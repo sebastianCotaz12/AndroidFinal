@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/img"
+    android:padding="24dp"
+    tools:context=".controller.MainActivity">
+
+    <!-- Fondo con overlay oscuro para contraste -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B3000000" /> <!-- negro más opaco -->
+
+    <!-- Contenido centrado -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:padding="20dp">
+
+        <!-- Texto de bienvenida -->
+        <TextView
+            android:id="@+id/tvBienvenida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BIENVENIDO"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="8dp" />
+
+
+
+        <!-- Subtítulo motivador -->
+        <TextView
+            android:id="@+id/tvSubtitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="La mejor experiencia a un clic de distancia"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:layout_marginBottom="30dp" />
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/imginicio"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@mipmap/logo"
+            android:contentDescription="Logo"
+            android:layout_marginBottom="30dp" />
+
+        <!-- Botón principal SIN archivos externos -->
+        <Button
+            android:id="@+id/btninicio"
+            android:layout_width="240dp"
+            android:layout_height="60dp"
+            android:text="Comencemos"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:textAllCaps="false"
+            android:elevation="8dp"
+            android:padding="12dp"
+            android:backgroundTint="#3F7DFA"
+            android:clipToOutline="true" />
+
+    </LinearLayout>
+
+</RelativeLayout>

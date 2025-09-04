@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical"
+    tools:context=".controller.form_reportes">
+
+    <!-- Barra superior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:background="#2196F3"
+        android:elevation="6dp">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="Icono Lista" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reportes"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/img"
+            android:contentDescription="Logo" />
+    </LinearLayout>
+
+    <!-- Título -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crear Reporte"
+        android:textSize="22sp"
+        android:textColor="#212121"
+        android:gravity="center"
+        android:layout_marginVertical="16dp"
+        android:textStyle="bold" />
+
+    <!-- Formulario -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Campo reutilizable -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ID Reporte"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etId"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="ID (autogenerado)"
+                    android:background="@android:color/transparent"
+                    android:inputType="number"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Nombre Usuario -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre Usuario"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etNombreUsuarioR"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese nombre"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Cargo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargo"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etCargo"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese cargo"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Cédula -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cédula"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etCedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese cédula"
+                    android:background="@android:color/transparent"
+                    android:inputType="number"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Fecha -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etFecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese fecha"
+                    android:background="@android:color/transparent"
+                    android:inputType="date"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Lugar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lugar"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etLugar"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese lugar"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Descripción -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descripción"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etDescripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:hint="Ingrese descripción"
+                    android:gravity="top|start"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:inputType="textMultiLine" />
+            </LinearLayout>
+
+            <!-- Imagen -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Imagen"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etImagen"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ruta imagen"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Archivos -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Archivos"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etArchivos"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ruta archivos"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Estado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Estado"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese estado"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/btnEnviarReporte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enviar Reporte"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:backgroundTint="#2196F3"
+        android:textColor="@android:color/white"
+        android:layout_margin="16dp"
+        android:paddingVertical="12dp" />
+
+</LinearLayout>

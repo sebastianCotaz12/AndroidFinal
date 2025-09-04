@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6"
+    tools:context=".controller.registro">
+
+    <!-- Fondo decorativo con degradado -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical"
+        android:background="@android:drawable/screen_background_dark_transparent"
+        android:gravity="center"
+        android:backgroundTint="#2196F3" /> <!-- Azul -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Tarjeta contenedora -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:padding="24dp"
+                android:elevation="6dp"
+                android:backgroundTintMode="src_in"
+                android:clipToOutline="true"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:backgroundTint="#FFFFFF"
+                android:translationZ="4dp">
+
+                <!-- Título -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Crear cuenta"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#2196F3"/>
+
+
+                <!-- Campos -->
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellido"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre de usuario"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Correo electrónico"
+                    android:inputType="textEmailAddress"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cargo"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="12dp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Confirmar contraseña"
+                    android:inputType="textPassword"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="#000000"
+                    android:layout_marginBottom="20dp"/>
+
+                <!-- Botones -->
+                <Button
+                    android:id="@+id/btnRegistrarse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Registrarse"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#2196F3"
+                    android:layout_marginBottom="12dp"
+                    android:padding="12dp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/btnVolver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Volver al inicio"
+                    android:textColor="#2196F3"
+                    android:backgroundTint="#E0E0E0"
+                    android:padding="12dp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

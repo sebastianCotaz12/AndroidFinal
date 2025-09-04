@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F9FC">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:layout_above="@+id/fab">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Encabezado elegante -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:background="@android:drawable/screen_background_dark_transparent"
+                android:backgroundTintMode="src_in"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:layout_marginBottom="20dp"
+                android:elevation="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detalle del Reporte"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:letterSpacing="0.05"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="4"/>
+            </LinearLayout>
+
+            <!-- Card: Nombre Usuario -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvNombreUsuario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nombre Usuario"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ejemplo: Juan Pérez"
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Cargo -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvCargo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cargo"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ejemplo: Supervisor"
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Cédula -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvCedula"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cédula"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ejemplo: 123456789"
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card: Fecha -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvFecha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ejemplo: 02/09/2025"
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Lugar -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvLugar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lugar"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ejemplo: Bogotá"
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Descripción -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvDescripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Descripción"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ejemplo: Detalle del incidente..."
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Estado -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvEstado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Estado"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ejemplo: Pendiente"
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón de acción flotante -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:contentDescription="Editar"
+        app:backgroundTint="@android:color/holo_blue_dark"
+        app:tint="@android:color/white"
+        app:srcCompat="@android:drawable/ic_menu_edit"/>
+</RelativeLayout>

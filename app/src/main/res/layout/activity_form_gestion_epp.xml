@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical"
+    tools:context=".controller.form_gestionEpp">
+
+    <!-- Barra superior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:background="#3F7DFA"
+        android:elevation="6dp">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="Icono Gestión EPP" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Gestión EPP"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/img"
+            android:contentDescription="Logo" />
+    </LinearLayout>
+
+    <!-- Título -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crear Registro Gestión EPP"
+        android:textSize="22sp"
+        android:textColor="#212121"
+        android:gravity="center"
+        android:layout_marginVertical="16dp"
+        android:textStyle="bold" />
+
+    <!-- Formulario -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ID -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ID Registro"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etIdEpp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="ID (autogenerado o manual)"
+                    android:background="@android:color/transparent"
+                    android:inputType="number"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Nombre -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese nombre"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Apellido -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Apellido"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etApellido"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese apellido"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Cédula -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cédula"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etCedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese cédula"
+                    android:background="@android:color/transparent"
+                    android:inputType="number"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Cargo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargo"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etCargo"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese cargo"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Productos -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Productos"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etProductos"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese productos"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Cantidad -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cantidad"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etCantidad"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese cantidad"
+                    android:background="@android:color/transparent"
+                    android:inputType="number"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Importancia -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Importancia"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etImportancia"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese importancia"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Estado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Estado"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese estado"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Fecha Creación -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha de Creación"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etFechaCreacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Ingrese fecha"
+                    android:background="@android:color/transparent"
+                    android:inputType="date"
+                    android:padding="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón Guardar -->
+    <Button
+        android:id="@+id/btnGuardarEpp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar Gestión EPP"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:backgroundTint="#3F7DFA"
+        android:textColor="@android:color/white"
+        android:layout_margin="16dp"
+        android:paddingVertical="12dp" />
+
+</LinearLayout>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F6F8"
+    tools:context=".controller.lista_listaChequeo">
+
+    <!-- Encabezado -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#3F7DFA"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:elevation="4dp">
+
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_centerVertical="true"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            android:tint="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Gestion EPP"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/logo"/>
+    </RelativeLayout>
+
+    <!-- Contenido -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Título -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Listas de Solicitudes EPP recibidos"
+                android:textAlignment="center"
+                android:textColor="#1C1C1C"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Barra de búsqueda -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:elevation="4dp"
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="8dp"
+                android:clipToPadding="false"
+                android:backgroundTint="#FFFFFF"
+                android:background="@android:drawable/editbox_background">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="Buscar solicitud..."
+                    android:padding="6dp"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    android:tint="#3F7DFA" />
+            </LinearLayout>
+
+            <!-- Crear nuevo reporte -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:elevation="3dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:paddingHorizontal="16dp"
+                android:clipToPadding="false"
+                android:layout_gravity="center"
+                android:backgroundTint="#EAF0FF"
+                android:background="@android:drawable/editbox_background">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Crear nueva solicitud EPP"
+                    android:textColor="#3F7DFA"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="12dp" />
+
+                <ImageButton
+                    android:id="@+id/imgButton_crearlista"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@android:color/transparent"
+                    android:src="@android:drawable/ic_input_add"
+                    android:tint="#3F7DFA" />
+            </LinearLayout>
+
+            <!-- Lista de reportes -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewListaChequeo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
