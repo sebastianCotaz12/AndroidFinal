@@ -26,11 +26,28 @@ public class detalles_actLudicas extends AppCompatActivity {
         Intent intent = getIntent();
 
         if (intent != null) {
-            tvUsuario.setText(intent.getStringExtra("usuario"));
-            tvNombreActividad.setText(intent.getStringExtra("nombre_actividad"));
-            tvFecha.setText(intent.getStringExtra("fecha"));
-            tvDescripcion.setText(intent.getStringExtra("descripcion"));
-            tvEvidencia.setText(intent.getStringExtra("evidencia"));
+            int id = intent.getIntExtra("id", -1); // por si lo necesitas
+            String usuario = intent.getStringExtra("usuario");
+            String nombreActividad = intent.getStringExtra("nombreActividad");
+            String fecha = intent.getStringExtra("fecha");
+            String descripcion = intent.getStringExtra("descripcion");
+            String archivoAdjunto = intent.getStringExtra("archivoAdjunto");
+            String imagenVideo = intent.getStringExtra("imagenVideo");
+
+            // Setear en los TextView
+            tvUsuario.setText(usuario);
+            tvNombreActividad.setText(nombreActividad);
+            tvFecha.setText(fecha);
+            tvDescripcion.setText(descripcion);
+
+            // Si hay archivo adjunto lo mostramos, si no, el video
+            if (archivoAdjunto != null && !archivoAdjunto.isEmpty()) {
+                tvEvidencia.setText(archivoAdjunto);
+            } else if (imagenVideo != null && !imagenVideo.isEmpty()) {
+                tvEvidencia.setText(imagenVideo);
+            } else {
+                tvEvidencia.setText("Sin evidencia");
+            }
         }
     }
 }

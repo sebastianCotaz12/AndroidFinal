@@ -39,24 +39,21 @@ public class adapter_actLudica extends RecyclerView.Adapter<adapter_actLudica.Vi
         holder.txtNombreFecha.setText(item.getNombreActividad() + " - " + item.getFecha());
 
         holder.btnDetalles.setOnClickListener(v -> {
-            Intent intent = new Intent(context,detalles_actLudicas.class);
+            Intent intent = new Intent(context, detalles_actLudicas.class);
+
+            // Pasamos TODOS los datos que existen en el modelo
             intent.putExtra("id", item.getId());
-            intent.putExtra("nombreUsuario", item.getUsuario());
+            intent.putExtra("usuario", item.getUsuario());
             intent.putExtra("nombreActividad", item.getNombreActividad());
             intent.putExtra("fecha", item.getFecha());
             intent.putExtra("descripcion", item.getDescripcion());
-            intent.putExtra("imagen_video", item.getEvidencia());
+            intent.putExtra("imagenVideo", item.getImagenVideo());
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
-
-//        holder.btnDownload.setOnClickListener(v -> {
-//
-//
-//
-//        });
     }
+
 
     @Override
     public int getItemCount() {
