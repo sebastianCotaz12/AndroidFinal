@@ -35,10 +35,11 @@ public class Menu extends AppCompatActivity {
              Intent intent = new Intent(Menu.this, lista_reportes.class);
              startActivity(intent);
          });
+         btnAct.setOnClickListener(v -> {
+             Intent intent = new Intent(Menu.this, lista_actLudicas.class);
+             startActivity(intent);
 
-        // btnAct.setOnClickListener(v -> {
-        //     // TODO: Abrir interfaz de Actividades Lúdicas
-        // });
+         });
 
         btnListaChequeo.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, lista_listaChequeo.class);

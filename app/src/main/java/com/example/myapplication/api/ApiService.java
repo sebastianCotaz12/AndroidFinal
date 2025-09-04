@@ -1,5 +1,6 @@
 package com.example.myapplication.api;
 
+import com.example.myapplication.controller.crear_actLudica;
 import com.example.myapplication.controller.crear_gestionEpp;
 import com.example.myapplication.controller.crear_listaChequeo;
 import com.example.myapplication.controller.crear_reportes;
@@ -31,6 +32,12 @@ public interface ApiService {
 
     @GET("listarReportes")
     Call<List<crear_reportes>> getReportes();
+
+    @POST ("crearActividadLudica")
+    Call<ApiResponse<crear_actLudica>> crearActividad(@Body crear_actLudica actividad);
+
+    @GET("listarActividadesLudicas")
+    Call<List<crear_actLudica>> getActividad ();
 
 }
 

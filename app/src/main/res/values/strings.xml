@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">SST</string>
+    <string name="actividades_l_dicas">Actividades Ludicas</string>
+    <string name="usuario">Espacio ver nombre de usuario</string>
+    <string name="nombre_de_la_actividad">Espacio de ver nombre de la actividad</string>
+    <string name="fecha_de_la_actividad">Espacio de ver fecha de la actividad</string>
+    <string name="descripcion_de_la_actividad">Espacio de ver descripcion de la actividad</string>
+    <string name="subir_imagen">Espacio para ver imagen de la  actividad</string>
+    <string name="subir_video">Espacio para ver video de la actividad</string>
+    <string name="enviar_evidencia">Enviar evidencia</string>
 </resources>
