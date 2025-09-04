@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ID Reporte"
+                    android:text="ID usuario"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
                     android:textSize="15sp" />

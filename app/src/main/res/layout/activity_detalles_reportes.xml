@@ -57,7 +57,6 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvNombreUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Nombre Usuario"
@@ -66,9 +65,10 @@
                         android:textColor="#2E3A59"/>
 
                     <TextView
+                        android:id="@+id/tvNombreUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ejemplo: Juan Pérez"
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="#6C7A92"
                         android:layout_marginTop="4dp"/>
@@ -90,7 +90,6 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvCargo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Cargo"
@@ -99,9 +98,10 @@
                         android:textColor="#2E3A59"/>
 
                     <TextView
+                        android:id="@+id/tvCargo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ejemplo: Supervisor"
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="#6C7A92"
                         android:layout_marginTop="4dp"/>
@@ -123,7 +123,6 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvCedula"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Cédula"
@@ -132,9 +131,10 @@
                         android:textColor="#2E3A59"/>
 
                     <TextView
+                        android:id="@+id/tvCedula"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ejemplo: 123456789"
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="#6C7A92"
                         android:layout_marginTop="4dp"/>
@@ -156,7 +156,6 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvFecha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Fecha"
@@ -165,9 +164,10 @@
                         android:textColor="#2E3A59"/>
 
                     <TextView
+                        android:id="@+id/tvFecha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ejemplo: 02/09/2025"
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="#6C7A92"
                         android:layout_marginTop="4dp"/>
@@ -189,7 +189,6 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvLugar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Lugar"
@@ -198,9 +197,10 @@
                         android:textColor="#2E3A59"/>
 
                     <TextView
+                        android:id="@+id/tvLugar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ejemplo: Bogotá"
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="#6C7A92"
                         android:layout_marginTop="4dp"/>
@@ -222,7 +222,6 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvDescripcion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Descripción"
@@ -231,9 +230,10 @@
                         android:textColor="#2E3A59"/>
 
                     <TextView
+                        android:id="@+id/tvDescripcion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ejemplo: Detalle del incidente..."
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="#6C7A92"
                         android:layout_marginTop="4dp"/>
@@ -241,6 +241,73 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Estado -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Estado"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:id="@+id/tvEstado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Imagen -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Imagen (ruta o URL):"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:id="@+id/tvImagen"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Archivos -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -255,18 +322,18 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvEstado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Estado"
+                        android:text="Archivos (ruta o URL):"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="#2E3A59"/>
 
                     <TextView
+                        android:id="@+id/tvArchivos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ejemplo: Pendiente"
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="#6C7A92"
                         android:layout_marginTop="4dp"/>

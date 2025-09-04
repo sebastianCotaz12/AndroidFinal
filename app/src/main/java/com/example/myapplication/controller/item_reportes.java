@@ -1,26 +1,69 @@
 package com.example.myapplication.controller;
 
-import android.os.Bundle;
+public class item_reportes {
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+    private int id;
+    private String nombreUsuario;
+    private String cargo;
+    private String cedula;
+    private String fecha;
+    private String lugar;
+    private String descripcion;
+    private String imagen;
+    private String archivos;
+    private String estado;
 
-import com.example.myapplication.R;
+    public item_reportes(int id, String nombreUsuario, String cargo, String cedula, String fecha,
+                             String lugar, String descripcion, String imagen, String archivos, String estado) {
+        this.id = id;
+        this.nombreUsuario = nombreUsuario;
+        this.cargo = cargo;
+        this.cedula = cedula;
+        this.fecha = fecha;
+        this.lugar = lugar;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.archivos = archivos;
+        this.estado = estado;
+    }
 
-public class item_reportes extends AppCompatActivity {
+    public int getId() {
+        return id;
+    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_item_reportes);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public String getLugar() {
+        return lugar;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public String getArchivos() {
+        return archivos;
+    }
+
+    public String getEstado() {
+        return estado;
     }
 }
