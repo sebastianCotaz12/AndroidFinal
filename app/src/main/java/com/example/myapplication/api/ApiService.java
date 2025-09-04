@@ -12,6 +12,9 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiService {
+
+    @POST("login")
+    Call<LoginResponse> login(@Body LoginRequest request);
     @POST("crearListaChequeo")
     Call<ApiResponse<crear_listaChequeo>> crearListaChequeo(@Body crear_listaChequeo lista);
     @GET("listarListasChequeo")

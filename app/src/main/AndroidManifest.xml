@@ -15,6 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".controller.lista_actLudicas"
+            android:exported="false" />
+        <activity
+            android:name=".controller.item_actLudicas"
+            android:exported="false" />
+        <activity
+            android:name=".controller.form_actLudicas"
+            android:exported="false" />
+        <activity
+            android:name=".controller.detalles_actLudicas"
+            android:exported="false" />
+        <activity
             android:name=".controller.lista_gestionEpp"
             android:exported="false" />
         <activity
@@ -54,7 +66,7 @@
             android:name=".controller.registro"
             android:exported="false" />
         <activity
-            android:name=".controller.MainActivity"
+            android:name=".controller.Menu"
             android:exported="false" />
         <activity
             android:name=".controller.inicioSesion"
@@ -63,7 +75,7 @@
             android:name=".controller.form_reportes"
             android:exported="false" />
         <activity
-            android:name=".controller.Menu"
+            android:name=".controller.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

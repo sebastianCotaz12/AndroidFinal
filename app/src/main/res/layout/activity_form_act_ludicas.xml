@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F6FA"
+    tools:context=".controller.CreaActividades">
+
+    <!-- 🔹 Barra superior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="#3F7DFA"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@mipmap/logo"
+            android:tint="#FFFFFF" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Actividades Lúdicas"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/img"
+            android:tint="#FFFFFF" />
+    </LinearLayout>
+
+    <!-- 🔹 Contenido scrollable -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Card de campos -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <EditText
+                        android:id="@+id/etUsuario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint=""
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp"
+                        android:backgroundTint="#3F7DFA" />
+
+                    <EditText
+                        android:id="@+id/etNombreActividad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/nombre_de_la_actividad"
+                        android:inputType="textCapWords"
+                        android:minHeight="48dp"
+                        android:backgroundTint="#3F7DFA" />
+
+                    <EditText
+                        android:id="@+id/etFecha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/fecha_de_la_actividad"
+                        android:inputType="date"
+                        android:minHeight="48dp"
+                        android:backgroundTint="#3F7DFA" />
+
+                    <EditText
+                        android:id="@+id/etDescripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="@string/descripcion_de_la_actividad"
+                        android:inputType="textMultiLine"
+                        android:minHeight="100dp"
+                        android:backgroundTint="#3F7DFA" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Vista previa de la imagen -->
+            <ImageView
+                android:id="@+id/ivPreview"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:background="@android:color/darker_gray"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="Vista previa" />
+
+            <!-- Zona de adjuntar archivo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Adjuntar Evidencia"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:id="@+id/ivAdjuntar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/adjuntar"
+                    android:tint="#3F7DFA" />
+            </LinearLayout>
+
+            <!-- Botón enviar -->
+            <Button
+                android:id="@+id/btnEnviarEvidencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#3F7DFA"
+                android:text="@string/enviar_evidencia"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:minHeight="48dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
