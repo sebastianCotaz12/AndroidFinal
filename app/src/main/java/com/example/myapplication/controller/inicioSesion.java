@@ -37,7 +37,7 @@ public class inicioSesion extends AppCompatActivity {
 
         // 🔹 Botón olvidó contraseña
         binding.txtForgot.setOnClickListener(v -> {
-            Intent intent = new Intent(inicioSesion.this, Registro.class);
+            Intent intent = new Intent(inicioSesion.this, Olvidaste_contrasenia.class);
             startActivity(intent);
         });
     }
