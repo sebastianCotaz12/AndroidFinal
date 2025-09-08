@@ -15,9 +15,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.controller.adapter_reportes;
-import com.example.myapplication.controller.item_reportes;
-import com.example.myapplication.databinding.ActivityListaReportesBinding;
+import com.example.myapplication.databinding.ActivityListaListaChequeoBinding
+        ;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,20 +24,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class lista_reportes extends AppCompatActivity {
+public class Lista_listaChequeo extends AppCompatActivity {
 
-    ActivityListaReportesBinding binding;
-    adapter_reportes adapter;
-    List<item_reportes> listaReportes = new ArrayList<>();
+    private ActivityListaListaChequeoBinding binding;
+    private Adapter_listaChequeo adapter;
+    private List<Item_listaChequeo> listaChequeos = new ArrayList<>();
 
-    // 🔹 Ajusta esta URL a tu endpoint real
-    String URL_API = "https://backsst.onrender.com/listarReportes";
+    private static final String URL_API = "https://backsst.onrender.com/listarListasChequeo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityListaReportesBinding.inflate(getLayoutInflater());
+        binding = ActivityListaListaChequeoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
@@ -48,21 +46,21 @@ public class lista_reportes extends AppCompatActivity {
         });
 
         // Configurar RecyclerView
-        RecyclerView recyclerView = binding.recyclerViewListaReportes;
+        RecyclerView recyclerView = binding.recyclerViewListaChequeo;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new adapter_reportes(this, listaReportes);
+        adapter = new Adapter_listaChequeo(this, listaChequeos);
         recyclerView.setAdapter(adapter);
 
         // Llamar API
-        obtenerReportes();
+        obtenerListasChequeo();
 
-        // Botón para crear nuevo reporte
-        binding.imgButtonCrearreporte.setOnClickListener(v -> {
-            startActivity(new Intent(lista_reportes.this, form_reportes.class));
+        // Botón para crear nueva lista de chequeo
+        binding.imgButtonCrearlista.setOnClickListener(v -> {
+            startActivity(new Intent(Lista_listaChequeo.this, Form_listaChequeo.class));
         });
     }
 
-    private void obtenerReportes() {
+    private void obtenerListasChequeo() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -73,23 +71,21 @@ public class lista_reportes extends AppCompatActivity {
                     try {
                         JSONArray datos = response.getJSONArray("datos");
 
-                        listaReportes.clear();
+                        listaChequeos.clear();
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
 
-                            item_reportes item = new item_reportes(
-                                    obj.getInt("idReporte"),
-                                    obj.getString("nombreUsuario"),
-                                    obj.getString("cargo"),
-                                    obj.getString("cedula"),
+                            Item_listaChequeo item = new Item_listaChequeo(
+                                    obj.getString("usuarioNombre"),
                                     obj.getString("fecha"),
-                                    obj.getString("lugar"),
-                                    obj.getString("descripcion"),
-                                    obj.optString("imagen"),
-                                    obj.optString("archivos"),
-                                    obj.optString("estado")
+                                    obj.getString("hora"),
+                                    obj.getString("modelo"),
+                                    obj.getString("marca"),
+                                    obj.getString("soat"),
+                                    obj.getString("tecnico"),
+                                    obj.getString("kilometraje")
                             );
-                            listaReportes.add(item);
+                            listaChequeos.add(item);
                         }
                         adapter.notifyDataSetChanged();
 

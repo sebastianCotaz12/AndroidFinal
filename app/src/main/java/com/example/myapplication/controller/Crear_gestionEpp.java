@@ -2,7 +2,7 @@ package com.example.myapplication.controller;
 
 import com.google.gson.annotations.SerializedName;
 
-public class crear_gestionEpp {
+public class Crear_gestionEpp {
 
     @SerializedName("id_usuario")
     private int idUsuario;
@@ -35,9 +35,9 @@ public class crear_gestionEpp {
     private String fechaCreacion;
 
     // 🔹 Constructor con todos los campos
-    public crear_gestionEpp(int idUsuario, String nombre, String apellido, String cedula,
-                        String cargo, String productos, String cantidad,
-                        String importancia, String estado, String fechaCreacion) {
+    public Crear_gestionEpp(int idUsuario, String nombre, String apellido, String cedula,
+                            String cargo, String productos, String cantidad,
+                            String importancia, String estado, String fechaCreacion) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -51,7 +51,7 @@ public class crear_gestionEpp {
     }
 
     // 🔹 Constructor vacío (para Retrofit/Gson)
-    public crear_gestionEpp() {
+    public Crear_gestionEpp() {
     }
 
     // 🔹 Getters y Setters

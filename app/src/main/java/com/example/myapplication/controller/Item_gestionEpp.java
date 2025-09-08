@@ -1,6 +1,6 @@
 package com.example.myapplication.controller;
 
-public class item_gestionEpp {
+public class Item_gestionEpp {
     private int idUsuario;
     private String nombre;
     private String apellido;
@@ -13,9 +13,9 @@ public class item_gestionEpp {
     private String fechaCreacion;
 
     // Constructor
-    public item_gestionEpp(int idUsuario, String nombre, String apellido, String cedula,
-                            String cargo, String productos, int cantidad, String importancia,
-                            String estado, String fechaCreacion) {
+    public Item_gestionEpp(int idUsuario, String nombre, String apellido, String cedula,
+                           String cargo, String productos, int cantidad, String importancia,
+                           String estado, String fechaCreacion) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;

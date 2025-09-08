@@ -27,22 +27,22 @@ public class Menu extends AppCompatActivity {
 
 
         btnGestionEpp.setOnClickListener(v -> {
-            Intent intent = new Intent(Menu.this, lista_gestionEpp.class);
+            Intent intent = new Intent(Menu.this, Lista_gestionEpp.class);
                 startActivity(intent);
         });
 
          btnReportes.setOnClickListener(v -> {
-             Intent intent = new Intent(Menu.this, lista_reportes.class);
+             Intent intent = new Intent(Menu.this, Lista_reportes.class);
              startActivity(intent);
          });
          btnAct.setOnClickListener(v -> {
-             Intent intent = new Intent(Menu.this, lista_actLudicas.class);
+             Intent intent = new Intent(Menu.this, Lista_actLudicas.class);
              startActivity(intent);
 
          });
 
         btnListaChequeo.setOnClickListener(v -> {
-            Intent intent = new Intent(Menu.this, lista_listaChequeo.class);
+            Intent intent = new Intent(Menu.this, Lista_listaChequeo.class);
             startActivity(intent);
         });
 

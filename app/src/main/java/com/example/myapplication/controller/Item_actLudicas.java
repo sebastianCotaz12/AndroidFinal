@@ -1,6 +1,6 @@
 package com.example.myapplication.controller;
 
-public class item_actLudicas {
+public class Item_actLudicas {
     private int id;
     private String usuario;
     private String nombreActividad;
@@ -9,7 +9,7 @@ public class item_actLudicas {
     private String evidencia;
     private String imagenVideo;
 
-    public item_actLudicas(int id, String usuario, String nombreActividad, String fecha, String descripcion, String evidencia,  String imagenVideo) {
+    public Item_actLudicas(int id, String usuario, String nombreActividad, String fecha, String descripcion, String evidencia, String imagenVideo) {
         this.id = id;
         this.usuario = usuario;
         this.nombreActividad = nombreActividad;

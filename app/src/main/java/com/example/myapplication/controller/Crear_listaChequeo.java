@@ -2,7 +2,7 @@ package com.example.myapplication.controller;
 
 import com.google.gson.annotations.SerializedName;
 
-public class crear_listaChequeo {
+public class Crear_listaChequeo {
 
     @SerializedName("id_usuario")
     private int idUsuario;
@@ -32,9 +32,9 @@ public class crear_listaChequeo {
     private String kilometraje;
 
 
-    public crear_listaChequeo(int idUsuario, String usuarioNombre, String fecha, String hora,
-                             String modelo, String marca, String soat, String tecnico,
-                             String kilometraje) {
+    public Crear_listaChequeo(int idUsuario, String usuarioNombre, String fecha, String hora,
+                              String modelo, String marca, String soat, String tecnico,
+                              String kilometraje) {
         this.idUsuario = idUsuario;
         this.usuarioNombre = usuarioNombre;
         this.fecha = fecha;
@@ -46,7 +46,7 @@ public class crear_listaChequeo {
         this.kilometraje = kilometraje;
     }
 
-    public crear_listaChequeo() {
+    public Crear_listaChequeo() {
 
     }
 

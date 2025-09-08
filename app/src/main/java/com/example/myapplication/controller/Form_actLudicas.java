@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class form_actLudicas extends AppCompatActivity {
+public class Form_actLudicas extends AppCompatActivity {
 
     private ActivityFormActLudicasBinding binding;
     private Uri imagenUri = null;
@@ -140,7 +140,7 @@ public class form_actLudicas extends AppCompatActivity {
 
 
         String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiY29ycmVvRWxlY3Ryb25pY28iOiJhbmRyZXNAZXhhbXBsZS5jb20iLCJ0aW1lc3RhbXAiOjE3NTcwMDIyMTI0NzMsImlhdCI6MTc1NzAwMjIxMiwiZXhwIjoxNzU3MDA1ODEyfQ.a_X1YeJMXLWsFFzzPAdx6rGRp1jjXo7GGYq1U0RINl8";
-        crear_actLudica actividad = new crear_actLudica();
+        Crear_actLudica actividad = new Crear_actLudica();
         actividad.setIdUsuario(idUsuario);
         actividad.setNombreActividad(nombreActividad);
         actividad.setFechaActividad(fecha);
@@ -153,26 +153,26 @@ public class form_actLudicas extends AppCompatActivity {
         String jsonBody = gson.toJson(actividad);
         System.out.println("Body que se enviará: " + jsonBody);
         ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
-        Call<ApiResponse<crear_actLudica>> call = apiService.crearActividad(actividad);
+        Call<ApiResponse<Crear_actLudica>> call = apiService.crearActividad(actividad);
         //ListaActividadesItem actividad = new ListaActividadesItem(0, usuario, nombreActividad, fecha, descripcion, imgBase64);
 
         //long resultado = managerDb.insertarActividad(actividad);
 
 
-        call.enqueue(new Callback<ApiResponse<crear_actLudica>>() {
+        call.enqueue(new Callback<ApiResponse<Crear_actLudica>>() {
             @Override
-            public void onResponse(@NonNull Call<ApiResponse<crear_actLudica>> call, @NonNull Response<ApiResponse<crear_actLudica>> response) {
+            public void onResponse(@NonNull Call<ApiResponse<Crear_actLudica>> call, @NonNull Response<ApiResponse<Crear_actLudica>> response) {
                 System.out.println(response.toString());
                 if (response.isSuccessful() && response.body() != null) {
 
-                    Toast.makeText(form_actLudicas.this, "Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(form_actLudicas.this,lista_actLudicas.class));
+                    Toast.makeText(Form_actLudicas.this, "Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Form_actLudicas.this, Lista_actLudicas.class));
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<crear_actLudica>> call, Throwable t) {
-                Toast.makeText(form_actLudicas.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(Call<ApiResponse<Crear_actLudica>> call, Throwable t) {
+                Toast.makeText(Form_actLudicas.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
         Toast.makeText(this, "Actividad guardada con evidencia", Toast.LENGTH_SHORT).show();

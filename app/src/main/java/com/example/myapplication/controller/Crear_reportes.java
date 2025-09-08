@@ -2,7 +2,7 @@ package com.example.myapplication.controller;
 
 import com.google.gson.annotations.SerializedName;
 
-public class crear_reportes {
+public class Crear_reportes {
 
     @SerializedName("id_usuario")   // 👈 agregado
     private Integer idUsuario;
@@ -34,7 +34,7 @@ public class crear_reportes {
     @SerializedName("estado")
     private String estado;
 
-    public crear_reportes() {}
+    public Crear_reportes() {}
 
 
     public Integer getIdUsuario() { return idUsuario; }   // 👈 getter

@@ -1,9 +1,9 @@
 package com.example.myapplication.api;
 
-import com.example.myapplication.controller.crear_actLudica;
-import com.example.myapplication.controller.crear_gestionEpp;
-import com.example.myapplication.controller.crear_listaChequeo;
-import com.example.myapplication.controller.crear_reportes;
+import com.example.myapplication.controller.Crear_actLudica;
+import com.example.myapplication.controller.Crear_gestionEpp;
+import com.example.myapplication.controller.Crear_listaChequeo;
+import com.example.myapplication.controller.Crear_reportes;
 
 import java.util.List;
 
@@ -17,27 +17,27 @@ public interface ApiService {
     @POST("login")
     Call<LoginResponse> login(@Body LoginRequest request);
     @POST("crearListaChequeo")
-    Call<ApiResponse<crear_listaChequeo>> crearListaChequeo(@Body crear_listaChequeo lista);
+    Call<ApiResponse<Crear_listaChequeo>> crearListaChequeo(@Body Crear_listaChequeo lista);
     @GET("listarListasChequeo")
-    Call<List<crear_listaChequeo>> getListasChequeo();
+    Call<List<Crear_listaChequeo>> getListasChequeo();
 
     @POST("crearGestion")
-    Call<ApiResponse<crear_gestionEpp>> crearGestion(@Body crear_gestionEpp gestion);
+    Call<ApiResponse<Crear_gestionEpp>> crearGestion(@Body Crear_gestionEpp gestion);
 
     @GET("listarGestiones")
-    Call<List<crear_gestionEpp>> getGestiones();
+    Call<List<Crear_gestionEpp>> getGestiones();
 
     @POST("crearReporte ")
-    Call<ApiResponse<crear_reportes>> crearReporte(@Body crear_reportes reporte);
+    Call<ApiResponse<Crear_reportes>> crearReporte(@Body Crear_reportes reporte);
 
     @GET("listarReportes")
-    Call<List<crear_reportes>> getReportes();
+    Call<List<Crear_reportes>> getReportes();
 
     @POST ("crearActividadLudica")
-    Call<ApiResponse<crear_actLudica>> crearActividad(@Body crear_actLudica actividad);
+    Call<ApiResponse<Crear_actLudica>> crearActividad(@Body Crear_actLudica actividad);
 
     @GET("listarActividadesLudicas")
-    Call<List<crear_actLudica>> getActividad ();
+    Call<List<Crear_actLudica>> getActividad ();
 
 }
 

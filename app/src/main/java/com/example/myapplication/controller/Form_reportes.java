@@ -15,7 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class form_reportes extends AppCompatActivity {
+public class Form_reportes extends AppCompatActivity {
 
     private ActivityFormReportesBinding binding;
 
@@ -54,7 +54,7 @@ public class form_reportes extends AppCompatActivity {
         }
 
         // Crear objeto reporte
-        crear_reportes nuevoReporte = new crear_reportes();
+        Crear_reportes nuevoReporte = new Crear_reportes();
         nuevoReporte.setIdUsuario(1); // Temporal hasta login
         nuevoReporte.setNombreUsuario(nombreUsuario);
         nuevoReporte.setCargo(cargo);
@@ -70,24 +70,24 @@ public class form_reportes extends AppCompatActivity {
         String token = "TOKEN_JWT_VALIDO";
 
         ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
-        Call<ApiResponse<crear_reportes>> call = apiService.crearReporte(nuevoReporte);
+        Call<ApiResponse<Crear_reportes>> call = apiService.crearReporte(nuevoReporte);
 
-        call.enqueue(new Callback<ApiResponse<crear_reportes>>() {
+        call.enqueue(new Callback<ApiResponse<Crear_reportes>>() {
             @Override
-            public void onResponse(Call<ApiResponse<crear_reportes>> call, Response<ApiResponse<crear_reportes>> response) {
+            public void onResponse(Call<ApiResponse<Crear_reportes>> call, Response<ApiResponse<Crear_reportes>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(form_reportes.this, "Reporte guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(form_reportes.this, lista_reportes.class);
+                    Toast.makeText(Form_reportes.this, "Reporte guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Form_reportes.this, Lista_reportes.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(form_reportes.this, "Error al guardar el reporte.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_reportes.this, "Error al guardar el reporte.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<crear_reportes>> call, Throwable t) {
-                Toast.makeText(form_reportes.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(Call<ApiResponse<Crear_reportes>> call, Throwable t) {
+                Toast.makeText(Form_reportes.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

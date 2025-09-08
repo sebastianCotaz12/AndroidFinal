@@ -31,13 +31,13 @@ public class inicioSesion extends AppCompatActivity {
 
         // 🔹 Botón registrarse
         binding.txtRegister.setOnClickListener(v -> {
-            Intent intent = new Intent(inicioSesion.this, registro.class);
+            Intent intent = new Intent(inicioSesion.this, Registro.class);
             startActivity(intent);
         });
 
         // 🔹 Botón olvidó contraseña
         binding.txtForgot.setOnClickListener(v -> {
-            Intent intent = new Intent(inicioSesion.this, registro.class);
+            Intent intent = new Intent(inicioSesion.this, Registro.class);
             startActivity(intent);
         });
     }

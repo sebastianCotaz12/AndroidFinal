@@ -16,12 +16,13 @@ import com.example.myapplication.R;
 
 import java.util.List;
 
-public class adapter_gestionEpp extends RecyclerView.Adapter<adapter_gestionEpp.ViewHolder> {
+public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.ViewHolder> {
 
     private final Context context;
-    private final List<item_gestionEpp> lista;
+    private final List<Item_reportes> lista;
 
-    public adapter_gestionEpp(Context context, List<item_gestionEpp> lista) {
+    // 🔹 Constructor corregido
+    public Adapter_reportes(Context context, List<Item_reportes> lista) {
         this.context = context;
         this.lista = lista;
     }
@@ -29,38 +30,41 @@ public class adapter_gestionEpp extends RecyclerView.Adapter<adapter_gestionEpp.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_item_gestion_epp, parent, false);
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.activity_item_reportes, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        item_gestionEpp item = lista.get(position);
+        Item_reportes item = lista.get(position);
 
-        // Mostrar en la lista el nombre + apellido
-        holder.txtNombre.setText(item.getNombre() + " " + item.getApellido());
+        // Mostrar nombre + fecha
+        holder.txtNombreFecha.setText(item.getNombreUsuario() + " - " + item.getFecha());
 
-        // Acción al presionar "Detalles"
+        // Botón detalles
         holder.btnDetalles.setOnClickListener(v -> {
-            Intent intent = new Intent(context, detalles_gestionEPP.class);
+            Intent intent = new Intent(context, Detalles_reportes.class);
 
-            intent.putExtra("nombre", item.getNombre());
-            intent.putExtra("apellido", item.getApellido());
-            intent.putExtra("cedula", item.getCedula());
+            // Pasamos los datos al intent
+            intent.putExtra("id", item.getId());
+            intent.putExtra("nombre_usuario", item.getNombreUsuario());
             intent.putExtra("cargo", item.getCargo());
-            intent.putExtra("productos", item.getProductos());
-            intent.putExtra("cantidad", item.getCantidad());
-            intent.putExtra("importancia", item.getImportancia());
+            intent.putExtra("cedula", item.getCedula());
+            intent.putExtra("fecha", item.getFecha());
+            intent.putExtra("lugar", item.getLugar());
+            intent.putExtra("descripcion", item.getDescripcion());
+            intent.putExtra("imagen", item.getImagen());
+            intent.putExtra("archivos", item.getArchivos());
             intent.putExtra("estado", item.getEstado());
-            intent.putExtra("fecha_creacion", item.getFechaCreacion());
 
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necesario si el context no es una activity
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necesario si no viene de una Activity
             context.startActivity(intent);
         });
 
-        // Acción al presionar "Descargar"
+        // Botón de descarga
         holder.btnDownload.setOnClickListener(v -> {
-            // Aquí puedes implementar exportar datos a PDF, Excel o similar
+            // Aquí implementarás la descarga de archivos
         });
     }
 
@@ -70,13 +74,13 @@ public class adapter_gestionEpp extends RecyclerView.Adapter<adapter_gestionEpp.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNombre;
+        TextView txtNombreFecha;
         Button btnDetalles;
         ImageButton btnDownload;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtNombre = itemView.findViewById(R.id.txtNombre);
+            txtNombreFecha = itemView.findViewById(R.id.txtNombre);
             btnDetalles = itemView.findViewById(R.id.btnDetalles);
             btnDownload = itemView.findViewById(R.id.btnDownload);
         }

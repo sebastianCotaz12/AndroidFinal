@@ -1,6 +1,6 @@
 package com.example.myapplication.controller;
 
-public class item_listaChequeo {
+public class Item_listaChequeo {
 
     private String nombre;
     private String fecha;
@@ -11,7 +11,7 @@ public class item_listaChequeo {
     private String tecnico;
     private String kilometraje;
 
-    public item_listaChequeo(String nombre, String fecha, String hora, String modelo, String marca, String soat, String tecnico, String kilometraje) {
+    public Item_listaChequeo(String nombre, String fecha, String hora, String modelo, String marca, String soat, String tecnico, String kilometraje) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.hora = hora;

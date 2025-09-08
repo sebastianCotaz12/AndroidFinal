@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F4F6F8"
     android:orientation="vertical"
-    tools:context=".controller.lista_listaChequeo">
+    tools:context=".controller.Lista_listaChequeo">
 
     <!-- Encabezado -->
     <RelativeLayout

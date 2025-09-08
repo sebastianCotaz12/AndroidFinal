@@ -15,7 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.databinding.ActivityListaActLudicasBinding;
+import com.example.myapplication.databinding.ActivityListaGestionEppBinding;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,46 +23,46 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class lista_actLudicas extends AppCompatActivity {
+public class Lista_gestionEpp extends AppCompatActivity {
 
-    private ActivityListaActLudicasBinding binding; // ✅ corregido
-    private final List<item_actLudicas> listaActividades = new ArrayList<>();
-    private adapter_actLudica adapter;
+    ActivityListaGestionEppBinding binding;
+    Adapter_gestionEpp adapter;
+    List<Item_gestionEpp> listaGestion = new ArrayList<>();
 
-    private static final String URL_API = "https://backsst.onrender.com/listarActividadesLudicas";
+    // 🔹 Ajusta esta URL a tu endpoint real
+    String URL_API = "https://backsst.onrender.com/listarGestiones";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityListaActLudicasBinding.inflate(getLayoutInflater()); // ✅ corregido
+        binding = ActivityListaGestionEppBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Ajustar padding por barras del sistema
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Configurar RecyclerView con un layout manager
+        // Configurar RecyclerView
         RecyclerView recyclerView = binding.recyclerViewListaChequeo;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Asignar el adapter (sin DBHelper, solo consumo de API)
-        adapter = new adapter_actLudica(this, listaActividades);
+        adapter = new Adapter_gestionEpp(this, listaGestion);
         recyclerView.setAdapter(adapter);
 
-        // Llamar a la API
-        obtenerActividades();
+        // Llamar API
+        obtenerGestiones();
 
-        // Botón para crear nueva actividad
+        // Botón para crear nueva gestión
+        // Botón para crear nueva lista de chequeo
         binding.imgButtonCrearlista.setOnClickListener(v -> {
-            startActivity(new Intent(lista_actLudicas.this, form_actLudicas.class));
+            startActivity(new Intent(Lista_gestionEpp.this, Form_gestionEpp.class));
         });
+
     }
 
-    private void obtenerActividades() {
+    private void obtenerGestiones() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -73,22 +73,24 @@ public class lista_actLudicas extends AppCompatActivity {
                     try {
                         JSONArray datos = response.getJSONArray("datos");
 
-                        listaActividades.clear();
+                        listaGestion.clear();
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
 
-                            item_actLudicas item = new item_actLudicas(
-                                    obj.getInt("id"),
-                                    obj.getString("nombreUsuario"),
-                                    obj.getString("nombreActividad"),
-                                    obj.getString("fechaActividad"),
-                                    obj.getString("descripcion"),
-                                    obj.optString("archivoAdjunto", ""),
-                                    obj.optString("imagenVideo", "")
+                            Item_gestionEpp item = new Item_gestionEpp(
+                                    obj.getInt("idUsuario"),
+                                    obj.getString("nombre"),
+                                    obj.getString("apellido"),
+                                    obj.getString("cedula"),
+                                    obj.getString("cargo"),
+                                    obj.getString("productos"),
+                                    obj.getInt("cantidad"),
+                                    obj.getString("importancia"),
+                                    obj.optString("estado"),
+                                    obj.getString("fechaCreacion")
                             );
-                            listaActividades.add(item);
+                            listaGestion.add(item);
                         }
-
                         adapter.notifyDataSetChanged();
 
                     } catch (Exception e) {

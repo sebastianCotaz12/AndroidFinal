@@ -15,7 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class form_gestionEpp extends AppCompatActivity {
+public class Form_gestionEpp extends AppCompatActivity {
 
     private ActivityFormGestionEppBinding binding;
 
@@ -61,7 +61,7 @@ public class form_gestionEpp extends AppCompatActivity {
         }
 
         // Crear objeto de gestión
-        crear_gestionEpp nuevaGestion = new crear_gestionEpp();
+        Crear_gestionEpp nuevaGestion = new Crear_gestionEpp();
         nuevaGestion.setIdUsuario(1); // Temporal
         nuevaGestion.setNombre(nombre);
         nuevaGestion.setApellido(apellido);
@@ -77,24 +77,24 @@ public class form_gestionEpp extends AppCompatActivity {
         String token = "TOKEN_JWT_VALIDO";
 
         ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
-        Call<ApiResponse<crear_gestionEpp>> call = apiService.crearGestion(nuevaGestion);
+        Call<ApiResponse<Crear_gestionEpp>> call = apiService.crearGestion(nuevaGestion);
 
-        call.enqueue(new Callback<ApiResponse<crear_gestionEpp>>() {
+        call.enqueue(new Callback<ApiResponse<Crear_gestionEpp>>() {
             @Override
-            public void onResponse(Call<ApiResponse<crear_gestionEpp>> call, Response<ApiResponse<crear_gestionEpp>> response) {
+            public void onResponse(Call<ApiResponse<Crear_gestionEpp>> call, Response<ApiResponse<Crear_gestionEpp>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(form_gestionEpp.this, "Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(form_gestionEpp.this, lista_gestionEpp.class);
+                    Toast.makeText(Form_gestionEpp.this, "Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Form_gestionEpp.this, Lista_gestionEpp.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(form_gestionEpp.this, "Error al guardar la gestión.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_gestionEpp.this, "Error al guardar la gestión.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<crear_gestionEpp>> call, Throwable t) {
-                Toast.makeText(form_gestionEpp.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(Call<ApiResponse<Crear_gestionEpp>> call, Throwable t) {
+                Toast.makeText(Form_gestionEpp.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

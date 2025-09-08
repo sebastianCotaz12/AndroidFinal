@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class form_listaChequeo extends AppCompatActivity {
+public class Form_listaChequeo extends AppCompatActivity {
 
     private ActivityFormListaChequeoBinding binding;
 
@@ -57,7 +57,7 @@ public class form_listaChequeo extends AppCompatActivity {
         }
 
         // Crear objeto con los mismos campos que espera el backend
-        crear_listaChequeo nuevaLista = new crear_listaChequeo();
+        Crear_listaChequeo nuevaLista = new Crear_listaChequeo();
         nuevaLista.setIdUsuario(5); // ejemplo, hasta que uses login real
         nuevaLista.setUsuarioNombre(nombreUsuario);
         nuevaLista.setFecha(fecha);
@@ -72,22 +72,22 @@ public class form_listaChequeo extends AppCompatActivity {
 
         ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
 
-        Call<ApiResponse<crear_listaChequeo>> call = apiService.crearListaChequeo(nuevaLista);
+        Call<ApiResponse<Crear_listaChequeo>> call = apiService.crearListaChequeo(nuevaLista);
 
-        call.enqueue(new Callback<ApiResponse<crear_listaChequeo>>() {
+        call.enqueue(new Callback<ApiResponse<Crear_listaChequeo>>() {
             @Override
-            public void onResponse(Call<ApiResponse<crear_listaChequeo>> call, Response<ApiResponse<crear_listaChequeo>> response) {
+            public void onResponse(Call<ApiResponse<Crear_listaChequeo>> call, Response<ApiResponse<Crear_listaChequeo>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(form_listaChequeo.this, "Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(form_listaChequeo.this, lista_listaChequeo.class));
+                    Toast.makeText(Form_listaChequeo.this, "Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Form_listaChequeo.this, Lista_listaChequeo.class));
                 } else {
-                    Toast.makeText(form_listaChequeo.this, "Error: No se pudo guardar.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_listaChequeo.this, "Error: No se pudo guardar.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<crear_listaChequeo>> call, Throwable t) {
-                Toast.makeText(form_listaChequeo.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(Call<ApiResponse<Crear_listaChequeo>> call, Throwable t) {
+                Toast.makeText(Form_listaChequeo.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

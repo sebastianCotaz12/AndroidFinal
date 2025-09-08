@@ -15,55 +15,55 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".controller.lista_actLudicas"
+            android:name=".controller.Lista_actLudicas"
             android:exported="false" />
         <activity
-            android:name=".controller.item_actLudicas"
+            android:name=".controller.Item_actLudicas"
             android:exported="false" />
         <activity
-            android:name=".controller.form_actLudicas"
+            android:name=".controller.Form_actLudicas"
             android:exported="false" />
         <activity
-            android:name=".controller.detalles_actLudicas"
+            android:name=".controller.Detalles_actLudicas"
             android:exported="false" />
         <activity
-            android:name=".controller.lista_gestionEpp"
+            android:name=".controller.Lista_gestionEpp"
             android:exported="false" />
         <activity
-            android:name=".controller.item_gestionEpp"
+            android:name=".controller.Item_gestionEpp"
             android:exported="false" />
         <activity
-            android:name=".controller.detalles_gestionEpp"
+            android:name=".controller.Detalles_gestionEPP"
             android:exported="false" />
         <activity
-            android:name=".controller.form_gestionEpp"
+            android:name=".controller.Form_gestionEpp"
             android:exported="false" />
         <activity
-            android:name=".controller.item_listaChequeo"
+            android:name=".controller.Item_listaChequeo"
             android:exported="false" />
         <activity
-            android:name=".controller.lista_listaChequeo"
+            android:name=".controller.Lista_listaChequeo"
             android:exported="false" />
         <activity
-            android:name=".controller.form_listaChequeo"
+            android:name=".controller.Form_listaChequeo"
             android:exported="false" />
         <activity
-            android:name=".controller.detalles_listaChequeo"
+            android:name=".controller.Detalles_listaChequeo"
             android:exported="false" />
         <activity
-            android:name=".controller.detalles_gestionEPP"
+            android:name=".controller.Item_reportes"
             android:exported="false" />
         <activity
-            android:name=".controller.item_reportes"
+            android:name=".controller.Form_reportes"
             android:exported="false" />
         <activity
-            android:name=".controller.lista_reportes"
+            android:name=".controller.Lista_reportes"
             android:exported="false" />
         <activity
-            android:name=".controller.detalles_reportes"
+            android:name=".controller.Detalles_reportes"
             android:exported="false" />
         <activity
-            android:name=".controller.registro"
+            android:name=".controller.Registro"
             android:exported="false" />
         <activity
             android:name=".controller.Menu"
@@ -71,9 +71,7 @@
         <activity
             android:name=".controller.inicioSesion"
             android:exported="false" />
-        <activity
-            android:name=".controller.form_reportes"
-            android:exported="false" />
+
         <activity
             android:name=".controller.MainActivity"
             android:exported="true">

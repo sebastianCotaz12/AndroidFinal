@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F4F6F8"
-    tools:context=".controller.lista_reportes">
+    tools:context=".controller.Lista_reportes">
 
     <!-- Encabezado -->
     <RelativeLayout

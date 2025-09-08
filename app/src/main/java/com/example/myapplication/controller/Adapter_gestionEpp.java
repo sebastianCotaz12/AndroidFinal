@@ -16,12 +16,12 @@ import com.example.myapplication.R;
 
 import java.util.List;
 
-public class adapter_listaChequeo extends RecyclerView.Adapter<adapter_listaChequeo.ViewHolder> {
+public class Adapter_gestionEpp extends RecyclerView.Adapter<Adapter_gestionEpp.ViewHolder> {
 
     private final Context context;
-    private final List<item_listaChequeo> lista;
+    private final List<Item_gestionEpp> lista;
 
-    public adapter_listaChequeo(Context context, List<item_listaChequeo> lista) {
+    public Adapter_gestionEpp(Context context, List<Item_gestionEpp> lista) {
         this.context = context;
         this.lista = lista;
     }
@@ -29,33 +29,38 @@ public class adapter_listaChequeo extends RecyclerView.Adapter<adapter_listaCheq
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_item_lista_chequeo, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.activity_item_gestion_epp, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        item_listaChequeo item = lista.get(position);
+        Item_gestionEpp item = lista.get(position);
 
-        holder.txtNombre.setText(item.getNombre() + " - " + item.getFecha());
+        // Mostrar en la lista el nombre + apellido
+        holder.txtNombre.setText(item.getNombre() + " " + item.getApellido());
 
+        // Acción al presionar "Detalles"
         holder.btnDetalles.setOnClickListener(v -> {
-            Intent intent = new Intent(context, detalles_listaChequeo.class);
-            intent.putExtra("usuario", item.getNombre());
-            intent.putExtra("fecha", item.getFecha());
-            intent.putExtra("hora", item.getHora());
-            intent.putExtra("modelo", item.getModelo());
-            intent.putExtra("marca", item.getMarca());
-            intent.putExtra("soat", item.getSoat());
-            intent.putExtra("tecnico", item.getTecnico());
-            intent.putExtra("kilometraje", item.getKilometraje());
+            Intent intent = new Intent(context, Detalles_gestionEPP.class);
+
+            intent.putExtra("nombre", item.getNombre());
+            intent.putExtra("apellido", item.getApellido());
+            intent.putExtra("cedula", item.getCedula());
+            intent.putExtra("cargo", item.getCargo());
+            intent.putExtra("productos", item.getProductos());
+            intent.putExtra("cantidad", item.getCantidad());
+            intent.putExtra("importancia", item.getImportancia());
+            intent.putExtra("estado", item.getEstado());
+            intent.putExtra("fecha_creacion", item.getFechaCreacion());
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necesario si el context no es una activity
             context.startActivity(intent);
         });
 
+        // Acción al presionar "Descargar"
         holder.btnDownload.setOnClickListener(v -> {
-            // Implementa aquí la funcionalidad de descarga si deseas
+            // Aquí puedes implementar exportar datos a PDF, Excel o similar
         });
     }
 

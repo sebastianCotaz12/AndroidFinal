@@ -15,9 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.controller.adapter_gestionEpp;
-import com.example.myapplication.controller.item_gestionEpp;
-import com.example.myapplication.databinding.ActivityListaGestionEppBinding;
+import com.example.myapplication.databinding.ActivityListaReportesBinding;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,20 +23,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class lista_gestionEpp extends AppCompatActivity {
+public class Lista_reportes extends AppCompatActivity {
 
-    ActivityListaGestionEppBinding binding;
-    adapter_gestionEpp adapter;
-    List<item_gestionEpp> listaGestion = new ArrayList<>();
+    ActivityListaReportesBinding binding;
+    Adapter_reportes adapter;
+    List<Item_reportes> listaReportes = new ArrayList<>();
 
     // 🔹 Ajusta esta URL a tu endpoint real
-    String URL_API = "https://backsst.onrender.com/listarGestiones";
+    String URL_API = "https://backsst.onrender.com/listarReportes";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityListaGestionEppBinding.inflate(getLayoutInflater());
+        binding = ActivityListaReportesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
@@ -48,23 +46,21 @@ public class lista_gestionEpp extends AppCompatActivity {
         });
 
         // Configurar RecyclerView
-        RecyclerView recyclerView = binding.recyclerViewListaChequeo;
+        RecyclerView recyclerView = binding.recyclerViewListaReportes;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new adapter_gestionEpp(this, listaGestion);
+        adapter = new Adapter_reportes(this, listaReportes);
         recyclerView.setAdapter(adapter);
 
         // Llamar API
-        obtenerGestiones();
+        obtenerReportes();
 
-        // Botón para crear nueva gestión
-        // Botón para crear nueva lista de chequeo
-        binding.imgButtonCrearlista.setOnClickListener(v -> {
-            startActivity(new Intent(lista_gestionEpp.this, form_gestionEpp.class));
+        // Botón para crear nuevo reporte
+        binding.imgButtonCrearreporte.setOnClickListener(v -> {
+            startActivity(new Intent(Lista_reportes.this, Form_reportes.class));
         });
-
     }
 
-    private void obtenerGestiones() {
+    private void obtenerReportes() {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -75,23 +71,23 @@ public class lista_gestionEpp extends AppCompatActivity {
                     try {
                         JSONArray datos = response.getJSONArray("datos");
 
-                        listaGestion.clear();
+                        listaReportes.clear();
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
 
-                            item_gestionEpp item = new item_gestionEpp(
-                                    obj.getInt("idUsuario"),
-                                    obj.getString("nombre"),
-                                    obj.getString("apellido"),
-                                    obj.getString("cedula"),
+                            Item_reportes item = new Item_reportes(
+                                    obj.getInt("idReporte"),
+                                    obj.getString("nombreUsuario"),
                                     obj.getString("cargo"),
-                                    obj.getString("productos"),
-                                    obj.getInt("cantidad"),
-                                    obj.getString("importancia"),
-                                    obj.optString("estado"),
-                                    obj.getString("fechaCreacion")
+                                    obj.getString("cedula"),
+                                    obj.getString("fecha"),
+                                    obj.getString("lugar"),
+                                    obj.getString("descripcion"),
+                                    obj.optString("imagen"),
+                                    obj.optString("archivos"),
+                                    obj.optString("estado")
                             );
-                            listaGestion.add(item);
+                            listaReportes.add(item);
                         }
                         adapter.notifyDataSetChanged();
 

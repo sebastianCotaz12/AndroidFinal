@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F5F5F5"
-    tools:context=".controller.form_actLudicas">
+    tools:context=".controller.Form_actLudicas">
 
     <!-- Barra superior -->
     <LinearLayout

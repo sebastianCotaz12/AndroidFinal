@@ -1,6 +1,6 @@
 package com.example.myapplication.controller;
 
-public class item_reportes {
+public class Item_reportes {
 
     private int id;
     private String nombreUsuario;
@@ -13,8 +13,8 @@ public class item_reportes {
     private String archivos;
     private String estado;
 
-    public item_reportes(int id, String nombreUsuario, String cargo, String cedula, String fecha,
-                             String lugar, String descripcion, String imagen, String archivos, String estado) {
+    public Item_reportes(int id, String nombreUsuario, String cargo, String cedula, String fecha,
+                         String lugar, String descripcion, String imagen, String archivos, String estado) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.cargo = cargo;

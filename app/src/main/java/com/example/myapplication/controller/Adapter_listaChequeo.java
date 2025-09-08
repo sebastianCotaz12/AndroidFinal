@@ -16,12 +16,12 @@ import com.example.myapplication.R;
 
 import java.util.List;
 
-public class adapter_actLudica extends RecyclerView.Adapter<adapter_actLudica.ViewHolder> {
+public class Adapter_listaChequeo extends RecyclerView.Adapter<Adapter_listaChequeo.ViewHolder> {
 
-    private Context context;
-    private List<item_actLudicas> lista;
+    private final Context context;
+    private final List<Item_listaChequeo> lista;
 
-    public adapter_actLudica(Context context, List<item_actLudicas> lista) {
+    public Adapter_listaChequeo(Context context, List<Item_listaChequeo> lista) {
         this.context = context;
         this.lista = lista;
     }
@@ -29,31 +29,35 @@ public class adapter_actLudica extends RecyclerView.Adapter<adapter_actLudica.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_item_act_ludicas, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.activity_item_lista_chequeo, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        item_actLudicas item = lista.get(position);
-        holder.txtNombreFecha.setText(item.getNombreActividad() + " - " + item.getFecha());
+        Item_listaChequeo item = lista.get(position);
+
+        holder.txtNombre.setText(item.getNombre() + " - " + item.getFecha());
 
         holder.btnDetalles.setOnClickListener(v -> {
-            Intent intent = new Intent(context, detalles_actLudicas.class);
-
-            // Pasamos TODOS los datos que existen en el modelo
-            intent.putExtra("id", item.getId());
-            intent.putExtra("usuario", item.getUsuario());
-            intent.putExtra("nombreActividad", item.getNombreActividad());
+            Intent intent = new Intent(context, Detalles_listaChequeo.class);
+            intent.putExtra("usuario", item.getNombre());
             intent.putExtra("fecha", item.getFecha());
-            intent.putExtra("descripcion", item.getDescripcion());
-            intent.putExtra("imagenVideo", item.getImagenVideo());
+            intent.putExtra("hora", item.getHora());
+            intent.putExtra("modelo", item.getModelo());
+            intent.putExtra("marca", item.getMarca());
+            intent.putExtra("soat", item.getSoat());
+            intent.putExtra("tecnico", item.getTecnico());
+            intent.putExtra("kilometraje", item.getKilometraje());
 
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necesario si el context no es una activity
             context.startActivity(intent);
         });
-    }
 
+        holder.btnDownload.setOnClickListener(v -> {
+            // Implementa aquí la funcionalidad de descarga si deseas
+        });
+    }
 
     @Override
     public int getItemCount() {
@@ -61,13 +65,13 @@ public class adapter_actLudica extends RecyclerView.Adapter<adapter_actLudica.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNombreFecha;
+        TextView txtNombre;
         Button btnDetalles;
         ImageButton btnDownload;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtNombreFecha = itemView.findViewById(R.id.txtNombre);
+            txtNombre = itemView.findViewById(R.id.txtNombre);
             btnDetalles = itemView.findViewById(R.id.btnDetalles);
             btnDownload = itemView.findViewById(R.id.btnDownload);
         }

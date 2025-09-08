@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 
-public class detalles_gestionEPP extends AppCompatActivity {
+public class Detalles_gestionEPP extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

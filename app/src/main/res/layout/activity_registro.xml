@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3F4F6"
-    tools:context=".controller.registro">
+    tools:context=".controller.Registro">
 
     <!-- Fondo decorativo con degradado -->
     <LinearLayout

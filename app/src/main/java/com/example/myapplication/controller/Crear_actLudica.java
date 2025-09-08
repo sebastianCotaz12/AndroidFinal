@@ -2,7 +2,7 @@ package com.example.myapplication.controller;
 
 import com.google.gson.annotations.SerializedName;
 
-public class crear_actLudica {
+public class Crear_actLudica {
 
 
     @SerializedName("id_usuario")
@@ -27,11 +27,11 @@ public class crear_actLudica {
     private String imagenVideo;
 
 
-    public crear_actLudica() {
+    public Crear_actLudica() {
     }
 
 
-    public crear_actLudica(int idUsuario, String nombreUsuario, String nombreActividad, String fechaActividad, String descripcion, String evidencia, String imagenVideo) {
+    public Crear_actLudica(int idUsuario, String nombreUsuario, String nombreActividad, String fechaActividad, String descripcion, String evidencia, String imagenVideo) {
 
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
