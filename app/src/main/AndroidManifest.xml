@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".controller.Nueva_Contrasenia"
+            android:exported="false" />
+        <activity
             android:name=".controller.lista_actLudicas"
             android:exported="false" />
         <activity
