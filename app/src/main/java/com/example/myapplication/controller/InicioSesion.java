@@ -30,6 +30,13 @@ public class InicioSesion extends AppCompatActivity {
 
         prefsManager = new PrefsManager(this);
 
+        String usuario = getIntent().getStringExtra("usuario");
+        if (usuario != null) {
+            binding.edtUsername.setText(usuario);
+        }
+
+
+        // Botón para iniciar sesión
         binding.btnSignIn.setOnClickListener(v -> {
             String correo = binding.edtUsername.getText().toString().trim();
             String password = binding.edtPassword.getText().toString().trim();
@@ -40,6 +47,12 @@ public class InicioSesion extends AppCompatActivity {
             }
 
             hacerLogin(correo, password);
+        });
+
+        // Texto para ir al registro
+        binding.txtRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(InicioSesion.this, Registro.class);
+            startActivity(intent);
         });
     }
 
@@ -60,12 +73,10 @@ public class InicioSesion extends AppCompatActivity {
                     // Guardar datos del usuario
                     if (loginResponse.getUser() != null) {
                         LoginResponse.Usuario usuario = loginResponse.getUser();
-
                         prefsManager.setIdUsuario(usuario.getId());
                         prefsManager.setNombreUsuario(usuario.getNombre());
                         prefsManager.setIdEmpresa(usuario.getIdEmpresa());
                         prefsManager.setIdArea(usuario.getIdArea());
-
                     }
 
                     Toast.makeText(InicioSesion.this, "Login correcto", Toast.LENGTH_SHORT).show();

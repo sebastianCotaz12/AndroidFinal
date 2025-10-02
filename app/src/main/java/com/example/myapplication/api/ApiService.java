@@ -1,9 +1,12 @@
 package com.example.myapplication.api;
 
+import com.example.myapplication.controller.Area;
 import com.example.myapplication.controller.Crear_actLudica;
 import com.example.myapplication.controller.Crear_gestionEpp;
 import com.example.myapplication.controller.Crear_listaChequeo;
+import com.example.myapplication.controller.Crear_registro;
 import com.example.myapplication.controller.Crear_reportes;
+import com.example.myapplication.controller.Empresa;
 
 import java.util.List;
 
@@ -42,6 +45,17 @@ public interface ApiService {
 
     @GET("listarReportes")
     Call<List<Crear_reportes>> getReportes();
+
+    @GET("listarAreas")
+    Call<List<Area>> listarAreas();
+
+    @GET("listarEmpresas")
+    Call<ApiResponse<List<Empresa>>> listarEmpresas();
+
+    @POST("register")
+    Call<RegistroResponse> registrarUsuario(@Body Crear_registro nuevoUsuario);
+
+
 
     // Reportes con subida de archivos
     @Multipart
