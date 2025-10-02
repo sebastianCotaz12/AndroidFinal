@@ -16,15 +16,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Encabezado elegante -->
+            <!-- Encabezado -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:background="@android:drawable/screen_background_dark_transparent"
-                android:backgroundTintMode="src_in"
                 android:backgroundTint="@android:color/holo_blue_dark"
+                android:backgroundTintMode="src_in"
                 android:layout_marginBottom="20dp"
                 android:elevation="8dp">
 
@@ -42,7 +42,7 @@
                     android:shadowRadius="4"/>
             </LinearLayout>
 
-            <!-- Card: Nombre Usuario -->
+            <!-- Nombre Usuario -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Cargo -->
+            <!-- Cargo -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Cédula -->
+            <!-- Cédula -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card: Fecha -->
+            <!-- Fecha -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -290,14 +290,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Imagen (ruta o URL):"
+                        android:text="Imagen"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="#2E3A59"/>
 
                     <TextView
                         android:id="@+id/tvImagen"
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=""
@@ -324,7 +323,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Archivos (ruta o URL):"
+                        android:text="Archivos"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="#2E3A59"/>
@@ -343,7 +342,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón de acción flotante -->
+    <!-- FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

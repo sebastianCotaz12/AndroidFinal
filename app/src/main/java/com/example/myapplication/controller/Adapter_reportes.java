@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.ItemReporte;
 import com.example.myapplication.R;
 
 import java.util.List;
@@ -19,10 +20,10 @@ import java.util.List;
 public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.ViewHolder> {
 
     private final Context context;
-    private final List<Item_reportes> lista;
+    private final List<ItemReporte> lista;
 
     // 🔹 Constructor corregido
-    public Adapter_reportes(Context context, List<Item_reportes> lista) {
+    public Adapter_reportes(Context context, List<ItemReporte> lista) {
         this.context = context;
         this.lista = lista;
     }
@@ -37,7 +38,7 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Item_reportes item = lista.get(position);
+        ItemReporte item = lista.get(position);
 
         // Mostrar nombre + fecha
         holder.txtNombreFecha.setText(item.getNombreUsuario() + " - " + item.getFecha());

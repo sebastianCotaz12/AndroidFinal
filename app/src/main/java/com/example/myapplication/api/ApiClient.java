@@ -19,7 +19,9 @@ public class ApiClient {
     private static Retrofit retrofitProtected = null;  // Para endpoints con token
     private static String lastToken = "";
 
-    // ✅ Cliente sin token (ej: login, registro)
+    // =====================
+    // Cliente sin token
+    // =====================
     public static Retrofit getClient() {
         if (retrofitPublic == null) {
             retrofitPublic = new Retrofit.Builder()
@@ -30,8 +32,11 @@ public class ApiClient {
         return retrofitPublic;
     }
 
-    // ✅ Cliente con token (endpoints protegidos)
+    // =====================
+    // Cliente con token dinámico
+    // =====================
     public static Retrofit getClient(String token) {
+        // Reconstruir si es un token distinto
         if (retrofitProtected == null || !lastToken.equals(token)) {
             lastToken = token;
 
@@ -54,5 +59,14 @@ public class ApiClient {
                     .build();
         }
         return retrofitProtected;
+    }
+
+    // =====================
+    // Reiniciar clientes (opcional)
+    // =====================
+    public static void resetClients() {
+        retrofitPublic = null;
+        retrofitProtected = null;
+        lastToken = "";
     }
 }

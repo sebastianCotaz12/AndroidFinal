@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -11,10 +13,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.myapplication.ItemReporte;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityListaReportesBinding;
 
 import org.json.JSONArray;
@@ -23,14 +23,27 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 public class Lista_reportes extends AppCompatActivity {
 
-    ActivityListaReportesBinding binding;
-    Adapter_reportes adapter;
-    List<Item_reportes> listaReportes = new ArrayList<>();
+    private ActivityListaReportesBinding binding;
+    private ListaReportesAdapter adapter;
+    private List<ItemReporte> listaReportes = new ArrayList<>();
 
     // 🔹 Ajusta esta URL a tu endpoint real
-    String URL_API = "https://backsst.onrender.com/listarReportes";
+    private final String URL_API = "https://backsst.onrender.com/listarReportes";
+
+    private final ActivityResultLauncher<Intent> formLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // Si se guardó un nuevo reporte, recargar lista
+                    obtenerReportes();
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +52,8 @@ public class Lista_reportes extends AppCompatActivity {
         binding = ActivityListaReportesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
+        // Ajuste de márgenes por sistema
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -48,7 +62,23 @@ public class Lista_reportes extends AppCompatActivity {
         // Configurar RecyclerView
         RecyclerView recyclerView = binding.recyclerViewListaReportes;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter_reportes(this, listaReportes);
+
+        adapter = new ListaReportesAdapter(this, listaReportes, new ListaReportesAdapter.OnItemClickListener() {
+            @Override
+            public void onDetallesClick(ItemReporte reporte) {
+                // Abrir actividad de detalles
+                Intent intent = new Intent(Lista_reportes.this, Detalles_reportes.class);
+                intent.putExtra("idReporte", reporte.getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onDownloadClick(ItemReporte reporte) {
+                // Lógica de descarga
+                Toast.makeText(Lista_reportes.this, "Descargando: " + reporte.getArchivos(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         recyclerView.setAdapter(adapter);
 
         // Llamar API
@@ -56,7 +86,8 @@ public class Lista_reportes extends AppCompatActivity {
 
         // Botón para crear nuevo reporte
         binding.imgButtonCrearreporte.setOnClickListener(v -> {
-            startActivity(new Intent(Lista_reportes.this, Form_reportes.class));
+            Intent intent = new Intent(Lista_reportes.this, Form_reportes.class);
+            formLauncher.launch(intent);
         });
     }
 
@@ -70,12 +101,11 @@ public class Lista_reportes extends AppCompatActivity {
                 response -> {
                     try {
                         JSONArray datos = response.getJSONArray("datos");
-
                         listaReportes.clear();
+
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
-
-                            Item_reportes item = new Item_reportes(
+                            ItemReporte item = new ItemReporte(
                                     obj.getInt("idReporte"),
                                     obj.getString("nombreUsuario"),
                                     obj.getString("cargo"),

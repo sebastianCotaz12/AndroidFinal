@@ -19,7 +19,7 @@
         android:elevation="6dp">
 
         <ImageView
-            android:id="@+id/iv_logo"
+            android:id="@+id/ivLogo"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:contentDescription="Icono Lista" />
@@ -35,7 +35,7 @@
             android:textColor="@android:color/white" />
 
         <ImageView
-            android:id="@+id/img_logo"
+            android:id="@+id/imgLogo"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:src="@drawable/img"
@@ -65,61 +65,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Campo reutilizable -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="ID usuario"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/etId"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="ID (autogenerado)"
-                    android:background="@android:color/transparent"
-                    android:inputType="number"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Nombre Usuario -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nombre Usuario"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/etNombreUsuarioR"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Ingrese nombre"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
-            </LinearLayout>
-
             <!-- Cargo -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,10 +86,11 @@
                 <EditText
                     android:id="@+id/etCargo"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:hint="Ingrese cargo"
                     android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:inputType="text" />
             </LinearLayout>
 
             <!-- Cédula -->
@@ -168,11 +114,11 @@
                 <EditText
                     android:id="@+id/etCedula"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:hint="Ingrese cédula"
                     android:background="@android:color/transparent"
-                    android:inputType="number"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:inputType="number" />
             </LinearLayout>
 
             <!-- Fecha -->
@@ -196,11 +142,12 @@
                 <EditText
                     android:id="@+id/etFecha"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Ingrese fecha"
+                    android:layout_height="wrap_content"
+                    android:hint="Seleccione fecha"
+                    android:focusable="false"
                     android:background="@android:color/transparent"
-                    android:inputType="date"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:inputType="date" />
             </LinearLayout>
 
             <!-- Lugar -->
@@ -224,10 +171,11 @@
                 <EditText
                     android:id="@+id/etLugar"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:hint="Ingrese lugar"
                     android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:inputType="text" />
             </LinearLayout>
 
             <!-- Descripción -->
@@ -277,13 +225,21 @@
                     android:textStyle="bold"
                     android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/etImagen"
+                <Button
+                    android:id="@+id/btnSeleccionarImagen"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="Ruta imagen"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:text="Seleccionar Imagen"
+                    android:backgroundTint="#E0E0E0"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tvImagenSeleccionada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ninguna imagen seleccionada"
+                    android:textColor="#808080"
+                    android:paddingTop="4dp" />
             </LinearLayout>
 
             <!-- Archivos -->
@@ -304,13 +260,21 @@
                     android:textStyle="bold"
                     android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/etArchivos"
+                <Button
+                    android:id="@+id/btnSeleccionarArchivo"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="Ruta archivos"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:text="Seleccionar Archivo"
+                    android:backgroundTint="#E0E0E0"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tvArchivoSeleccionado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ningún archivo seleccionado"
+                    android:textColor="#808080"
+                    android:paddingTop="4dp" />
             </LinearLayout>
 
             <!-- Estado -->
@@ -331,16 +295,18 @@
                     android:textStyle="bold"
                     android:textSize="15sp" />
 
-                <EditText
-                    android:id="@+id/etEstado"
+                <Spinner
+                    android:id="@+id/spEstado"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="Ingrese estado"
-                    android:background="@android:color/transparent"
+                    android:spinnerMode="dropdown"
                     android:padding="8dp" />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
+
+    <!-- Botón Enviar -->
     <Button
         android:id="@+id/btnEnviarReporte"
         android:layout_width="match_parent"

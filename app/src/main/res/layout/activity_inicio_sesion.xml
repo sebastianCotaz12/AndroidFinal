@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/img"
     android:padding="24dp"
-    tools:context=".controller.inicioSesion">
+    tools:context=".controller.InicioSesion">
 
     <!-- Fondo semitransparente para oscurecer un poco la imagen -->
     <View

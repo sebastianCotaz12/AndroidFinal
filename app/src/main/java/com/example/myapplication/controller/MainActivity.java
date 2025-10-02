@@ -38,11 +38,6 @@ public class MainActivity extends AppCompatActivity {
         logo.startAnimation(animLogo);
         logo.startAnimation(scaleLogo);
 
-        // 🔹 Animación Título (fade más lento)
-        Animation animTitulo = new AlphaAnimation(0f, 1f);
-        animTitulo.setDuration(1500);
-        animTitulo.setStartOffset(500);// aparece después del logo
-
         // 🔹 Animación Botón (slide-up + fade)
         Animation animBtn = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0f,
@@ -51,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 Animation.RELATIVE_TO_SELF, 0f
         );
         animBtn.setDuration(800);
-        animBtn.setStartOffset(1000); // entra después del título
+        animBtn.setStartOffset(1000);
 
         Animation fadeBtn = new AlphaAnimation(0f, 1f);
         fadeBtn.setDuration(800);
@@ -60,10 +55,11 @@ public class MainActivity extends AppCompatActivity {
         btnInicio.startAnimation(animBtn);
         btnInicio.startAnimation(fadeBtn);
 
-        // 🔹 Evento click para pasar a otra interfaz
+        // 🔹 Evento click → Ir al login (inicioSesion)
         btnInicio.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, inicioSesion.class);
+            Intent intent = new Intent(MainActivity.this, InicioSesion.class);
             startActivity(intent);
+            finish(); // cerrar MainActivity para que no regrese
         });
     }
 }

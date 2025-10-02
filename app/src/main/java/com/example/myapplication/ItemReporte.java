@@ -1,44 +1,37 @@
-package com.example.myapplication.controller;
+package com.example.myapplication;
 
-import com.google.gson.annotations.SerializedName;
+public class ItemReporte {
 
-public class Crear_reportes {
-
-    @SerializedName("id_usuario")
-    private Integer idUsuario;
-
-    @SerializedName("nombre_usuario")
+    private int id;
     private String nombreUsuario;
-
-    @SerializedName("cargo")
     private String cargo;
-
-    @SerializedName("cedula")
     private String cedula;
-
-    @SerializedName("fecha")
     private String fecha;
-
-    @SerializedName("lugar")
     private String lugar;
-
-    @SerializedName("descripcion")
     private String descripcion;
-
-    @SerializedName("imagen")
     private String imagen;
-
-    @SerializedName("archivos")
     private String archivos;
-
-    @SerializedName("estado")
     private String estado;
 
-    public Crear_reportes() {}
+    // Constructor completo
+    public ItemReporte(int id, String nombreUsuario, String cargo, String cedula,
+                       String fecha, String lugar, String descripcion,
+                       String imagen, String archivos, String estado) {
+        this.id = id;
+        this.nombreUsuario = nombreUsuario;
+        this.cargo = cargo;
+        this.cedula = cedula;
+        this.fecha = fecha;
+        this.lugar = lugar;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.archivos = archivos;
+        this.estado = estado;
+    }
 
     // Getters y Setters
-    public Integer getIdUsuario() { return idUsuario; }
-    public void setIdUsuario(Integer idUsuario) { this.idUsuario = idUsuario; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getNombreUsuario() { return nombreUsuario; }
     public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
