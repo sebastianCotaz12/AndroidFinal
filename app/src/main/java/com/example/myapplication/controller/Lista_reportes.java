@@ -13,8 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.ItemReporte;
-import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityListaReportesBinding;
 
 import org.json.JSONArray;
@@ -63,22 +61,8 @@ public class Lista_reportes extends AppCompatActivity {
         RecyclerView recyclerView = binding.recyclerViewListaReportes;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new ListaReportesAdapter(this, listaReportes, new ListaReportesAdapter.OnItemClickListener() {
-            @Override
-            public void onDetallesClick(ItemReporte reporte) {
-                // Abrir actividad de detalles
-                Intent intent = new Intent(Lista_reportes.this, Detalles_reportes.class);
-                intent.putExtra("idReporte", reporte.getId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onDownloadClick(ItemReporte reporte) {
-                // Lógica de descarga
-                Toast.makeText(Lista_reportes.this, "Descargando: " + reporte.getArchivos(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        // ✅ Ahora ya no necesita interfaz, solo el adapter directo
+        adapter = new ListaReportesAdapter(this, listaReportes);
         recyclerView.setAdapter(adapter);
 
         // Llamar API

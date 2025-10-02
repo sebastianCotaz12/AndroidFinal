@@ -1,57 +1,71 @@
 package com.example.myapplication.controller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.ItemReporte;
 import com.example.myapplication.R;
+import com.example.myapplication.controller.ItemReporte;
 
 import java.util.List;
 
-public class ListaReportesAdapter extends RecyclerView.Adapter<ListaReportesAdapter.ReporteViewHolder> {
+public class ListaReportesAdapter extends RecyclerView.Adapter<ListaReportesAdapter.ViewHolder> {
 
     private Context context;
     private List<ItemReporte> listaReportes;
-    private OnItemClickListener listener;
 
-    // Interfaz para manejar clicks
-    public interface OnItemClickListener {
-        void onDetallesClick();
-        void onDownloadClick(ItemReporte reporte);
-    }
-
-    public ListaReportesAdapter(Context context, List<ItemReporte> listaReportes, OnItemClickListener listener) {
+    public ListaReportesAdapter(Context context, List<ItemReporte> listaReportes) {
         this.context = context;
         this.listaReportes = listaReportes;
-        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public ReporteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.activity_item_reportes, parent, false);
-        return new ReporteViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReporteViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemReporte reporte = listaReportes.get(position);
-        holder.txtNombre.setText(reporte.getNombreUsuario());
-        holder.txtFecha.setText(reporte.getFecha());
 
-        // Click en botón Detalles
-        holder.btnDetalles.setOnClickListener(v -> listener.onDetallesClick());
+        // Asignar datos a las vistas del item_reporte.xml
+        holder.tvNombreUsuario.setText(reporte.getNombreUsuario());
+        holder.tvCargo.setText(reporte.getCargo());
+        holder.tvFecha.setText(reporte.getFecha());
+        holder.tvEstado.setText(reporte.getEstado());
 
-        // Click en botón Descargar
-        holder.btnDownload.setOnClickListener(v -> listener.onDownloadClick(reporte));
+        // Botón Detalles
+        holder.btnDetalles.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Detalles_reportes.class);
+            intent.putExtra("nombre_usuario", reporte.getNombreUsuario());
+            intent.putExtra("cargo", reporte.getCargo());
+            intent.putExtra("cedula", reporte.getCedula());
+            intent.putExtra("fecha", reporte.getFecha());
+            intent.putExtra("lugar", reporte.getLugar());
+            intent.putExtra("descripcion", reporte.getDescripcion());
+            intent.putExtra("imagen", reporte.getImagen());
+            intent.putExtra("archivos", reporte.getArchivos());
+            intent.putExtra("estado", reporte.getEstado());
+            context.startActivity(intent);
+        });
+
+        // Botón Descargar (ejemplo)
+        holder.btnDescargar.setOnClickListener(v -> {
+            // Aquí pondrías tu lógica real de descarga
+            // De momento solo mostramos un mensaje
+            android.widget.Toast.makeText(context,
+                    "Descargando: " + reporte.getArchivos(),
+                    android.widget.Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
@@ -59,18 +73,18 @@ public class ListaReportesAdapter extends RecyclerView.Adapter<ListaReportesAdap
         return listaReportes.size();
     }
 
-    // ViewHolder
-    public static class ReporteViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNombre, txtFecha;
-        Button btnDetalles;
-        ImageButton btnDownload;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvNombreUsuario, tvCargo, tvFecha, tvEstado;
+        Button btnDetalles, btnDescargar;
 
-        public ReporteViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtNombre = itemView.findViewById(R.id.txtNombre);
-            txtFecha = itemView.findViewById(R.id.txtFecha);
+            tvNombreUsuario = itemView.findViewById(R.id.etNombre);
+            tvCargo = itemView.findViewById(R.id.tvCargo);
+            tvFecha = itemView.findViewById(R.id.tvFecha);
+            tvEstado = itemView.findViewById(R.id.tvEstado);
             btnDetalles = itemView.findViewById(R.id.btnDetalles);
-            btnDownload = itemView.findViewById(R.id.btnDownload);
+
         }
     }
 }
