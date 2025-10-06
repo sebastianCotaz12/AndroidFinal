@@ -67,7 +67,14 @@ public class Menu extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // btnBlog.setOnClickListener(v -> { });
+        btnBlog.setOnClickListener(v -> {
+            Intent intent = new Intent( Menu.this, Lista_eventos.class);
+            startActivity(intent);
+        }); {
+
+
         // btnAsesoramiento.setOnClickListener(v -> { });
     }
+    }
 }
+

@@ -15,6 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".controller.Lista_eventos"
+            android:exported="false" />
+        <activity
+            android:name=".controller.Detalles_eventos"
+            android:exported="false" />
+        <activity
+            android:name=".controller.Form_eventos"
+            android:exported="false" />
+        <activity
             android:name=".controller.Lista_actLudicas"
             android:exported="false" />
         <activity
@@ -81,7 +90,6 @@
             android:name=".controller.MainActivity"
             android:exported="true">
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
