@@ -397,7 +397,6 @@
         android:layout_margin="16dp"
         android:paddingVertical="14dp"
         android:elevation="5dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/btn_primary" />
+        android:layout_gravity="bottom" />
 
 </LinearLayout>
