@@ -53,7 +53,7 @@ public class Registro extends AppCompatActivity {
         });
 
         // 🔹 Llenar Áreas desde backend
-        AreaController areaController = new AreaController();
+        AreaController areaController = new AreaController(this);
         areaController.listarAreas(this, areas -> {
             List<String> nombresAreas = new ArrayList<>();
             List<Integer> idsAreas = new ArrayList<>();

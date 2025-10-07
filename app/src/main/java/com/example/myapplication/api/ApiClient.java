@@ -1,72 +1,86 @@
 package com.example.myapplication.api;
 
-import java.io.IOException;
+import android.util.Log;
 
-import okhttp3.Interceptor;
+import com.example.myapplication.utils.PrefsManager;
+
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    // 🔹 URL base de tu backend
+    // 🌐 URL base del backend
     private static final String BASE_URL = "https://backsst.onrender.com/";
 
-    // 🔹 Instancias de Retrofit
-    private static Retrofit retrofitPublic = null;     // Para login/registro
-    private static Retrofit retrofitProtected = null;  // Para endpoints con token
-    private static String lastToken = "";
+    // Instancia única (Singleton)
+    private static Retrofit retrofit = null;
+    private static PrefsManager lastPrefsManager = null;
 
-    // =====================
-    // Cliente sin token
-    // =====================
+    /**
+     * ✅ Método clásico de compatibilidad (sin token)
+     */
     public static Retrofit getClient() {
-        if (retrofitPublic == null) {
-            retrofitPublic = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return retrofitPublic;
+        return getClient(null);
     }
 
-    // =====================
-    // Cliente con token dinámico
-    // =====================
-    public static Retrofit getClient(String token) {
-        // Reconstruir si es un token distinto
-        if (retrofitProtected == null || !lastToken.equals(token)) {
-            lastToken = token;
+    /**
+     * ✅ Obtiene el cliente Retrofit con el token JWT (si existe)
+     */
+    public static Retrofit getClient(PrefsManager prefsManager) {
+        // 🔸 Si el PrefsManager cambió o Retrofit es nulo, se reconstruye
+        if (retrofit == null || prefsManager != lastPrefsManager) {
 
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(new Interceptor() {
-                        @Override
-                        public Response intercept(Chain chain) throws IOException {
-                            Request request = chain.request().newBuilder()
-                                    .addHeader("Authorization", "Bearer " + token)
-                                    .build();
-                            return chain.proceed(request);
-                        }
-                    })
-                    .build();
+            OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS);
 
-            retrofitProtected = new Retrofit.Builder()
+            // 🔹 Agregamos el interceptor solo si hay token
+            if (prefsManager != null && prefsManager.getToken() != null) {
+                String token = prefsManager.getToken();
+
+                httpClient.addInterceptor(chain -> {
+                    Request original = chain.request();
+                    Request.Builder requestBuilder = original.newBuilder()
+                            .header("Authorization", "Bearer " + token)
+                            .method(original.method(), original.body());
+                    Log.d("ApiClient", "✅ Token agregado al header Authorization");
+                    return chain.proceed(requestBuilder.build());
+                });
+            } else {
+                httpClient.addInterceptor(chain -> {
+                    Log.w("ApiClient", "⚠️ Petición sin token (usuario no autenticado)");
+                    return chain.proceed(chain.request());
+                });
+            }
+
+            OkHttpClient client = httpClient.build();
+
+            retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
                     .build();
+
+            lastPrefsManager = prefsManager;
         }
-        return retrofitProtected;
+
+        return retrofit;
     }
 
-    // =====================
-    // Reiniciar clientes (opcional)
-    // =====================
-    public static void resetClients() {
-        retrofitPublic = null;
-        retrofitProtected = null;
-        lastToken = "";
+    /**
+      Resetea Retrofit (por ejemplo al cerrar sesión)
+     */
+    public static void resetClient() {
+        retrofit = null;
+        lastPrefsManager = null;
+        Log.i("ApiClient", "🔄 Retrofit reiniciado correctamente");
+    }
+    public static ApiService getApiService() {
+        return getClient().create(ApiService.class);
     }
 }

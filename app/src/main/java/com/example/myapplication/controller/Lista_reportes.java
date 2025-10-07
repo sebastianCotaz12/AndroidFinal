@@ -13,7 +13,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.myapplication.databinding.ActivityListaReportesBinding;
+import com.example.myapplication.utils.PrefsManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,24 +26,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
 public class Lista_reportes extends AppCompatActivity {
 
     private ActivityListaReportesBinding binding;
     private ListaReportesAdapter adapter;
     private List<ItemReporte> listaReportes = new ArrayList<>();
+    private PrefsManager prefsManager;
 
-    // 🔹 Ajusta esta URL a tu endpoint real
     private final String URL_API = "https://backsst.onrender.com/listarReportes";
 
     private final ActivityResultLauncher<Intent> formLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK) {
-                    // Si se guardó un nuevo reporte, recargar lista
                     obtenerReportes();
                 }
             });
@@ -46,29 +45,29 @@ public class Lista_reportes extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityListaReportesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Ajuste de márgenes por sistema
+        prefsManager = new PrefsManager(this);
+
+        // Ajuste márgenes sistema
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Configurar RecyclerView
+        // RecyclerView
         RecyclerView recyclerView = binding.recyclerViewListaReportes;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // ✅ Ahora ya no necesita interfaz, solo el adapter directo
         adapter = new ListaReportesAdapter(this, listaReportes);
         recyclerView.setAdapter(adapter);
 
-        // Llamar API
+        // Cargar reportes
         obtenerReportes();
 
-        // Botón para crear nuevo reporte
+        // Botón crear nuevo reporte
         binding.imgButtonCrearreporte.setOnClickListener(v -> {
             Intent intent = new Intent(Lista_reportes.this, Form_reportes.class);
             formLauncher.launch(intent);
@@ -77,6 +76,12 @@ public class Lista_reportes extends AppCompatActivity {
 
     private void obtenerReportes() {
         RequestQueue queue = Volley.newRequestQueue(this);
+        String token = prefsManager.getToken();
+
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(this, "⚠️ Debes iniciar sesión primero", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -103,6 +108,7 @@ public class Lista_reportes extends AppCompatActivity {
                             );
                             listaReportes.add(item);
                         }
+
                         adapter.notifyDataSetChanged();
 
                     } catch (Exception e) {
@@ -110,7 +116,14 @@ public class Lista_reportes extends AppCompatActivity {
                     }
                 },
                 error -> Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show()
-        );
+        ) {
+            @Override
+            public java.util.Map<String, String> getHeaders() {
+                java.util.Map<String, String> headers = new java.util.HashMap<>();
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
 
         queue.add(request);
     }

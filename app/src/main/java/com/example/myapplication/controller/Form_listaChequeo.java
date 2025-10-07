@@ -70,7 +70,7 @@ public class Form_listaChequeo extends AppCompatActivity {
 
         String token = "TOKEN_JWT_VALIDO";
 
-        ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
 
         Call<ApiResponse<Crear_listaChequeo>> call = apiService.crearListaChequeo(nuevaLista);
 

@@ -25,7 +25,6 @@ public class LoginResponse {
         return user;
     }
 
-    // Clase interna o externa según prefieras
     public static class Usuario {
         @SerializedName("id")
         private int id;
@@ -45,11 +44,23 @@ public class LoginResponse {
         @SerializedName("id_area")
         private int idArea;
 
+        // 🔹 NUEVOS CAMPOS
+        @SerializedName("nombre_empresa")
+        private String nombreEmpresa;
+
+        @SerializedName("nombre_area")
+        private String nombreArea;
+
+        // Getters existentes
         public int getId() { return id; }
         public String getNombre() { return nombre; }
         public String getApellido() { return apellido; }
         public String getCorreoElectronico() { return correoElectronico; }
         public int getIdEmpresa() { return idEmpresa; }
         public int getIdArea() { return idArea; }
+
+        // 🔹 Getters nuevos
+        public String getNombreEmpresa() { return nombreEmpresa; }
+        public String getNombreArea() { return nombreArea; }
     }
 }

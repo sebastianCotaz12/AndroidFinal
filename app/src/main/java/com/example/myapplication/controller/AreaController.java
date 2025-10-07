@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.api.ApiClient;
 import com.example.myapplication.api.ApiService;
+import com.example.myapplication.utils.PrefsManager;
 
 import java.util.List;
 
@@ -16,8 +17,9 @@ public class AreaController {
 
     private final ApiService apiService;
 
-    public AreaController() {
-        apiService = ApiClient.getClient().create(ApiService.class);
+    public AreaController(Context context) {
+        PrefsManager prefsManager = new PrefsManager(context);
+        apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
     }
 
     public void listarAreas(Context context, AreaCallback callback) {

@@ -2,6 +2,7 @@ package com.example.myapplication.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,71 +31,67 @@ public class InicioSesion extends AppCompatActivity {
 
         prefsManager = new PrefsManager(this);
 
-        String usuario = getIntent().getStringExtra("usuario");
-        if (usuario != null) {
-            binding.edtUsername.setText(usuario);
+        // Si ya hay token guardado → saltar al menú directamente
+        if (prefsManager.getToken() != null && !prefsManager.getToken().isEmpty()) {
+            irAlMenu();
+            return;
         }
 
-
-        // Botón para iniciar sesión
-        binding.btnSignIn.setOnClickListener(v -> {
-            String correo = binding.edtUsername.getText().toString().trim();
-            String password = binding.edtPassword.getText().toString().trim();
-
-            if (correo.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            hacerLogin(correo, password);
-        });
-
-        // Texto para ir al registro
-        binding.txtRegister.setOnClickListener(v -> {
-            Intent intent = new Intent(InicioSesion.this, Registro.class);
-            startActivity(intent);
-        });
+        // Botón de iniciar sesión
+        binding.btnSignIn.setOnClickListener(view -> iniciarSesion());
     }
 
-    private void hacerLogin(String correo, String password) {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        LoginRequest request = new LoginRequest(correo, password);
+    private void iniciarSesion() {
+        String correo = binding.edtUsername.getText().toString().trim();
+        String contrasena = binding.edtPassword.getText().toString().trim();
+
+        if (correo.isEmpty() || contrasena.isEmpty()) {
+            Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        // Llamada al backend
+        ApiService apiService = ApiClient.getApiService();
+        LoginRequest request = new LoginRequest(correo, contrasena);
 
         Call<LoginResponse> call = apiService.login(request);
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                binding.progressBar.setVisibility(View.GONE);
+
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
 
-                    // Guardar token
+                    // Guardar token y datos del usuario en PrefsManager
                     prefsManager.setToken(loginResponse.getToken());
+                    prefsManager.setIdUsuario(loginResponse.getUser().getId());
+                    prefsManager.setNombreUsuario(loginResponse.getUser().getNombre());
+                    prefsManager.setIdEmpresa(loginResponse.getUser().getIdEmpresa());
+                    prefsManager.setIdArea(loginResponse.getUser().getIdArea());
+                    prefsManager.setNombreEmpresa(loginResponse.getUser().getNombreEmpresa());
+                    prefsManager.setNombreArea(loginResponse.getUser().getNombreArea());
 
-                    // Guardar datos del usuario
-                    if (loginResponse.getUser() != null) {
-                        LoginResponse.Usuario usuario = loginResponse.getUser();
-                        prefsManager.setIdUsuario(usuario.getId());
-                        prefsManager.setNombreUsuario(usuario.getNombre());
-                        prefsManager.setIdEmpresa(usuario.getIdEmpresa());
-                        prefsManager.setIdArea(usuario.getIdArea());
-                    }
+                    Toast.makeText(InicioSesion.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(InicioSesion.this, "Login correcto", Toast.LENGTH_SHORT).show();
                     irAlMenu();
                 } else {
-                    Toast.makeText(InicioSesion.this, "Credenciales inválidas", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InicioSesion.this, "Credenciales incorrectas o error del servidor", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(InicioSesion.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
+                Toast.makeText(InicioSesion.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void irAlMenu() {
-        Intent intent = new Intent(this, Menu.class); // Tu Activity principal
+        Intent intent = new Intent(InicioSesion.this, Menu.class);
         startActivity(intent);
         finish();
     }

@@ -152,7 +152,7 @@ public class Form_actLudicas extends AppCompatActivity {
         Gson gson = new Gson();
         String jsonBody = gson.toJson(actividad);
         System.out.println("Body que se enviará: " + jsonBody);
-        ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<ApiResponse<Crear_actLudica>> call = apiService.crearActividad(actividad);
         //ListaActividadesItem actividad = new ListaActividadesItem(0, usuario, nombreActividad, fecha, descripcion, imgBase64);
 

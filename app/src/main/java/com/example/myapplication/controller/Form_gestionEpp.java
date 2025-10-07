@@ -76,7 +76,7 @@ public class Form_gestionEpp extends AppCompatActivity {
         // Token (debería obtenerse dinámicamente)
         String token = "TOKEN_JWT_VALIDO";
 
-        ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<ApiResponse<Crear_gestionEpp>> call = apiService.crearGestion(nuevaGestion);
 
         call.enqueue(new Callback<ApiResponse<Crear_gestionEpp>>() {

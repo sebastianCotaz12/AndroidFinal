@@ -39,9 +39,27 @@ public interface ApiService {
     @GET("listarGestiones")
     Call<List<Crear_gestionEpp>> getGestiones();
 
-    // Reportes
+    // Reportes (sin archivos, solo texto)
     @POST("crearReporte")
     Call<ApiResponse<Crear_reportes>> crearReporte(@Body Crear_reportes reporte);
+
+    // Reportes (con archivos: imagen/documento)
+    @Multipart
+    @POST("crearReporte")
+    Call<ApiResponse<Crear_reportes>> crearReporteMultipart(
+            @Part("id_usuario") RequestBody idUsuario,
+            @Part("id_empresa") RequestBody idEmpresa,
+            @Part("nombre_usuario") RequestBody nombreUsuario,
+            @Part("cargo") RequestBody cargo,
+            @Part("cedula") RequestBody cedula,
+            @Part("fecha") RequestBody fecha,
+            @Part("lugar") RequestBody lugar,
+            @Part("descripcion") RequestBody descripcion,
+            @Part("estado") RequestBody estado,
+            @Part MultipartBody.Part imagen,
+            @Part MultipartBody.Part archivos
+    );
+
 
     @GET("listarReportes")
     Call<List<Crear_reportes>> getReportes();
@@ -54,24 +72,6 @@ public interface ApiService {
 
     @POST("register")
     Call<RegistroResponse> registrarUsuario(@Body Crear_registro nuevoUsuario);
-
-
-
-    // Reportes con subida de archivos
-    @Multipart
-    @POST("crearReporte")
-    Call<ApiResponse<Crear_reportes>> crearReporteMultipart(
-            @Part("id_usuario") RequestBody idUsuario,
-            @Part("nombre_usuario") RequestBody nombreUsuario,
-            @Part("cargo") RequestBody cargo,
-            @Part("cedula") RequestBody cedula,
-            @Part("fecha") RequestBody fecha,
-            @Part("lugar") RequestBody lugar,
-            @Part("descripcion") RequestBody descripcion,
-            @Part("estado") RequestBody estado,
-            @Part MultipartBody.Part imagen,
-            @Part MultipartBody.Part archivo
-    );
 
     // Actividades Lúdicas
     @POST("crearActividadLudica")

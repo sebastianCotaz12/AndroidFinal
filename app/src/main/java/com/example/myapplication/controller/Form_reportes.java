@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.example.myapplication.api.ApiResponse;
 import com.example.myapplication.api.ApiService;
 import com.example.myapplication.databinding.ActivityFormReportesBinding;
 import com.example.myapplication.utils.PrefsManager;
+import com.example.myapplication.utils.SesionManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,16 +37,18 @@ public class Form_reportes extends AppCompatActivity {
 
     private ActivityFormReportesBinding binding;
     private PrefsManager prefsManager;
+    private SesionManager sesionManager;
+
     private Uri imagenUri = null;
     private Uri archivoUri = null;
 
+    // ---- Selectores ----
     private final ActivityResultLauncher<Intent> seleccionarImagenLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     imagenUri = result.getData().getData();
-                    if (imagenUri != null) {
+                    if (imagenUri != null)
                         binding.tvImagenSeleccionada.setText(imagenUri.getLastPathSegment());
-                    }
                 }
             });
 
@@ -52,9 +56,8 @@ public class Form_reportes extends AppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     archivoUri = result.getData().getData();
-                    if (archivoUri != null) {
+                    if (archivoUri != null)
                         binding.tvArchivoSeleccionado.setText(archivoUri.getLastPathSegment());
-                    }
                 }
             });
 
@@ -65,98 +68,98 @@ public class Form_reportes extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         prefsManager = new PrefsManager(this);
+        sesionManager = new SesionManager(this);
 
-        // Autocompletar campos
-        binding.etCargo.setText(String.valueOf(prefsManager.getIdArea()));
+        // --- Verificar sesión ---
+        if (!sesionManager.haySesionActiva()) {
+            Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
+            sesionManager.cerrarSesion();
+            finish();
+            return;
+        }
+
+        // --- Autocompletar datos de sesión ---
+        binding.etCargo.setText(prefsManager.getNombreArea());
         binding.etCargo.setEnabled(false);
 
         binding.etCedula.setText(String.valueOf(prefsManager.getIdUsuario()));
         binding.etCedula.setEnabled(false);
 
-        // Spinner estado
+        // --- Spinner de estado ---
         String[] opcionesEstado = {"Pendiente", "En Proceso", "Realizado"};
         ArrayAdapter<String> adapterEstado = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, opcionesEstado);
         binding.spEstado.setAdapter(adapterEstado);
 
-        // Seleccionar imagen
-        binding.btnSeleccionarImagen.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            seleccionarImagenLauncher.launch(Intent.createChooser(intent, "Seleccionar Imagen"));
-        });
-
-        // Seleccionar archivo
-        binding.btnSeleccionarArchivo.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
-            seleccionarArchivoLauncher.launch(Intent.createChooser(intent, "Seleccionar Archivo"));
-        });
-
-        // Seleccionar fecha
+        // --- Listeners ---
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
-
-        // Enviar reporte
+        binding.btnSeleccionarImagen.setOnClickListener(v -> seleccionarImagen());
+        binding.btnSeleccionarArchivo.setOnClickListener(v -> seleccionarArchivo());
         binding.btnEnviarReporte.setOnClickListener(v -> guardarReporteMultipart());
     }
 
     private void abrirDatePicker() {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
+        Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePicker = new DatePickerDialog(
                 this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    Calendar sel = Calendar.getInstance();
-                    sel.set(selectedYear, selectedMonth, selectedDay);
+                (view, year, month, day) -> {
+                    Calendar selected = Calendar.getInstance();
+                    selected.set(year, month, day);
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    binding.etFecha.setText(sdf.format(sel.getTime()));
+                    binding.etFecha.setText(sdf.format(selected.getTime()));
                 },
-                year, month, day
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
         );
         datePicker.show();
     }
 
+    private void seleccionarImagen() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        seleccionarImagenLauncher.launch(Intent.createChooser(intent, "Seleccionar Imagen"));
+    }
+
+    private void seleccionarArchivo() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        seleccionarArchivoLauncher.launch(Intent.createChooser(intent, "Seleccionar Archivo"));
+    }
+
     private RequestBody createPartFromString(String value) {
-        return RequestBody.create(value, MediaType.parse("multipart/form-data"));
+        return RequestBody.create(value != null ? value : "", MediaType.parse("text/plain"));
     }
 
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
         if (fileUri == null) return null;
         try {
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
-            if (inputStream == null) return null;
-
-            File tempFile = File.createTempFile("upload", null, getCacheDir());
+            File tempFile = File.createTempFile("upload_", null, getCacheDir());
             FileOutputStream outputStream = new FileOutputStream(tempFile);
 
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = inputStream.read(buf)) > 0) {
-                outputStream.write(buf, 0, len);
-            }
-            outputStream.close();
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1)
+                outputStream.write(buffer, 0, bytesRead);
+
             inputStream.close();
+            outputStream.close();
 
             RequestBody requestFile = RequestBody.create(tempFile, MediaType.parse("multipart/form-data"));
             return MultipartBody.Part.createFormData(partName, tempFile.getName(), requestFile);
 
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "Error preparando archivo: " + e.getMessage(), Toast.LENGTH_LONG).show();
             return null;
         }
     }
 
     private void guardarReporteMultipart() {
-        int idUsuario = prefsManager.getIdUsuario();
         String nombreUsuario = prefsManager.getNombreUsuario();
+        int idUsuario = prefsManager.getIdUsuario();
+        int idEmpresa = prefsManager.getIdEmpresa();
         String token = prefsManager.getToken();
-
-        if (idUsuario == -1 || token == null || token.trim().isEmpty()) {
-            Toast.makeText(this, "Error: no se encontraron datos de sesión. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
-            return;
-        }
 
         String cargo = binding.etCargo.getText().toString().trim();
         String cedula = binding.etCedula.getText().toString().trim();
@@ -166,17 +169,26 @@ public class Form_reportes extends AppCompatActivity {
         String estado = binding.spEstado.getSelectedItem().toString();
 
         if (fecha.isEmpty() || lugar.isEmpty() || descripcion.isEmpty()) {
-            Toast.makeText(this, "Por favor completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "⚠️ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
+        if (token == null || token.trim().isEmpty()) {
+            Toast.makeText(this, "🚫 No hay token. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
+            sesionManager.cerrarSesion();
+            return;
+        }
+
+        // 🔹 Cliente con token JWT
+        ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
+        Log.d("TOKEN_DEBUG", "Token usado al crear reporte: " + token);
 
         MultipartBody.Part imagenPart = prepareFilePart("imagen", imagenUri);
-        MultipartBody.Part archivoPart = prepareFilePart("archivo", archivoUri);
+        MultipartBody.Part archivoPart = prepareFilePart("archivos", archivoUri);
 
         Call<ApiResponse<Crear_reportes>> call = apiService.crearReporteMultipart(
                 createPartFromString(String.valueOf(idUsuario)),
+                createPartFromString(String.valueOf(idEmpresa)),
                 createPartFromString(nombreUsuario),
                 createPartFromString(cargo),
                 createPartFromString(cedula),
@@ -192,17 +204,26 @@ public class Form_reportes extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponse<Crear_reportes>> call, Response<ApiResponse<Crear_reportes>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(Form_reportes.this, "Reporte guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK); // 🔹 avisar a Lista_reportes que recargue
+                    ApiResponse<Crear_reportes> apiResponse = response.body();
+                    Toast.makeText(Form_reportes.this, "✅ " + apiResponse.getMsj(), Toast.LENGTH_LONG).show();
+                    Log.d("REPORTE_OK", "Reporte creado correctamente: " + apiResponse.getMsj());
+                    setResult(RESULT_OK);
                     finish();
                 } else {
-                    Toast.makeText(Form_reportes.this, "Error al guardar el reporte.", Toast.LENGTH_LONG).show();
+                    String errorMsg = "⚠️ Error API (" + response.code() + ")";
+                    try {
+                        if (response.errorBody() != null)
+                            errorMsg += " → " + response.errorBody().string();
+                    } catch (Exception ignored) {}
+                    Log.e("REPORTE_ERR", errorMsg);
+                    Toast.makeText(Form_reportes.this, errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Crear_reportes>> call, Throwable t) {
-                Toast.makeText(Form_reportes.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("REPORTE_FAIL", "Error conexión: " + t.getMessage());
+                Toast.makeText(Form_reportes.this, "🚫 Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
