@@ -2,6 +2,7 @@ package com.example.myapplication.api;
 
 import com.example.myapplication.controller.Area;
 import com.example.myapplication.controller.Crear_actLudica;
+import com.example.myapplication.controller.Crear_eventos;
 import com.example.myapplication.controller.Crear_gestionEpp;
 import com.example.myapplication.controller.Crear_listaChequeo;
 import com.example.myapplication.controller.Crear_registro;
@@ -83,4 +84,12 @@ public interface ApiService {
     // Recuperar contraseña
     @POST("forgot-password")
     Call<ApiResponse<Void>> forgotPassword(@Body ForgotPasswordRequest request);
+
+    // Crear eventos
+    @POST("eventos")
+    Call<ApiResponse<Crear_eventos>> creareventos(@Body Crear_eventos eventos);
+
+    // Listar eventos por empresa
+    @GET("eventos/empresa/{id_empresa}")
+    Call<List<Crear_eventos>> getEventosPorEmpresa();
 }

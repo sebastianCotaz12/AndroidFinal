@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5"
+    tools:context=".controller.Form_eventos">
+
+    <!-- Barra superior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:background="#2196F3"
+        android:elevation="6dp">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="Menú" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Eventos"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@mipmap/logo"
+            android:contentDescription="Logo" />
+    </LinearLayout>
+
+    <!-- Título -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Formulario de Eventos"
+        android:textSize="22sp"
+        android:textColor="#212121"
+        android:gravity="center"
+        android:layout_marginVertical="16dp"
+        android:textStyle="bold" />
+
+    <!-- Contenido scrollable (Formulario) -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Título -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Título del evento"
+                    android:textColor="#1565C0"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etTituloEvento"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Ingrese título"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Fecha -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha del evento"
+                    android:textColor="#1565C0"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etFechaEvento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:focusable="false"
+                    android:hint="Seleccione fecha"
+                    android:padding="8dp" />
+
+
+            </LinearLayout>
+
+            <!-- Descripción -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descripción del evento"
+                    android:textColor="#1565C0"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etDescripcionEvento"
+                    android:layout_width="match_parent"
+                    android:layout_height="71dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="top|start"
+                    android:hint="Ingrese descripción"
+                    android:inputType="textMultiLine"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Adjuntar Evidencia -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Evidencia"
+                    android:textColor="#1565C0"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <!-- Vista previa de la imagen -->
+                <ImageView
+                    android:id="@+id/ivPreviewEvento"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@android:color/darker_gray"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <!-- Zona de adjuntar archivo -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="Adjuntar Evidencia"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Botón adjuntar -->
+                    <ImageView
+                        android:id="@+id/ivAdjuntarEvento"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/img" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botón enviar -->
+    <Button
+        android:id="@+id/btnGuardarEvento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar Evento"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:backgroundTint="#2196F3"
+        android:textColor="@android:color/white"
+        android:layout_margin="16dp"
+        android:paddingVertical="12dp" />
+</LinearLayout>

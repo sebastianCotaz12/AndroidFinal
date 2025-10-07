@@ -67,13 +67,7 @@ public class Menu extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Opcionales: Blog y Asesoramiento
-        btnBlog.setOnClickListener(v -> {
-            // Aquí puedes abrir la actividad de Blog
-        });
-
-        btnAsesoramiento.setOnClickListener(v -> {
-            // Aquí puedes abrir la actividad de Asesoramiento
-        });
+        // btnBlog.setOnClickListener(v -> { });
+        // btnAsesoramiento.setOnClickListener(v -> { });
     }
 }
