@@ -175,7 +175,7 @@ public class Form_eventos extends AppCompatActivity {
         Gson gson = new Gson();
         String jsonBody = gson.toJson(eventos);
         System.out.println("Body que se enviará: " + jsonBody);
-        ApiService apiService = ApiClient.getClient(token).create(ApiService.class);
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<ApiResponse<Crear_eventos>> call = apiService.creareventos(eventos);
 
 

@@ -14,7 +14,7 @@
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="12dp"
+        android:paddingHorizontal="16dp"
         android:background="#3F7DFA"
         android:elevation="6dp">
 
@@ -22,7 +22,8 @@
             android:id="@+id/iv_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:contentDescription="Icono Lista" />
+            android:contentDescription="Icono Lista"
+            android:tint="@android:color/white" />
 
         <TextView
             android:layout_width="0dp"
@@ -48,32 +49,38 @@
         android:layout_height="wrap_content"
         android:text="Crear Lista de Chequeo"
         android:textSize="22sp"
+        android:textStyle="bold"
         android:textColor="#212121"
         android:gravity="center"
-        android:layout_marginVertical="16dp"
-        android:textStyle="bold" />
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp" />
 
-    <!-- Formulario -->
+    <!-- Contenido con Scroll -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingHorizontal="16dp">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingVertical="8dp">
 
+            <!-- Reusable: cada bloque -->
+            <!-- ID Lista -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:layout_marginHorizontal="2dp"
+                android:clipToOutline="true"
+                android:backgroundTintMode="src_in">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -81,16 +88,20 @@
                     android:text="ID Reporte"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etIdlista"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:hint="ID (autogenerado)"
                     android:background="@android:color/transparent"
+                    android:paddingHorizontal="12dp"
                     android:inputType="number"
-                    android:padding="8dp" />
+                    android:textColor="#212121"
+                    android:textSize="15sp"
+                    android:backgroundTint="#DDDDDD" />
             </LinearLayout>
 
             <!-- Nombre Usuario -->
@@ -98,10 +109,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:clipToOutline="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -109,15 +121,19 @@
                     android:text="Nombre Usuario"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etUsuarioNombre"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:hint="Ingrese nombre"
                     android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#212121"
+                    android:textSize="15sp"
+                    android:backgroundTint="#DDDDDD" />
             </LinearLayout>
 
             <!-- Fecha -->
@@ -125,10 +141,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:clipToOutline="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -136,16 +153,20 @@
                     android:text="Fecha"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etFecha"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:hint="Ingrese fecha"
                     android:background="@android:color/transparent"
                     android:inputType="date"
-                    android:padding="8dp" />
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#212121"
+                    android:textSize="15sp"
+                    android:backgroundTint="#DDDDDD" />
             </LinearLayout>
 
             <!-- Hora -->
@@ -153,10 +174,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:clipToOutline="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -164,16 +186,20 @@
                     android:text="Hora"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etHora"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:hint="Ingrese hora"
                     android:background="@android:color/transparent"
                     android:inputType="time"
-                    android:padding="8dp" />
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#212121"
+                    android:textSize="15sp"
+                    android:backgroundTint="#DDDDDD" />
             </LinearLayout>
 
             <!-- Modelo -->
@@ -181,10 +207,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:clipToOutline="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -192,15 +219,19 @@
                     android:text="Modelo"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etModelo"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:hint="Ingrese modelo"
                     android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#212121"
+                    android:textSize="15sp"
+                    android:backgroundTint="#DDDDDD" />
             </LinearLayout>
 
             <!-- Marca -->
@@ -208,10 +239,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:clipToOutline="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -219,15 +251,19 @@
                     android:text="Marca"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etMarca"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:hint="Ingrese marca"
                     android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#212121"
+                    android:textSize="15sp"
+                    android:backgroundTint="#DDDDDD" />
             </LinearLayout>
 
             <!-- Kilometraje -->
@@ -235,10 +271,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:clipToOutline="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -246,27 +283,32 @@
                     android:text="Kilometraje"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etKilometraje"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:hint="Ingrese kilometraje"
                     android:background="@android:color/transparent"
                     android:inputType="number"
-                    android:padding="8dp" />
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#212121"
+                    android:textSize="15sp"
+                    android:backgroundTint="#DDDDDD" />
             </LinearLayout>
 
-            <!-- SOAT -->
+            <!-- SOAT vigente -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:clipToOutline="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -274,12 +316,14 @@
                     android:text="SOAT vigente"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <RadioButton
                         android:id="@+id/rbSoatSi"
@@ -301,10 +345,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="5dp"
+                android:clipToOutline="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -312,12 +357,14 @@
                     android:text="Revisado por técnico"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
                     <RadioButton
                         android:id="@+id/rbTecnicoSi"
@@ -333,6 +380,7 @@
                         android:layout_marginStart="24dp" />
                 </RadioGroup>
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
@@ -347,6 +395,9 @@
         android:backgroundTint="#3F7DFA"
         android:textColor="@android:color/white"
         android:layout_margin="16dp"
-        android:paddingVertical="12dp" />
+        android:paddingVertical="14dp"
+        android:elevation="5dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/btn_primary" />
 
 </LinearLayout>

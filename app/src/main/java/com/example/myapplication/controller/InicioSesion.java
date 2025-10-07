@@ -39,7 +39,14 @@ public class InicioSesion extends AppCompatActivity {
 
         // Botón de iniciar sesión
         binding.btnSignIn.setOnClickListener(view -> iniciarSesion());
+
+        binding.txtRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(InicioSesion.this, Registro.class);
+            startActivity(intent);
+        });
+
     }
+
 
     private void iniciarSesion() {
         String correo = binding.edtUsername.getText().toString().trim();

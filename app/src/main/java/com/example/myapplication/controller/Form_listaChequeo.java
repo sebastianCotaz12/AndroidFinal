@@ -12,6 +12,8 @@ import com.example.myapplication.api.ApiClient;
 import com.example.myapplication.api.ApiResponse;
 import com.example.myapplication.api.ApiService;
 import com.example.myapplication.databinding.ActivityFormListaChequeoBinding;
+import com.example.myapplication.utils.PrefsManager;
+import com.example.myapplication.utils.SesionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,14 +22,31 @@ import retrofit2.Response;
 public class Form_listaChequeo extends AppCompatActivity {
 
     private ActivityFormListaChequeoBinding binding;
+    private PrefsManager prefsManager;
+    private SesionManager sesionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Inflar el layout con ViewBinding
         binding = ActivityFormListaChequeoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // --- Inicializar gestores de sesión ---
+        prefsManager = new PrefsManager(this);
+        sesionManager = new SesionManager(this);
+
+        // --- Verificar si hay sesión activa ---
+        if (!sesionManager.haySesionActiva()) {
+            Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
+            sesionManager.cerrarSesion();
+            finish();
+            return;
+        }
+
+        // --- Autocompletar datos de sesión ---
+        binding.etUsuarioNombre.setText(prefsManager.getNombreUsuario());
+        binding.etUsuarioNombre.setEnabled(false); // campo solo lectura
 
         // Acción al hacer clic en el botón Guardar
         binding.btnGuardarlista.setOnClickListener(new View.OnClickListener() {
@@ -39,26 +58,37 @@ public class Form_listaChequeo extends AppCompatActivity {
     }
 
     private void guardarDatos() {
-        String nombreUsuario = binding.etUsuarioNombre.getText().toString().trim();
+        // --- Datos desde PrefsManager ---
+        int idUsuario = prefsManager.getIdUsuario();
+        int idEmpresa = prefsManager.getIdEmpresa();
+        String token = prefsManager.getToken();
+
+        if (token == null || token.trim().isEmpty()) {
+            Toast.makeText(this, "🚫 Token inválido. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
+            sesionManager.cerrarSesion();
+            return;
+        }
+
+        // --- Datos del formulario ---
+        String nombreUsuario = prefsManager.getNombreUsuario();
         String fecha = binding.etFecha.getText().toString().trim();
         String hora = binding.etHora.getText().toString().trim();
         String modelo = binding.etModelo.getText().toString().trim();
         String marca = binding.etMarca.getText().toString().trim();
         String kilometraje = binding.etKilometraje.getText().toString().trim();
-
         String soat = getRadioValue(binding.rbSoatSi, binding.rbSoatNo);
         String tecnico = getRadioValue(binding.rbTecnicoSi, binding.rbTecnicoNo);
 
-        if (nombreUsuario.isEmpty() || fecha.isEmpty() || hora.isEmpty() ||
-                modelo.isEmpty() || marca.isEmpty() || kilometraje.isEmpty() ||
-                soat == null || tecnico == null) {
-            Toast.makeText(this, "Por favor completa todos los campos.", Toast.LENGTH_LONG).show();
+        // --- Validación de campos ---
+        if (fecha.isEmpty() || hora.isEmpty() || modelo.isEmpty() ||
+                marca.isEmpty() || kilometraje.isEmpty() || soat == null || tecnico == null) {
+            Toast.makeText(this, "⚠️ Por favor completa todos los campos.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Crear objeto con los mismos campos que espera el backend
+        // --- Crear objeto lista de chequeo ---
         Crear_listaChequeo nuevaLista = new Crear_listaChequeo();
-        nuevaLista.setIdUsuario(5); // ejemplo, hasta que uses login real
+        nuevaLista.setIdUsuario(idUsuario);
         nuevaLista.setUsuarioNombre(nombreUsuario);
         nuevaLista.setFecha(fecha);
         nuevaLista.setHora(hora);
@@ -68,9 +98,8 @@ public class Form_listaChequeo extends AppCompatActivity {
         nuevaLista.setSoat(soat);
         nuevaLista.setTecnico(tecnico);
 
-        String token = "TOKEN_JWT_VALIDO";
-
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+        // --- Cliente API con token de sesión ---
+        ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
 
         Call<ApiResponse<Crear_listaChequeo>> call = apiService.crearListaChequeo(nuevaLista);
 
@@ -78,16 +107,17 @@ public class Form_listaChequeo extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponse<Crear_listaChequeo>> call, Response<ApiResponse<Crear_listaChequeo>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(Form_listaChequeo.this, "Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Form_listaChequeo.this, "✅ Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Form_listaChequeo.this, Lista_listaChequeo.class));
+                    finish();
                 } else {
-                    Toast.makeText(Form_listaChequeo.this, "Error: No se pudo guardar.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_listaChequeo.this, "⚠️ Error: No se pudo guardar.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Crear_listaChequeo>> call, Throwable t) {
-                Toast.makeText(Form_listaChequeo.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Form_listaChequeo.this, "🚫 Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
