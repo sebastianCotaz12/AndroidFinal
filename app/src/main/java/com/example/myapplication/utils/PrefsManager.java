@@ -74,7 +74,7 @@ public class PrefsManager {
     }
 
     // ======== LIMPIAR SESIÓN ========
-    public void clear() {
+    public void clearPrefs() {
         prefs.edit().clear().apply();
     }
 }

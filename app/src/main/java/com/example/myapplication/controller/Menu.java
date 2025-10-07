@@ -12,7 +12,7 @@ import com.example.myapplication.utils.PrefsManager;
 
 public class Menu extends AppCompatActivity {
 
-    Button btnGestionEpp, btnReportes, btnAct, btnListaChequeo, btnBlog, btnAsesoramiento;
+    Button btnGestionEpp, btnReportes, btnAct, btnListaChequeo, btnBlog, btnAsesoramiento, btnCerrarSesion;
     TextView tvBienvenida, tvEmpresa, tvArea;
 
     @Override
@@ -30,6 +30,7 @@ public class Menu extends AppCompatActivity {
         btnListaChequeo   = findViewById(R.id.btn_ListaChequeo);
         btnBlog           = findViewById(R.id.btn_Blog);
         btnAsesoramiento  = findViewById(R.id.btn_Asesoramiento);
+        btnCerrarSesion   = findViewById(R.id.btnCerrarSesion);
 
         // Referencias de textos para encabezado
         tvBienvenida = findViewById(R.id.tvBienvenida);
@@ -46,7 +47,7 @@ public class Menu extends AppCompatActivity {
         tvEmpresa.setText("Empresa: " + (empresa != null ? empresa : "N/A"));
         tvArea.setText("Área: " + (area != null ? area : "N/A"));
 
-        // Navegaciones
+        // --- NAVEGACIONES ---
         btnGestionEpp.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, Lista_gestionEpp.class);
             startActivity(intent);
@@ -67,7 +68,16 @@ public class Menu extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // btnBlog.setOnClickListener(v -> { });
-        // btnAsesoramiento.setOnClickListener(v -> { });
+        // --- BOTÓN CERRAR SESIÓN ---
+        btnCerrarSesion.setOnClickListener(v -> {
+            // Limpiar los datos del usuario guardados en las preferencias
+            prefsManager.clearPrefs();
+
+            // Volver a la pantalla de inicio o login
+            Intent intent = new Intent(Menu.this, InicioSesion.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 }

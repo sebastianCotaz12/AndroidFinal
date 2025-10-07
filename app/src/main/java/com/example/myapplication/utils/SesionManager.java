@@ -19,7 +19,7 @@ public class SesionManager {
     // Cerrar sesión de manera segura
     public void cerrarSesion() {
         // Limpiar datos locales
-        prefsManager.clear();
+        prefsManager.clearPrefs();
 
         // Resetear cliente de API
         ApiClient.resetClient();
