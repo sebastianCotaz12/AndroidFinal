@@ -21,14 +21,14 @@ public class ApiClient {
     private static PrefsManager lastPrefsManager = null;
 
     /**
-     * ✅ Método clásico de compatibilidad (sin token)
+     *  Método clásico de compatibilidad (sin token)
      */
     public static Retrofit getClient() {
         return getClient(null);
     }
 
     /**
-     * ✅ Obtiene el cliente Retrofit con el token JWT (si existe)
+     * ✅Obtiene el cliente Retrofit con el token JWT (si existe)
      */
     public static Retrofit getClient(PrefsManager prefsManager) {
         // 🔸 Si el PrefsManager cambió o Retrofit es nulo, se reconstruye
@@ -42,7 +42,6 @@ public class ApiClient {
             // 🔹 Agregamos el interceptor solo si hay token
             if (prefsManager != null && prefsManager.getToken() != null) {
                 String token = prefsManager.getToken();
-
                 httpClient.addInterceptor(chain -> {
                     Request original = chain.request();
                     Request.Builder requestBuilder = original.newBuilder()
@@ -52,6 +51,7 @@ public class ApiClient {
                     return chain.proceed(requestBuilder.build());
                 });
             } else {
+                // Si no hay token, logueamos advertencia
                 httpClient.addInterceptor(chain -> {
                     Log.w("ApiClient", "⚠️ Petición sin token (usuario no autenticado)");
                     return chain.proceed(chain.request());
@@ -73,14 +73,25 @@ public class ApiClient {
     }
 
     /**
-      Resetea Retrofit (por ejemplo al cerrar sesión)
+     * 🔄 Resetea Retrofit (por ejemplo al cerrar sesión)
      */
     public static void resetClient() {
         retrofit = null;
         lastPrefsManager = null;
         Log.i("ApiClient", "🔄 Retrofit reiniciado correctamente");
     }
+
+    /**
+     * ✅ Obtiene ApiService sin token
+     */
     public static ApiService getApiService() {
         return getClient().create(ApiService.class);
+    }
+
+    /**
+     * ✅ Obtiene ApiService con token (automático desde PrefsManager)
+     */
+    public static ApiService getApiService(PrefsManager prefsManager) {
+        return getClient(prefsManager).create(ApiService.class);
     }
 }

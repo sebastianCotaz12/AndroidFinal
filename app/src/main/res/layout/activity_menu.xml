@@ -135,5 +135,230 @@
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Menú de opciones -->
-    <!-- Menú de opciones --> <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:paddingHorizontal="8dp"> <GridLayout android:id="@+id/menu_grid" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:columnCount="2" android:alignmentMode="alignMargins" android:useDefaultMargins="true"> <!-- Gestión EPP --> <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_margin="10dp" android:layout_columnWeight="1" app:cardCornerRadius="18dp" app:cardElevation="10dp" app:cardBackgroundColor="@android:color/white"> <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="14dp"> <ImageView android:layout_width="72dp" android:layout_height="72dp" android:src="@drawable/epp" android:contentDescription="Icono" /> <com.google.android.material.button.MaterialButton android:id="@+id/btn_GestionEpp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Gestión EPP" android:textColor="@android:color/white" android:layout_marginTop="8dp" app:cornerRadius="12dp" app:icon="@android:drawable/ic_menu_manage" app:iconTint="@android:color/white" app:backgroundTint="#3F7DFA" /> </LinearLayout> </com.google.android.material.card.MaterialCardView> <!-- Reportes --> <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_margin="10dp" android:layout_columnWeight="1" app:cardCornerRadius="18dp" app:cardElevation="10dp" app:cardBackgroundColor="@android:color/white"> <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="14dp"> <ImageView android:layout_width="72dp" android:layout_height="72dp" android:src="@drawable/reportes" android:contentDescription="Icono" /> <com.google.android.material.button.MaterialButton android:id="@+id/btn_Reportes" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Reportes" android:textColor="@android:color/white" android:layout_marginTop="8dp" app:cornerRadius="12dp" app:icon="@android:drawable/ic_menu_agenda" app:iconTint="@android:color/white" app:backgroundTint="#3F7DFA" /> </LinearLayout> </com.google.android.material.card.MaterialCardView> <!-- Actividades Lúdicas --> <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_margin="10dp" android:layout_columnWeight="1" app:cardCornerRadius="18dp" app:cardElevation="10dp" app:cardBackgroundColor="@android:color/white"> <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="14dp"> <ImageView android:layout_width="72dp" android:layout_height="72dp" android:src="@drawable/ludicas" android:contentDescription="Icono" /> <com.google.android.material.button.MaterialButton android:id="@+id/btn_Act" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Actividades Lúdicas" android:textColor="@android:color/white" android:layout_marginTop="8dp" app:cornerRadius="12dp" app:icon="@android:drawable/ic_menu_edit" app:iconTint="@android:color/white" app:backgroundTint="#3F7DFA" /> </LinearLayout> </com.google.android.material.card.MaterialCardView> <!-- Lista de Chequeo --> <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_margin="10dp" android:layout_columnWeight="1" app:cardCornerRadius="18dp" app:cardElevation="10dp" app:cardBackgroundColor="@android:color/white"> <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="14dp"> <ImageView android:layout_width="72dp" android:layout_height="72dp" android:src="@drawable/chequeo" android:contentDescription="Icono" /> <com.google.android.material.button.MaterialButton android:id="@+id/btn_ListaChequeo" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Lista de Chequeo" android:textColor="@android:color/white" android:layout_marginTop="8dp" app:cornerRadius="12dp" app:icon="@android:drawable/ic_menu_view" app:iconTint="@android:color/white" app:backgroundTint="#3F7DFA" /> </LinearLayout> </com.google.android.material.card.MaterialCardView> <!-- Blog --> <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_margin="10dp" android:layout_columnWeight="1" app:cardCornerRadius="18dp" app:cardElevation="10dp" app:cardBackgroundColor="@android:color/white"> <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="14dp"> <ImageView android:layout_width="72dp" android:layout_height="72dp" android:src="@drawable/blog" android:contentDescription="Icono" /> <com.google.android.material.button.MaterialButton android:id="@+id/btn_Blog" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Blog" android:textColor="@android:color/white" android:layout_marginTop="8dp" app:cornerRadius="12dp" app:icon="@android:drawable/ic_menu_info_details" app:iconTint="@android:color/white" app:backgroundTint="#3F7DFA" /> </LinearLayout> </com.google.android.material.card.MaterialCardView> <!-- Asesoramiento --> <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_margin="10dp" android:layout_columnWeight="1" app:cardCornerRadius="18dp" app:cardElevation="10dp" app:cardBackgroundColor="@android:color/white"> <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center" android:padding="14dp"> <ImageView android:layout_width="72dp" android:layout_height="72dp" android:src="@drawable/asesoramiento" android:contentDescription="Icono" /> <com.google.android.material.button.MaterialButton android:id="@+id/btn_Asesoramiento" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Asesoramiento" android:textColor="@android:color/white" android:layout_marginTop="8dp" app:cornerRadius="12dp" app:icon="@android:drawable/ic_menu_call" app:iconTint="@android:color/white" app:backgroundTint="#3F7DFA" /> </LinearLayout> </com.google.android.material.card.MaterialCardView> </GridLayout> </ScrollView>
+    <!-- Menú de opciones -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="8dp">
+
+        <GridLayout
+            android:id="@+id/menu_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alignmentMode="alignMargins"
+            android:columnCount="2"
+            android:useDefaultMargins="true"> <!-- Gestión EPP -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="Icono"
+                        android:src="@drawable/epp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_GestionEpp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Gestión EPP"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#3F7DFA"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_manage"
+                        app:iconTint="@android:color/white" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView> <!-- Reportes -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="Icono"
+                        android:src="@drawable/reportes" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_Reportes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Reportes"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#3F7DFA"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_agenda"
+                        app:iconTint="@android:color/white" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView> <!-- Actividades Lúdicas -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="Icono"
+                        android:src="@drawable/ludicas" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_Act"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Actividades Lúdicas"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#3F7DFA"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_edit"
+                        app:iconTint="@android:color/white" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView> <!-- Lista de Chequeo -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="Icono"
+                        android:src="@drawable/chequeo" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_ListaChequeo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Lista de Chequeo"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#3F7DFA"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_view"
+                        app:iconTint="@android:color/white" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView> <!-- Blog -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="Icono"
+                        android:src="@drawable/blog" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_Blog"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Blog"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#3F7DFA"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_info_details"
+                        app:iconTint="@android:color/white" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView> <!-- Asesoramiento -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="Icono"
+                        android:src="@drawable/asesoramiento" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_Asesoramiento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Asesoramiento"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#3F7DFA"
+                        app:cornerRadius="12dp"
+                        app:icon="@android:drawable/ic_menu_call"
+                        app:iconTint="@android:color/white" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </GridLayout>
+    </ScrollView>
 </LinearLayout>

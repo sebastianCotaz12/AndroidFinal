@@ -1,24 +1,26 @@
 package com.example.myapplication.controller;
 
 public class Item_actLudicas {
-    private int id;
-    private String usuario;
-    private String nombreActividad;
-    private String fecha;
-    private String descripcion;
-    private String evidencia;
-    private String imagenVideo;
 
-    public Item_actLudicas(int id, String usuario, String nombreActividad, String fecha, String descripcion, String evidencia, String imagenVideo) {
+    private int id;
+    private String nombreUsuario;
+    private String nombreActividad;
+    private String fechaActividad;
+    private String descripcion;
+    private String archivoAdjunto;
+
+    // Constructor
+    public Item_actLudicas(int id, String nombreUsuario, String nombreActividad,
+                           String fechaActividad, String descripcion, String archivoAdjunto) {
         this.id = id;
-        this.usuario = usuario;
+        this.nombreUsuario = nombreUsuario;
         this.nombreActividad = nombreActividad;
-        this.fecha = fecha;
+        this.fechaActividad = fechaActividad;
         this.descripcion = descripcion;
-        this.evidencia = evidencia;
-        this.imagenVideo = imagenVideo;
+        this.archivoAdjunto = archivoAdjunto;
     }
 
+    // Getters y Setters
     public int getId() {
         return id;
     }
@@ -27,12 +29,12 @@ public class Item_actLudicas {
         this.id = id;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public String getNombreActividad() {
@@ -43,12 +45,12 @@ public class Item_actLudicas {
         this.nombreActividad = nombreActividad;
     }
 
-    public String getFecha() {
-        return fecha;
+    public String getFechaActividad() {
+        return fechaActividad;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFechaActividad(String fechaActividad) {
+        this.fechaActividad = fechaActividad;
     }
 
     public String getDescripcion() {
@@ -59,20 +61,11 @@ public class Item_actLudicas {
         this.descripcion = descripcion;
     }
 
-    public String getEvidencia() {
-        return evidencia;
+    public String getArchivoAdjunto() {
+        return archivoAdjunto;
     }
 
-    public void setEvidencia(String evidencia) {
-        this.evidencia = evidencia;
-    }
-
-
-    public String getImagenVideo() {
-        return imagenVideo;
-    }
-
-    public void setImagenVideo(String imagenVideo) {
-        this.imagenVideo = imagenVideo;
+    public void setArchivoAdjunto(String archivoAdjunto) {
+        this.archivoAdjunto = archivoAdjunto;
     }
 }

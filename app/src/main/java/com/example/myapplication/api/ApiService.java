@@ -15,6 +15,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -61,7 +63,6 @@ public interface ApiService {
             @Part MultipartBody.Part archivos
     );
 
-
     @GET("listarReportes")
     Call<List<Crear_reportes>> getReportes();
 
@@ -77,6 +78,18 @@ public interface ApiService {
     // Actividades Lúdicas
     @POST("crearActividadLudica")
     Call<ApiResponse<Crear_actLudica>> crearActividad(@Body Crear_actLudica actividad);
+
+    // Actividades Lúdicas con Base64
+    @FormUrlEncoded
+    @POST("crearActividadLudica")
+    Call<ApiResponse<Object>> crearActividadBase64(
+            @Field("id_usuario") int idUsuario,
+            @Field("nombre_actividad") String nombreActividad,
+            @Field("fecha") String fecha,
+            @Field("descripcion") String descripcion,
+            @Field("imagen") String imagenBase64,
+            @Field("extension") String extension
+    );
 
     @GET("listarActividadesLudicas")
     Call<List<Crear_actLudica>> getActividad();

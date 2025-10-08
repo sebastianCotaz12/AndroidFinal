@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F4F6F8"
-    tools:context=".controller.Lista_listaChequeo">
+    tools:context=".controller.Lista_actLudicas">
 
     <!-- Encabezado -->
     <RelativeLayout
@@ -95,7 +95,7 @@
                     android:tint="#3F7DFA" />
             </LinearLayout>
 
-            <!-- Crear nuevo reporte -->
+            <!-- Crear nuevo actividad -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

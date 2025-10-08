@@ -205,7 +205,7 @@ public class Form_reportes extends AppCompatActivity {
             public void onResponse(Call<ApiResponse<Crear_reportes>> call, Response<ApiResponse<Crear_reportes>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<Crear_reportes> apiResponse = response.body();
-                    Toast.makeText(Form_reportes.this, "✅ " + apiResponse.getMsj(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_reportes.this, "melooo " + apiResponse.getMsj(), Toast.LENGTH_LONG).show();
                     Log.d("REPORTE_OK", "Reporte creado correctamente: " + apiResponse.getMsj());
                     setResult(RESULT_OK);
                     finish();
@@ -223,7 +223,7 @@ public class Form_reportes extends AppCompatActivity {
             @Override
             public void onFailure(Call<ApiResponse<Crear_reportes>> call, Throwable t) {
                 Log.e("REPORTE_FAIL", "Error conexión: " + t.getMessage());
-                Toast.makeText(Form_reportes.this, "🚫 Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Form_reportes.this, " Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
