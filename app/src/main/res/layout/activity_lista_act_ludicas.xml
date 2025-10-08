@@ -126,7 +126,8 @@
                     android:layout_height="36dp"
                     android:background="@android:color/transparent"
                     android:src="@android:drawable/ic_input_add"
-                    android:tint="#3F7DFA" />
+                    android:tint="#3F7DFA"
+                    tools:ignore="UseAppTint" />
             </LinearLayout>
 
             <!-- Lista de reportes -->

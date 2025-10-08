@@ -1,39 +1,44 @@
 package com.example.myapplication.controller;
 
 public class Item_eventos {
-    private String titulo;
-    private String fecha;
-    private String descripcion;
-    private String adjuntar;
+    private String tituloEvento;
+    private String fechaEvento;
+    private String descripcionEvento;
+    private String adjuntarEvento;
     private String imagen;
 
     // Constructor
-    public Item_eventos(String titulo, String fecha, String descripcion, String adjuntar, String imagen) {
-        this.titulo = titulo;
-        this.fecha = fecha;
-        this.descripcion = descripcion;
-        this.adjuntar = adjuntar;
+    public Item_eventos(String tituloEvento, String fechaEvento, String descripcionEvento, String adjuntarEvento, String imagen) {
+        this.tituloEvento = tituloEvento;
+        this.fechaEvento = fechaEvento;
+        this.descripcionEvento = descripcionEvento;
+        this.adjuntarEvento = adjuntarEvento;
         this.imagen = imagen;
     }
 
+    public Item_eventos( String titulo, String fechaActividad, String descripcion, String archivoAdjunto) {
+    }
+
     // Getters
-    public String getTitulo() { return titulo; }
+    public String getTituloEvento() { return tituloEvento; }
+    public void setTituloEvento(String tituloEvento) { this.tituloEvento = tituloEvento; }
 
-    public String getFecha() { return fecha; }
 
-    public String getDescripcion() { return descripcion; }
+    public String getFechaEvento() { return fechaEvento; }
+    public void setFechaEvento(String fechaEvento) { this.fechaEvento = fechaEvento; }
 
-    public String getAdjuntar() { return adjuntar; }
+
+
+    public String getDescripcionEvento() { return descripcionEvento; }
+    public void setDescripcionEvento(String descripcionEvento) { this.descripcionEvento = descripcionEvento; }
+
+
+
+    public String getAdjuntarEvento() { return adjuntarEvento; }
+    public void setAdjuntarEvento(String adjuntarEvento) { this.adjuntarEvento = adjuntarEvento; }
+
+
 
     public String getImagen() { return imagen; }
-
-    // Setters
-    public void setTitulo(String titulo) { this.titulo = titulo; }
-
-    public void setFecha(String fecha) { this.fecha = fecha; }
-
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
-    public void setAdjuntar(String adjuntar) { this.adjuntar = adjuntar; }
-
     public void setImagen(String imagen) { this.imagen = imagen; }
 }

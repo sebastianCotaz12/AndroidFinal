@@ -67,6 +67,10 @@ public class Menu extends AppCompatActivity {
             Intent intent = new Intent(Menu.this, Lista_listaChequeo.class);
             startActivity(intent);
         });
+        btnBlog.setOnClickListener(v -> {
+            Intent intent = new Intent(Menu.this, Lista_eventos.class);
+            startActivity(intent);
+        });
 
         // --- BOTÓN CERRAR SESIÓN ---
         btnCerrarSesion.setOnClickListener(v -> {
