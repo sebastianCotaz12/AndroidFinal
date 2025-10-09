@@ -4,8 +4,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
     android:orientation="vertical"
+    android:background="#F5F5F5"
     tools:context=".controller.Form_gestionEpp">
 
     <!-- Barra superior -->
@@ -19,9 +19,9 @@
         android:elevation="6dp">
 
         <ImageView
-            android:id="@+id/iv_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:src="@drawable/ic_launcher_foreground"
             android:contentDescription="Icono Gestión EPP" />
 
         <TextView
@@ -33,27 +33,18 @@
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="@android:color/white" />
-
-        <ImageView
-            android:id="@+id/img_logo"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:src="@drawable/img"
-            android:contentDescription="Logo" />
     </LinearLayout>
 
-    <!-- Título -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Crear Registro Gestión EPP"
+        android:text="Registrar Entrega de EPP"
         android:textSize="22sp"
         android:textColor="#212121"
         android:gravity="center"
         android:layout_marginVertical="16dp"
         android:textStyle="bold" />
 
-    <!-- Formulario -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -65,113 +56,30 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- ID -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="ID Registro"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/etIdEpp"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="ID (autogenerado o manual)"
-                    android:background="@android:color/transparent"
-                    android:inputType="number"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Nombre -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nombre"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/etNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Ingrese nombre"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Apellido -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Apellido"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/etApellido"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Ingrese apellido"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
-            </LinearLayout>
-
             <!-- Cédula -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="12dp"
-                android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cédula"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:layout_marginEnd="8dp" />
 
                 <EditText
                     android:id="@+id/etCedula"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="Ingrese cédula"
-                    android:background="@android:color/transparent"
+                    android:hint="Cédula del empleado"
                     android:inputType="number"
+                    android:background="@android:color/transparent"
                     android:padding="8dp" />
             </LinearLayout>
 
@@ -179,52 +87,78 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="12dp"
-                android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cargo"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:layout_marginEnd="8dp" />
 
                 <EditText
                     android:id="@+id/etCargo"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="Ingrese cargo"
+                    android:hint="Cargo"
                     android:background="@android:color/transparent"
                     android:padding="8dp" />
             </LinearLayout>
 
-            <!-- Productos -->
+            <!-- Fecha entrega -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="12dp"
-                android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Productos"
+                    android:text="Fecha de entrega"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:layout_marginEnd="8dp" />
+
+                <EditText
+                    android:id="@+id/etFechaEntrega"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="Selecciona una fecha"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Producto -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="#FFFFFF"
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Producto EPP"
+                    android:textColor="#1565C0"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp" />
 
                 <EditText
                     android:id="@+id/etProductos"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="Ingrese productos"
+                    android:hint="Ejemplo: Guantes, Casco"
                     android:background="@android:color/transparent"
                     android:padding="8dp" />
             </LinearLayout>
@@ -233,27 +167,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="12dp"
-                android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cantidad"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:layout_marginEnd="8dp" />
 
                 <EditText
                     android:id="@+id/etCantidad"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:hint="Ingrese cantidad"
-                    android:background="@android:color/transparent"
+                    android:hint="Cantidad de elementos"
                     android:inputType="number"
+                    android:background="@android:color/transparent"
                     android:padding="8dp" />
             </LinearLayout>
 
@@ -261,97 +194,57 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="12dp"
-                android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="2dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Importancia"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:layout_marginEnd="8dp" />
 
-                <EditText
-                    android:id="@+id/etImportancia"
+                <Spinner
+                    android:id="@+id/spImportancia"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Ingrese importancia"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:layout_height="40dp" />
             </LinearLayout>
 
             <!-- Estado -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="12dp"
-                android:layout_marginBottom="12dp"
                 android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:elevation="2dp"
+                android:layout_marginBottom="16dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Estado"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:layout_marginEnd="8dp" />
 
-                <EditText
-                    android:id="@+id/etEstado"
+                <Spinner
+                    android:id="@+id/spEstado"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Ingrese estado"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Fecha Creación -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Fecha de Creación"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/etFechaCreacion"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Ingrese fecha"
-                    android:background="@android:color/transparent"
-                    android:inputType="date"
-                    android:padding="8dp" />
+                    android:layout_height="40dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón Guardar -->
     <Button
-        android:id="@+id/btnGuardarEpp"
+        android:id="@+id/btnEnviarGestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Guardar Gestión EPP"
-        android:textAllCaps="false"
-        android:textStyle="bold"
         android:backgroundTint="#3F7DFA"
         android:textColor="@android:color/white"
         android:layout_margin="16dp"
         android:paddingVertical="12dp" />
-
 </LinearLayout>

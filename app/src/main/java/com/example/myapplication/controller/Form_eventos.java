@@ -140,7 +140,7 @@ public class Form_eventos extends AppCompatActivity {
             ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
             Log.d("TOKEN_DEBUG", "Token usado al crear evento: " + token);
 
-            Call<ApiResponse<Object>> call = apiService.crearActividadBase64(
+            Call<ApiResponse<Object>> call = apiService.crearEventoBase64(
                     idUsuario,
                     tituloEvento,
                     fecha,

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F4F6F8"
-    tools:context=".controller.Lista_listaChequeo">
+    tools:context=".controller.Lista_gestionEpp">
 
     <!-- Encabezado -->
     <RelativeLayout
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Gestion EPP"
+            android:text="Gestión EPP"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF" />
@@ -38,7 +38,7 @@
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/logo"/>
+            android:src="@mipmap/logo" />
     </RelativeLayout>
 
     <!-- Contenido -->
@@ -95,7 +95,7 @@
                     android:tint="#3F7DFA" />
             </LinearLayout>
 
-            <!-- Crear nuevo reporte -->
+            <!-- Crear nueva gestión -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Crear nueva solicitud EPP"
+                    android:text="Crear nueva gestión EPP"
                     android:textColor="#3F7DFA"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -129,7 +129,7 @@
                     android:tint="#3F7DFA" />
             </LinearLayout>
 
-            <!-- Lista de reportes -->
+            <!-- Lista de gestiones -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewListaChequeo"
                 android:layout_width="match_parent"

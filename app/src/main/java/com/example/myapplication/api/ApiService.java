@@ -35,12 +35,25 @@ public interface ApiService {
     @GET("listarListasChequeo")
     Call<List<Crear_listaChequeo>> getListasChequeo();
 
-    // Gestión EPP
+    // GESTIÓN EPP (sin imágenes)
+    @Multipart
     @POST("crearGestion")
-    Call<ApiResponse<Crear_gestionEpp>> crearGestion(@Body Crear_gestionEpp gestion);
+    Call<ApiResponse<Crear_gestionEpp>> crearGestionEpp(
+            @Part("id_usuario") RequestBody idUsuario,
+            @Part("id_empresa") RequestBody idEmpresa,
+            @Part("nombre_usuario") RequestBody nombreUsuario,
+            @Part("cargo") RequestBody cargo,
+            @Part("cedula") RequestBody cedula,
+            @Part("fecha_entrega") RequestBody fechaEntrega,
+            @Part("elemento_epp") RequestBody elementoEpp,
+            @Part("descripcion") RequestBody descripcion,
+            @Part("estado") RequestBody estado
+    );
 
     @GET("listarGestiones")
     Call<List<Crear_gestionEpp>> getGestiones();
+
+
 
     // Reportes (sin archivos, solo texto)
     @POST("crearReporte")
@@ -98,9 +111,19 @@ public interface ApiService {
     @POST("forgot-password")
     Call<ApiResponse<Void>> forgotPassword(@Body ForgotPasswordRequest request);
 
+
     // Crear eventos
-    @POST("eventos")
-    Call<ApiResponse<Crear_eventos>> creareventos(@Body Crear_eventos eventos);
+    @POST("blogs")
+    Call<ApiResponse<Object>> crearEventoBase64(
+            @Field("id_usuario") int idUsuario,
+            @Field("titulo_evento") String tituloEvento,
+            @Field("fecha_evento") String fechaEvento,
+            @Field("descripcion_evento") String descripcionEvento,
+            @Field("imagen") String imagenBase64,
+            @Field("extension") String extension
+
+    );
+
 
     // Listar eventos por empresa
     @GET("eventos/empresa/{id_empresa}")

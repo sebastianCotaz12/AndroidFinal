@@ -1,42 +1,37 @@
 package com.example.myapplication.controller;
 
 public class Item_gestionEpp {
-    private int idUsuario;
-    private String nombre;
-    private String apellido;
+    private int id;
     private String cedula;
-    private String cargo;
-    private String productos;
-    private int cantidad;
     private String importancia;
     private String estado;
-    private String fechaCreacion;
+    private String fecha_creacion;
+    private String productos;
+    private String cargo;
+    private String area;
+    private int cantidad;
 
-    // Constructor
-    public Item_gestionEpp(int idUsuario, String nombre, String apellido, String cedula,
-                           String cargo, String productos, int cantidad, String importancia,
-                           String estado, String fechaCreacion) {
-        this.idUsuario = idUsuario;
-        this.nombre = nombre;
-        this.apellido = apellido;
+    public Item_gestionEpp(int id, String cedula, String importancia, String estado,
+                           String fecha_creacion, String productos, String cargo,
+                           String area, int cantidad) {
+        this.id = id;
         this.cedula = cedula;
-        this.cargo = cargo;
-        this.productos = productos;
-        this.cantidad = cantidad;
         this.importancia = importancia;
         this.estado = estado;
-        this.fechaCreacion = fechaCreacion;
+        this.fecha_creacion = fecha_creacion;
+        this.productos = productos;
+        this.cargo = cargo;
+        this.area = area;
+        this.cantidad = cantidad;
     }
 
-    // Getters
-    public int getIdUsuario() { return idUsuario; }
-    public String getNombre() { return nombre; }
-    public String getApellido() { return apellido; }
+    public int getId() { return id; }
     public String getCedula() { return cedula; }
-    public String getCargo() { return cargo; }
-    public String getProductos() { return productos; }
-    public int getCantidad() { return cantidad; }
     public String getImportancia() { return importancia; }
     public String getEstado() { return estado; }
-    public String getFechaCreacion() { return fechaCreacion; }
+    public String getFecha_creacion() { return fecha_creacion; }
+    public String getProductos() { return productos; }
+    public String getCargo() { return cargo; }
+    public String getArea() { return area; }
+    public int getCantidad() { return cantidad; }
 }
