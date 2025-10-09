@@ -13,8 +13,8 @@ public class Crear_eventos {
     @SerializedName("descripcionEvento")
     private String descripcionEvento;
 
-    @SerializedName("adjuntar")
-    private String adjuntar;
+    @SerializedName("adjuntarEvento")
+    private String adjuntarEvento;
 
     @SerializedName("imagen")
     private String imagen;
@@ -24,16 +24,16 @@ public class Crear_eventos {
 
 
 
-    public Crear_eventos( String titulo, String fechaEvento, String descripcion, String adjuntar, String imagenVideo) {
 
+    public Crear_eventos(String tituloEvento, String fechaEvento, String descripcionEvento, String adjuntarEvento, String imagen) {
 
-
-        this.tituloEvento = titulo;
+        this.tituloEvento = tituloEvento;
         this.fechaEvento = fechaEvento;
-        this.descripcionEvento = descripcion;
-        this.adjuntar = adjuntar;
-        this.imagen = imagenVideo;
+        this.descripcionEvento = descripcionEvento;
+        this.adjuntarEvento = adjuntarEvento;
+        this.imagen = imagen;
     }
+
 
 
     public String getTituloEvento() {
@@ -60,23 +60,21 @@ public class Crear_eventos {
         this.descripcionEvento = descripcionEvento;
     }
 
-    public String getAdjuntar() {
-        return adjuntar;
+    public String getAdjuntarEvento() {
+        return adjuntarEvento;
     }
 
-    public void setAdjuntar(String adjuntar) {
-        this.adjuntar = adjuntar;
+    public void setAdjuntarEvento(String adjuntarEvento) {
+        this.adjuntarEvento = adjuntarEvento;
     }
-
 
     @Override
     public String toString() {
         return "CrearEventos{" +
-
                 ", tituloEvento='" + tituloEvento + '\'' +
                 ", fechaEvento='" + fechaEvento + '\'' +
                 ", descripcionEvento='" + descripcionEvento + '\'' +
-                ", adjuntar='" + adjuntar + '\'' +
+                ", adjuntarEvento='" +adjuntarEvento + '\'' +
                 '}';
     }
 
@@ -88,6 +86,3 @@ public class Crear_eventos {
         this.imagen = imagen;
     }
 }
-
-
-

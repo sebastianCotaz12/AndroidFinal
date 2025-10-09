@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".lista_eventos"
+            android:exported="false" />
+        <activity
             android:name=".controller.Lista_eventos"
             android:exported="false" />
         <activity
