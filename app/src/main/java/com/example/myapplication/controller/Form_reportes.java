@@ -79,7 +79,7 @@ public class Form_reportes extends AppCompatActivity {
         }
 
         // --- Autocompletar datos de sesión ---
-        binding.etCargo.setText(prefsManager.getNombreArea());
+        binding.etCargo.setText(prefsManager.getCargo());
         binding.etCargo.setEnabled(false);
 
         binding.etCedula.setText(String.valueOf(prefsManager.getIdUsuario()));
@@ -161,7 +161,8 @@ public class Form_reportes extends AppCompatActivity {
         int idEmpresa = prefsManager.getIdEmpresa();
         String token = prefsManager.getToken();
 
-        String cargo = binding.etCargo.getText().toString().trim();
+        String cargoTextoPlano = binding.etCargo.getText().toString().trim();
+        String cargoJsonArray = "[\"" + cargoTextoPlano + "\"]";
         String cedula = binding.etCedula.getText().toString().trim();
         String fecha = binding.etFecha.getText().toString().trim();
         String lugar = binding.etLugar.getText().toString().trim();
@@ -190,7 +191,7 @@ public class Form_reportes extends AppCompatActivity {
                 createPartFromString(String.valueOf(idUsuario)),
                 createPartFromString(String.valueOf(idEmpresa)),
                 createPartFromString(nombreUsuario),
-                createPartFromString(cargo),
+                createPartFromString(cargoJsonArray),
                 createPartFromString(cedula),
                 createPartFromString(fecha),
                 createPartFromString(lugar),

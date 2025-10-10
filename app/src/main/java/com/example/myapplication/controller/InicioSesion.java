@@ -85,6 +85,7 @@ public class InicioSesion extends AppCompatActivity {
                     prefsManager.setIdArea(loginResponse.getUser().getIdArea());
                     prefsManager.setNombreEmpresa(loginResponse.getUser().getNombreEmpresa());
                     prefsManager.setNombreArea(loginResponse.getUser().getNombreArea());
+                    prefsManager.setCargo(loginResponse.getUser().getCargo());
 
                     Toast.makeText(InicioSesion.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
 

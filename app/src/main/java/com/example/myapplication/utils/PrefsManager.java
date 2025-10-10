@@ -73,6 +73,16 @@ public class PrefsManager {
         return prefs.getString("nombre_area", null);
     }
 
+    // ======== CARGO ========
+    public void setCargo(String cargo) {
+        prefs.edit().putString("cargo", cargo).apply();
+    }
+
+    public String getCargo() {
+        return prefs.getString("cargo", null);
+    }
+
+
     // ======== LIMPIAR SESIÓN ========
     public void clearPrefs() {
         prefs.edit().clear().apply();

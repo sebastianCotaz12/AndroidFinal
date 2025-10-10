@@ -25,6 +25,7 @@ public class LoginResponse {
         return user;
     }
 
+
     public static class Usuario {
         @SerializedName("id")
         private int id;
@@ -51,6 +52,9 @@ public class LoginResponse {
         @SerializedName("nombre_area")
         private String nombreArea;
 
+        @SerializedName("cargo")
+        private String cargo;
+
         // Getters existentes
         public int getId() { return id; }
         public String getNombre() { return nombre; }
@@ -58,6 +62,9 @@ public class LoginResponse {
         public String getCorreoElectronico() { return correoElectronico; }
         public int getIdEmpresa() { return idEmpresa; }
         public int getIdArea() { return idArea; }
+
+        public String getCargo() { return cargo; }
+
 
         // 🔹 Getters nuevos
         public String getNombreEmpresa() { return nombreEmpresa; }
