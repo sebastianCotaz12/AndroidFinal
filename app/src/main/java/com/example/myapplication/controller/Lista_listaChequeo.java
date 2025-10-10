@@ -88,7 +88,6 @@ public class Lista_listaChequeo extends AppCompatActivity {
 
     private void obtenerListasChequeo() {
         String token = prefsManager.getToken();
-        int idUsuario = prefsManager.getIdUsuario();
 
         if (token == null || token.trim().isEmpty()) {
             Toast.makeText(this, "🚫 Token inválido. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
@@ -100,20 +99,15 @@ public class Lista_listaChequeo extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                URL_API,
+                "https://backsst.onrender.com/listarlistasU", // ✅ nuevo endpoint filtrado por usuario
                 null,
                 response -> {
                     try {
-                        JSONArray datos = response.getJSONArray("datos");
+                        JSONArray datos = response.getJSONArray("data"); // ✅ accede a "data", no "datos"
 
                         listaChequeos.clear();
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
-
-                            // Filtrar por usuario si la API devuelve todos
-                            if (obj.has("id_usuario") && obj.getInt("id_usuario") != idUsuario) {
-                                continue;
-                            }
 
                             Item_listaChequeo item = new Item_listaChequeo(
                                     obj.optString("usuarioNombre", "N/A"),
@@ -144,7 +138,6 @@ public class Lista_listaChequeo extends AppCompatActivity {
                     Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 }
         ) {
-            // 🔹 Agregar encabezados con el token JWT
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
