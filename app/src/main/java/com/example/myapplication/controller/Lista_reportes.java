@@ -31,7 +31,7 @@ import java.util.List;
 public class Lista_reportes extends AppCompatActivity {
 
     private ActivityListaReportesBinding binding;
-    private ListaReportesAdapter adapter;
+    private Adapter_reportes adapter;
     private List<ItemReporte> listaReportes = new ArrayList<>();
     private PrefsManager prefsManager;
 
@@ -61,7 +61,7 @@ public class Lista_reportes extends AppCompatActivity {
         RecyclerView recyclerView = binding.recyclerViewListaReportes;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new ListaReportesAdapter(this, listaReportes);
+        adapter = new Adapter_reportes(this, listaReportes);
         recyclerView.setAdapter(adapter);
 
         obtenerReportes();
