@@ -99,11 +99,11 @@ public class Lista_listaChequeo extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                "https://backsst.onrender.com/listarlistasU", // ✅ nuevo endpoint filtrado por usuario
+                "https://backsst.onrender.com/listarlistasU", // nuevo endpoint filtrado por usuario
                 null,
                 response -> {
                     try {
-                        JSONArray datos = response.getJSONArray("data"); // ✅ accede a "data", no "datos"
+                        JSONArray datos = response.getJSONArray("data"); //  accede a "data", no "datos"
 
                         listaChequeos.clear();
                         for (int i = 0; i < datos.length(); i++) {

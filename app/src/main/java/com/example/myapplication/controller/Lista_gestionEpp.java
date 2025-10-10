@@ -68,11 +68,11 @@ public class Lista_gestionEpp extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                URL_API,
+                "https://backsst.onrender.com/listarGestions", // ✅ usa el endpoint filtrado por usuario
                 null,
                 response -> {
                     try {
-                        JSONArray datosArray = response.getJSONArray("datos");
+                        JSONArray datosArray = response.getJSONArray("data"); // ✅ accede a "data"
                         lista.clear();
 
                         for (int i = 0; i < datosArray.length(); i++) {
