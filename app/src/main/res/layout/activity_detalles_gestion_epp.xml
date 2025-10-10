@@ -59,13 +59,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Nombre"
+                        android:text="Id Usuario"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="#2E3A59"/>
 
                     <TextView
-                        android:id="@+id/tvNombre"
+                        android:id="@+id/tvIdG"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=""
@@ -92,13 +92,13 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Apellido"
+                        android:text="Nombre"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="#2E3A59"/>
 
                     <TextView
-                        android:id="@+id/tvApellido"
+                        android:id="@+id/tvNombre"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=""

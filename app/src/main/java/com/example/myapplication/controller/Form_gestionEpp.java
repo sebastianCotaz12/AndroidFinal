@@ -52,8 +52,16 @@ public class Form_gestionEpp extends AppCompatActivity {
         binding.etIdUsuario.setText(String.valueOf(prefsManager.getIdUsuario()));
         binding.etIdUsuario.setEnabled(false);
 
-        binding.etArea.setText(prefsManager.getNombreArea());
-        binding.etArea.setEnabled(false);
+        // Mostrar datos automáticos
+        String nombreArea = prefsManager.getNombreArea();
+        int idArea = prefsManager.getIdArea();
+
+        if (nombreArea != null && idArea != -1) {
+            binding.etArea.setText(nombreArea);
+        } else {
+            binding.etArea.setText("Área no asignada");
+        }
+
 
         // === Campos manuales ===
         binding.etCargo.setEnabled(true);
@@ -141,5 +149,6 @@ public class Form_gestionEpp extends AppCompatActivity {
             }
         });
     }
+
 
 }

@@ -1,14 +1,18 @@
 package com.example.myapplication.controller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.myapplication.R;
+
 import java.util.List;
 
 public class Adapter_gestionEpp extends RecyclerView.Adapter<Adapter_gestionEpp.ViewHolder> {
@@ -31,14 +35,34 @@ public class Adapter_gestionEpp extends RecyclerView.Adapter<Adapter_gestionEpp.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item_gestionEpp item = lista.get(position);
-        holder.txtNombre.setText("Cédula: " + item.getCedula() + " - " + item.getEstado());
+
+        // Texto visible en la lista
+        holder.txtNombre.setText("Cédula: " + item.getCedula() +
+                " | Estado: " + item.getEstado() +
+                " | Fecha: " + item.getFecha_creacion());
+
+        // Evento botón detalles
         holder.btnDetalles.setOnClickListener(v -> {
-            // Aquí puedes abrir un detalle o mostrar más info si lo deseas
+            Intent intent = new Intent(context, Detalles_gestionEPP.class);
+            intent.putExtra("id", item.getId());
+            intent.putExtra("cedula", item.getCedula());
+            intent.putExtra("importancia", item.getImportancia());
+            intent.putExtra("estado", item.getEstado());
+            intent.putExtra("fecha_creacion", item.getFecha_creacion());
+            intent.putExtra("productos", item.getProductos());
+            intent.putExtra("cargo", item.getCargo());
+            intent.putExtra("area", item.getArea());
+            intent.putExtra("cantidad", item.getCantidad());
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         });
     }
 
     @Override
-    public int getItemCount() { return lista.size(); }
+    public int getItemCount() {
+        return lista.size();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtNombre;
