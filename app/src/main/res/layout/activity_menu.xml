@@ -45,48 +45,74 @@
 
     </LinearLayout>
 
-    <!-- Encabezado con bienvenida -->
+
+
+    <!-- Encabezado con bienvenida (versión compacta y moderna, sin archivos externos) -->
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:background="#F5F5F5">
+        android:padding="12dp"
+        android:layout_margin="8dp"
+        android:background="#FAFAFA"
+        android:elevation="2dp"
+        android:clipToOutline="true"
+        android:gravity="center_vertical"
+        android:backgroundTint="#FAFAFA">
 
+        <!-- Texto de bienvenida -->
         <TextView
             android:id="@+id/tvBienvenida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bienvenido, Usuario"
+            android:text="👋 Bienvenido, Usuario"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
 
+        <!-- Empresa -->
         <TextView
             android:id="@+id/tvEmpresa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Empresa: -"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="4dp" />
+            android:text="🏢 Empresa: -"
+            android:textColor="#424242"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="sans-serif" />
 
+        <!-- Área -->
         <TextView
             android:id="@+id/tvArea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Área: -"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="2dp" />
+            android:text="📍 Área: -"
+            android:textColor="#424242"
+            android:textSize="14sp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif" />
 
+        <!-- Botón cerrar sesión -->
         <Button
             android:id="@+id/btnCerrarSesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cerrar Sesión"
-            android:backgroundTint="#FF3D00"
+            android:text="Cerrar sesión"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="6dp"
             android:textColor="@android:color/white"
-            android:layout_marginTop="10dp" />
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
+            android:backgroundTint="#D32F2F"
+            android:elevation="1dp" />
     </LinearLayout>
+
+
+
 
     <!-- Título -->
     <TextView

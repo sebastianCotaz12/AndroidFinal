@@ -53,6 +53,7 @@ public class Menu extends AppCompatActivity {
             startActivity(intent);
         });
 
+
         btnReportes.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, Lista_reportes.class);
             startActivity(intent);

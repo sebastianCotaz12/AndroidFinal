@@ -1,20 +1,16 @@
 package com.example.myapplication.controller;
 
-
-import com.example.myapplication.controller.Area;
-import com.example.myapplication.controller.Empresa;
 import com.google.gson.annotations.SerializedName;
 
 public class Usuario {
+
+    @SerializedName("id")
     private int id;
 
-    @SerializedName("idEmpresa")
-    private int idEmpresa;
-
-    @SerializedName("idArea")
-    private int idArea;
-
+    @SerializedName("nombre")
     private String nombre;
+
+    @SerializedName("apellido")
     private String apellido;
 
     @SerializedName("nombreUsuario")
@@ -23,10 +19,14 @@ public class Usuario {
     @SerializedName("correoElectronico")
     private String correoElectronico;
 
+    @SerializedName("cargo")
     private String cargo;
-    private String contrasena;
-    private String createdAt;
-    private String updatedAt;
+
+    @SerializedName("idEmpresa")
+    private int idEmpresa;
+
+    @SerializedName("idArea")
+    private int idArea;
 
     @SerializedName("empresa")
     private Empresa empresa;
@@ -34,19 +34,24 @@ public class Usuario {
     @SerializedName("area")
     private Area area;
 
-    // getters...
-    public int getId(){return id;}
-    public int getIdEmpresa(){return idEmpresa;}
-    public int getIdArea(){return idArea;}
-    public String getNombre(){return nombre;}
-    public String getApellido(){return apellido;}
-    public String getNombreUsuario(){return nombreUsuario;}
-    public String getCorreoElectronico(){return correoElectronico;}
-    public String getCargo(){return cargo;}
-    public String getContrasena(){return contrasena;}
-    public String getCreatedAt(){return createdAt;}
-    public String getUpdatedAt(){return updatedAt;}
-    public Empresa getEmpresa(){return empresa;}
-    public Area getArea(){return area;}
-}
+    // Getters básicos
+    public int getId() { return id; }
+    public String getNombre() { return nombre; }
+    public String getApellido() { return apellido; }
+    public String getNombreUsuario() { return nombreUsuario; }
+    public String getCorreoElectronico() { return correoElectronico; }
+    public String getCargo() { return cargo; }
+    public int getIdEmpresa() { return idEmpresa; }
+    public int getIdArea() { return idArea; }
+    public Empresa getEmpresa() { return empresa; }
+    public Area getArea() { return area; }
 
+    // 🔹 Getters para nombres de empresa y área
+    public String getNombreEmpresa() {
+        return empresa != null ? empresa.getNombre() : null;
+    }
+    public String getNombreArea() {
+        return area != null ? area.getNombre() : null;
+    }
+
+}

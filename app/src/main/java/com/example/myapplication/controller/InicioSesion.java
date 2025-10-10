@@ -77,20 +77,21 @@ public class InicioSesion extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
 
-                    // Guardar token y datos del usuario en PrefsManager
-                    prefsManager.setToken(loginResponse.getToken());
-                    prefsManager.setIdUsuario(loginResponse.getUser().getId());
-                    prefsManager.setNombreUsuario(loginResponse.getUser().getNombre());
-                    prefsManager.setIdEmpresa(loginResponse.getUser().getIdEmpresa());
-                    prefsManager.setIdArea(loginResponse.getUser().getIdArea());
-                    prefsManager.setNombreEmpresa(loginResponse.getUser().getNombreEmpresa());
-                    prefsManager.setNombreArea(loginResponse.getUser().getNombreArea());
-                    prefsManager.setCargo(loginResponse.getUser().getCargo());
+                    Usuario user = loginResponse.getUser();
 
-                    Toast.makeText(InicioSesion.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+                    // Guardar datos del usuario
+                    prefsManager.setToken(loginResponse.getToken());
+                    prefsManager.setIdUsuario(user.getId());
+                    prefsManager.setNombreUsuario(user.getNombreUsuario());
+                    prefsManager.setIdEmpresa(user.getIdEmpresa());
+                    prefsManager.setIdArea(user.getIdArea());
+                    prefsManager.setNombreEmpresa(user.getNombreEmpresa());
+                    prefsManager.setNombreArea(user.getNombreArea());
+                    prefsManager.setCargo(user.getCargo());
 
                     irAlMenu();
-                } else {
+                }
+                else {
                     Toast.makeText(InicioSesion.this, "Credenciales incorrectas o error del servidor", Toast.LENGTH_SHORT).show();
                 }
             }
