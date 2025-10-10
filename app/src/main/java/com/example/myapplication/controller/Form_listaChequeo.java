@@ -79,10 +79,14 @@ public class Form_listaChequeo extends AppCompatActivity {
         String soat = getRadioValue(binding.rbSoatSi, binding.rbSoatNo);
         String tecnico = getRadioValue(binding.rbTecnicoSi, binding.rbTecnicoNo);
 
+        // 🔹 Nuevos campos agregados
+        String placa = binding.etPlaca.getText().toString().trim();
+        String observaciones = binding.etObservaciones.getText().toString().trim();
+
         // --- Validación de campos ---
-        if (fecha.isEmpty() || hora.isEmpty() || modelo.isEmpty() ||
-                marca.isEmpty() || kilometraje.isEmpty() || soat == null || tecnico == null) {
-            Toast.makeText(this, "⚠️ Por favor completa todos los campos.", Toast.LENGTH_LONG).show();
+        if (fecha.isEmpty() || hora.isEmpty() || modelo.isEmpty() || marca.isEmpty() ||
+                kilometraje.isEmpty() || placa.isEmpty() || soat == null || tecnico == null) {
+            Toast.makeText(this, "⚠️ Por favor completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -97,6 +101,8 @@ public class Form_listaChequeo extends AppCompatActivity {
         nuevaLista.setKilometraje(kilometraje);
         nuevaLista.setSoat(soat);
         nuevaLista.setTecnico(tecnico);
+        nuevaLista.setPlaca(placa);
+        nuevaLista.setObservaciones(observaciones);
 
         // --- Cliente API con token de sesión ---
         ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
@@ -107,11 +113,11 @@ public class Form_listaChequeo extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponse<Crear_listaChequeo>> call, Response<ApiResponse<Crear_listaChequeo>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(Form_listaChequeo.this, "✅ Guardado: " + response.body().getMsj(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Form_listaChequeo.this, "✅ Guardado correctamente.", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Form_listaChequeo.this, Lista_listaChequeo.class));
                     finish();
                 } else {
-                    Toast.makeText(Form_listaChequeo.this, "⚠️ Error: No se pudo guardar.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_listaChequeo.this, "⚠️ Error al guardar la lista.", Toast.LENGTH_LONG).show();
                 }
             }
 

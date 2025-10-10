@@ -31,10 +31,17 @@ public class Crear_listaChequeo {
     @SerializedName("kilometraje")
     private String kilometraje;
 
+    // 🔹 Nuevos campos agregados
+    @SerializedName("placa")
+    private String placa;
+
+    @SerializedName("observaciones")
+    private String observaciones;
+
 
     public Crear_listaChequeo(int idUsuario, String usuarioNombre, String fecha, String hora,
                               String modelo, String marca, String soat, String tecnico,
-                              String kilometraje) {
+                              String kilometraje, String placa, String observaciones) {
         this.idUsuario = idUsuario;
         this.usuarioNombre = usuarioNombre;
         this.fecha = fecha;
@@ -44,6 +51,8 @@ public class Crear_listaChequeo {
         this.soat = soat;
         this.tecnico = tecnico;
         this.kilometraje = kilometraje;
+        this.placa = placa;
+        this.observaciones = observaciones;
     }
 
     public Crear_listaChequeo() {
@@ -123,6 +132,22 @@ public class Crear_listaChequeo {
         this.kilometraje = kilometraje;
     }
 
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
     @Override
     public String toString() {
         return "ListaChequeo{" +
@@ -135,6 +160,8 @@ public class Crear_listaChequeo {
                 ", soat='" + soat + '\'' +
                 ", tecnico='" + tecnico + '\'' +
                 ", kilometraje='" + kilometraje + '\'' +
+                ", placa='" + placa + '\'' +
+                ", observaciones='" + observaciones + '\'' +
                 '}';
     }
 }
