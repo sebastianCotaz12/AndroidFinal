@@ -2,7 +2,7 @@ package com.example.myapplication.controller;
 
 public class ItemReporte {
 
-    private int id;
+    private int idReporte;
     private String nombreUsuario;
     private String cargo;
     private String cedula;
@@ -13,10 +13,10 @@ public class ItemReporte {
     private String archivos;
     private String estado;
 
-    public ItemReporte(int id, String nombreUsuario, String cargo, String cedula,
+    public ItemReporte(int idReporte, String nombreUsuario, String cargo, String cedula,
                        String fecha, String lugar, String descripcion,
                        String imagen, String archivos, String estado) {
-        this.id = id;
+        this.idReporte = idReporte;
         this.nombreUsuario = nombreUsuario;
         this.cargo = cargo;
         this.cedula = cedula;
@@ -28,8 +28,7 @@ public class ItemReporte {
         this.estado = estado;
     }
 
-    // Getters y Setters
-    public int getId() { return id; }
+    public int getIdReporte() { return idReporte; }
     public String getNombreUsuario() { return nombreUsuario; }
     public String getCargo() { return cargo; }
     public String getCedula() { return cedula; }
@@ -40,7 +39,7 @@ public class ItemReporte {
     public String getArchivos() { return archivos; }
     public String getEstado() { return estado; }
 
-    public void setId(int id) { this.id = id; }
+    public void setIdReporte(int idReporte) { this.idReporte = idReporte; }
     public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
     public void setCargo(String cargo) { this.cargo = cargo; }
     public void setCedula(String cedula) { this.cedula = cedula; }

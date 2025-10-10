@@ -23,6 +23,8 @@ import com.example.myapplication.utils.PrefsManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class Lista_reportes extends AppCompatActivity {
     private List<ItemReporte> listaReportes = new ArrayList<>();
     private PrefsManager prefsManager;
 
-    private final String URL_API = "https://backsst.onrender.com/listarReportes";
+    private final String URL_API = "https://backsst.onrender.com/listarUsu";
 
     private final ActivityResultLauncher<Intent> formLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -50,24 +52,20 @@ public class Lista_reportes extends AppCompatActivity {
 
         prefsManager = new PrefsManager(this);
 
-        // Ajuste márgenes sistema
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // RecyclerView
         RecyclerView recyclerView = binding.recyclerViewListaReportes;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new ListaReportesAdapter(this, listaReportes);
         recyclerView.setAdapter(adapter);
 
-        // Cargar reportes
         obtenerReportes();
 
-        // Botón crear nuevo reporte
         binding.imgButtonCrearreporte.setOnClickListener(v -> {
             Intent intent = new Intent(Lista_reportes.this, Form_reportes.class);
             formLauncher.launch(intent);
@@ -77,27 +75,45 @@ public class Lista_reportes extends AppCompatActivity {
     private void obtenerReportes() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String token = prefsManager.getToken();
-
         if (token == null || token.isEmpty()) {
-            Toast.makeText(this, "⚠️ Debes iniciar sesión primero", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "⚠ Debes iniciar sesión primero", Toast.LENGTH_LONG).show();
             return;
+        }
+
+        int page = 1;
+        int perPage = 20;
+        String q = "";
+        String estado = "";
+
+        String url = URL_API + "?page=" + page + "&perPage=" + perPage;
+        try {
+            if (!q.isEmpty()) url += "&q=" + URLEncoder.encode(q, "UTF-8");
+            if (!estado.isEmpty()) url += "&estado=" + URLEncoder.encode(estado, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                URL_API,
+                url,
                 null,
                 response -> {
                     try {
-                        JSONArray datos = response.getJSONArray("datos");
+                        JSONObject meta = response.getJSONObject("meta");
+                        JSONArray datos = response.getJSONArray("data");
                         listaReportes.clear();
 
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
+
+
+                            String cargoRaw = obj.getString("cargo");
+                            String cargoLimpio = cargoRaw.replace("{", "").replace("}", "").replace("\"", "");
+
                             ItemReporte item = new ItemReporte(
                                     obj.getInt("idReporte"),
                                     obj.getString("nombreUsuario"),
-                                    obj.getString("cargo"),
+                                    cargoLimpio,
                                     obj.getString("cedula"),
                                     obj.getString("fecha"),
                                     obj.getString("lugar"),
@@ -107,6 +123,7 @@ public class Lista_reportes extends AppCompatActivity {
                                     obj.optString("estado")
                             );
                             listaReportes.add(item);
+
                         }
 
                         adapter.notifyDataSetChanged();

@@ -47,7 +47,7 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
             Intent intent = new Intent(context, Detalles_reportes.class);
 
             // Pasamos los datos al intent
-            intent.putExtra("id", item.getId());
+            intent.putExtra("id", item.getIdReporte());
             intent.putExtra("nombre_usuario", item.getNombreUsuario());
             intent.putExtra("cargo", item.getCargo());
             intent.putExtra("cedula", item.getCedula());

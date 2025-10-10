@@ -31,9 +31,8 @@ public class ListaReportesAdapter extends RecyclerView.Adapter<ListaReportesAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Asegúrate de usar el nombre del layout que realmente tienes.
-        // En tu código usabas "activity_item_reportes" — lo mantenemos.
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_item_reportes, parent, false);
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.activity_item_reportes, parent, false);
         return new ViewHolder(view);
     }
 
@@ -41,29 +40,26 @@ public class ListaReportesAdapter extends RecyclerView.Adapter<ListaReportesAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemReporte reporte = listaReportes.get(position);
 
-        // Rellenar vistas (si un campo es null, ponemos cadena vacía para evitar NPE)
-        holder.txtNombre.setText(reporte.getNombreUsuario() != null ? reporte.getNombreUsuario() : "");
-        holder.txtFecha.setText(reporte.getFecha() != null ? reporte.getFecha() : "");
+        holder.txtNombre.setText(
+                reporte.getNombreUsuario() != null
+                        ? reporte.getNombreUsuario()
+                        : ""
+        );
+        holder.txtFecha.setText(
+                reporte.getFecha() != null
+                        ? reporte.getFecha()
+                        : ""
+        );
 
-        // Detalles -> abre Detalles_reportes (asegúrate que esa Activity exista)
+        // Click para ver detalles (solo enviamos el ID)
         holder.btnDetalles.setOnClickListener(v -> {
             Intent intent = new Intent(context, Detalles_reportes.class);
-            intent.putExtra("id", reporte.getId());
-            intent.putExtra("nombre_usuario", reporte.getNombreUsuario());
-            intent.putExtra("cargo", reporte.getCargo());
-            intent.putExtra("cedula", reporte.getCedula());
-            intent.putExtra("fecha", reporte.getFecha());
-            intent.putExtra("lugar", reporte.getLugar());
-            intent.putExtra("descripcion", reporte.getDescripcion());
-            intent.putExtra("imagen", reporte.getImagen());
-            intent.putExtra("archivos", reporte.getArchivos());
-            intent.putExtra("estado", reporte.getEstado());
-            // Si llamas desde un Context que no es Activity, esto evita crash
+            intent.putExtra("reporte_id", reporte.getIdReporte());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
 
-        // Descargar -> abrir URL si existe
+        // Botón Descargar archivo
         holder.btnDownload.setOnClickListener(v -> {
             String url = reporte.getArchivos();
             if (url != null && !url.trim().isEmpty()) {
@@ -72,10 +68,18 @@ public class ListaReportesAdapter extends RecyclerView.Adapter<ListaReportesAdap
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                 } catch (Exception e) {
-                    Toast.makeText(context, "No se pudo abrir el archivo.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            context,
+                            "No se pudo abrir el archivo.",
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
             } else {
-                Toast.makeText(context, "No hay archivo disponible para descargar.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        context,
+                        "No hay archivo disponible para descargar.",
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         });
     }
@@ -85,17 +89,15 @@ public class ListaReportesAdapter extends RecyclerView.Adapter<ListaReportesAdap
         return listaReportes != null ? listaReportes.size() : 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNombre;
-        TextView txtFecha;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtNombre, txtFecha;
         Button btnDetalles;
         ImageButton btnDownload;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Los IDs deben coincidir exactamente con los del XML que pegaste
-            txtNombre = itemView.findViewById(R.id.txtNombre);
-            txtFecha = itemView.findViewById(R.id.txtFecha);
+            txtNombre   = itemView.findViewById(R.id.txtNombre);
+            txtFecha    = itemView.findViewById(R.id.txtFecha);
             btnDetalles = itemView.findViewById(R.id.btnDetalles);
             btnDownload = itemView.findViewById(R.id.btnDownload);
         }
