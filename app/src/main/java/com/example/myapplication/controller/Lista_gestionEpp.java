@@ -4,19 +4,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.Request;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.PrefsManager;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Date;
 
 public class Lista_gestionEpp extends AppCompatActivity {
 
@@ -30,7 +40,7 @@ public class Lista_gestionEpp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_gestion_epp); // ✅ CORRECTO
+        setContentView(R.layout.activity_lista_gestion_epp);
 
         prefsManager = new PrefsManager(this);
         recyclerView = findViewById(R.id.recyclerViewListaChequeo);
@@ -56,8 +66,8 @@ public class Lista_gestionEpp extends AppCompatActivity {
             return;
         }
 
-        com.android.volley.toolbox.JsonObjectRequest request = new com.android.volley.toolbox.JsonObjectRequest(
-                com.android.volley.Request.Method.GET,
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
                 URL_API,
                 null,
                 response -> {
@@ -67,17 +77,53 @@ public class Lista_gestionEpp extends AppCompatActivity {
 
                         for (int i = 0; i < datosArray.length(); i++) {
                             JSONObject obj = datosArray.getJSONObject(i);
+
+                            // --- Extraer productos (solo nombres) ---
+                            JSONArray productosArray = obj.optJSONArray("productos");
+                            StringBuilder productosNombres = new StringBuilder();
+                            if (productosArray != null) {
+                                for (int j = 0; j < productosArray.length(); j++) {
+                                    JSONObject prod = productosArray.getJSONObject(j);
+                                    String nombreProd = prod.optString("nombre", "Desconocido");
+                                    if (j > 0) productosNombres.append(", ");
+                                    productosNombres.append(nombreProd);
+                                }
+                            }
+
+                            // --- Extraer área ---
+                            String nombreArea = "Sin área";
+                            JSONObject areaObj = obj.optJSONObject("area");
+                            if (areaObj != null) {
+                                nombreArea = areaObj.optString("nombre", "Sin área");
+                            }
+
+                            // --- Extraer y formatear fecha ---
+                            String fechaRaw = obj.optString("createdAt", null);
+                            String fechaFormateada = "Sin fecha";
+                            if (fechaRaw != null && !fechaRaw.equals("null")) {
+                                fechaFormateada = formatearFecha(fechaRaw);
+                            }
+
+                            // --- Estado lógico (boolean a texto) ---
+                            boolean estadoBool = obj.optBoolean("estado", false);
+                            String estadoTexto = estadoBool ? "Activo" : "Inactivo";
+
+                            // --- Extraer cargo (solo ID disponible) ---
+                            String cargo = "ID: " + obj.optInt("idCargo", 0);
+
+                            // --- Crear el ítem ---
                             Item_gestionEpp item = new Item_gestionEpp(
                                     obj.getInt("id"),
                                     obj.optString("cedula", "Sin cédula"),
                                     obj.optString("importancia", "N/A"),
-                                    obj.optString("estado", "N/A"),
-                                    obj.optString("fecha_creacion", "Sin fecha"),
-                                    obj.optString("productos", "Sin productos"),
-                                    obj.optString("cargo", "Sin cargo"),
-                                    obj.optString("area", "Sin área"),
+                                    estadoTexto,
+                                    fechaFormateada,
+                                    productosNombres.toString(),
+                                    cargo,
+                                    nombreArea,
                                     obj.optInt("cantidad", 0)
                             );
+
                             lista.add(item);
                         }
 
@@ -98,5 +144,17 @@ public class Lista_gestionEpp extends AppCompatActivity {
         };
 
         queue.add(request);
+    }
+
+    // 🔹 Método auxiliar para convertir fecha ISO a formato legible
+    private String formatearFecha(String fechaIso) {
+        try {
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault());
+            Date fecha = formatoEntrada.parse(fechaIso);
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            return formatoSalida.format(fecha);
+        } catch (ParseException e) {
+            return "Sin fecha";
+        }
     }
 }

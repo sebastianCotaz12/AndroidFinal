@@ -31,6 +31,8 @@ public class Form_gestionEpp extends AppCompatActivity {
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
 
+    private int areaUsuario; // 🔹 Variable global para el id del área
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,16 +54,15 @@ public class Form_gestionEpp extends AppCompatActivity {
         binding.etIdUsuario.setText(String.valueOf(prefsManager.getIdUsuario()));
         binding.etIdUsuario.setEnabled(false);
 
-        // Mostrar datos automáticos
+        // Área automática
+        areaUsuario = prefsManager.getIdArea();
         String nombreArea = prefsManager.getNombreArea();
-        int idArea = prefsManager.getIdArea();
-
-        if (nombreArea != null && idArea != -1) {
+        if (nombreArea != null && areaUsuario != -1) {
             binding.etArea.setText(nombreArea);
         } else {
             binding.etArea.setText("Área no asignada");
         }
-
+        binding.etArea.setEnabled(false); // No editable
 
         // === Campos manuales ===
         binding.etCargo.setEnabled(true);
@@ -118,13 +119,14 @@ public class Form_gestionEpp extends AppCompatActivity {
         int cantidad = Integer.parseInt(cantidadStr);
         int[] productos = {Integer.parseInt(productosStr)};
 
+        // ✅ Usar idArea dinámico del usuario logueado
         Crear_gestionEpp gestion = new Crear_gestionEpp(
                 cedula,
-                Integer.parseInt(cargo),   // si el cargo es un número, si no, lo puedes ajustar
+                Integer.parseInt(cargo),
                 importancia,
                 estado,
                 cantidad,
-                3, // ejemplo: id_area fijo o obtenido de prefsManager
+                areaUsuario,
                 productos
         );
 
@@ -149,6 +151,4 @@ public class Form_gestionEpp extends AppCompatActivity {
             }
         });
     }
-
-
 }

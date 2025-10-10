@@ -1,5 +1,6 @@
 package com.example.myapplication.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -29,28 +30,22 @@ public class Detalles_gestionEPP extends AppCompatActivity {
         tvCantidad = findViewById(R.id.tvCantidad);
 
         // Obtener los datos del Intent
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            int id = extras.getInt("id");
-            String cedula = extras.getString("cedula");
-            String importancia = extras.getString("importancia");
-            String estado = extras.getString("estado");
-            String fecha = extras.getString("fecha_creacion");
-            String productos = extras.getString("productos");
-            String cargo = extras.getString("cargo");
-            String area = extras.getString("area");
-            int cantidad = extras.getInt("cantidad");
+        Intent intent = getIntent();
 
-            // Mostrar los datos en los TextView
-            tvId.setText("ID: " + id);
-            tvCedula.setText("Cédula: " + cedula);
-            tvImportancia.setText("Importancia: " + importancia);
-            tvEstado.setText("Estado: " + estado);
-            tvFechaCreacion.setText("Fecha de creación: " + fecha);
-            tvProductos.setText("Productos: " + productos);
-            tvCargo.setText("Cargo: " + cargo);
-            tvArea.setText("Área: " + area);
-            tvCantidad.setText("Cantidad: " + cantidad);
-        }
+        tvId.setText("ID: " + getExtra(intent, "id"));
+        tvCedula.setText("Cédula: " + getExtra(intent, "cedula"));
+        tvImportancia.setText("Importancia: " + getExtra(intent, "importancia"));
+        tvEstado.setText("Estado: " + getExtra(intent, "estado"));
+        tvFechaCreacion.setText("Fecha de creación: " + getExtra(intent, "fecha_creacion"));
+        tvProductos.setText("Productos: " + getExtra(intent, "productos"));
+        tvCargo.setText("Cargo: " + getExtra(intent, "cargo"));
+        tvArea.setText("Área: " + getExtra(intent, "area"));
+        tvCantidad.setText("Cantidad: " + getExtra(intent, "cantidad"));
+    }
+
+    // Helper para evitar valores nulos
+    private String getExtra(Intent intent, String key) {
+        String value = intent.getStringExtra(key);
+        return value != null ? value : "No disponible";
     }
 }
