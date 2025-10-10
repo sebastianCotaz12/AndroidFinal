@@ -207,6 +207,39 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- 🔹 NUEVO CAMPO: Placa -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Placa"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:id="@+id/tvPlaca"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- SOAT -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -222,7 +255,6 @@
                     android:padding="16dp">
 
                     <TextView
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="SOAT"
@@ -256,7 +288,6 @@
                     android:padding="16dp">
 
                     <TextView
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Técnico"
@@ -279,6 +310,39 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kilometraje"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="#2E3A59"/>
+
+                    <TextView
+                        android:id="@+id/tvKilometraje"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="#6C7A92"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 🔹 NUEVO CAMPO: Observaciones -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="60dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
@@ -290,16 +354,15 @@
                     android:padding="16dp">
 
                     <TextView
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Kilometraje"
+                        android:text="Observaciones"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="#2E3A59"/>
 
                     <TextView
-                        android:id="@+id/tvKilometraje"
+                        android:id="@+id/tvObservaciones"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=""

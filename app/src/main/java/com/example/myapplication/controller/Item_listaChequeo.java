@@ -10,8 +10,12 @@ public class Item_listaChequeo {
     private String soat;
     private String tecnico;
     private String kilometraje;
+    private String placa; // 🔹 Nuevo campo
+    private String observaciones; // 🔹 Nuevo campo
 
-    public Item_listaChequeo(String nombre, String fecha, String hora, String modelo, String marca, String soat, String tecnico, String kilometraje) {
+    public Item_listaChequeo(String nombre, String fecha, String hora, String modelo, String marca,
+                             String soat, String tecnico, String kilometraje,
+                             String placa, String observaciones) { // 🔹 Constructor actualizado
         this.nombre = nombre;
         this.fecha = fecha;
         this.hora = hora;
@@ -20,6 +24,8 @@ public class Item_listaChequeo {
         this.soat = soat;
         this.tecnico = tecnico;
         this.kilometraje = kilometraje;
+        this.placa = placa;
+        this.observaciones = observaciones;
     }
 
     public String getNombre() {
@@ -52,5 +58,13 @@ public class Item_listaChequeo {
 
     public String getKilometraje() {
         return kilometraje;
+    }
+
+    public String getPlaca() { // 🔹 Getter nuevo
+        return placa;
+    }
+
+    public String getObservaciones() { // 🔹 Getter nuevo
+        return observaciones;
     }
 }

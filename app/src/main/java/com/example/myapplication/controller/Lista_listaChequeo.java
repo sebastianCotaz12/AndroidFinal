@@ -109,6 +109,7 @@ public class Lista_listaChequeo extends AppCompatActivity {
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
 
+                            // 🔹 Crear el objeto con los nuevos campos
                             Item_listaChequeo item = new Item_listaChequeo(
                                     obj.optString("usuarioNombre", "N/A"),
                                     obj.optString("fecha", "Sin fecha"),
@@ -117,8 +118,11 @@ public class Lista_listaChequeo extends AppCompatActivity {
                                     obj.optString("marca", "Sin marca"),
                                     obj.optString("soat", "N/A"),
                                     obj.optString("tecnico", "N/A"),
-                                    obj.optString("kilometraje", "0")
+                                    obj.optString("kilometraje", "0"),
+                                    obj.optString("placa", "Sin placa"),
+                                    obj.optString("observaciones", "Sin observaciones")
                             );
+
                             listaChequeos.add(item);
                         }
 

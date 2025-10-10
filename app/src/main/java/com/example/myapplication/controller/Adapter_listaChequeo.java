@@ -49,6 +49,9 @@ public class Adapter_listaChequeo extends RecyclerView.Adapter<Adapter_listaCheq
             intent.putExtra("soat", item.getSoat());
             intent.putExtra("tecnico", item.getTecnico());
             intent.putExtra("kilometraje", item.getKilometraje());
+            intent.putExtra("placa", item.getPlaca());
+            intent.putExtra("observaciones", item.getObservaciones());
+
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // necesario si el context no es una activity
             context.startActivity(intent);
