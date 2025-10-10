@@ -40,6 +40,7 @@ public class Form_gestionEpp extends AppCompatActivity {
         prefsManager = new PrefsManager(this);
         sesionManager = new SesionManager(this);
 
+        // === Validar sesión activa ===
         if (!sesionManager.haySesionActiva()) {
             Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
@@ -47,13 +48,18 @@ public class Form_gestionEpp extends AppCompatActivity {
             return;
         }
 
-        binding.etCargo.setText(prefsManager.getNombreArea());
-        binding.etCargo.setEnabled(false);
+        // === Llenar campos automáticos visibles ===
+        binding.etIdUsuario.setText(String.valueOf(prefsManager.getIdUsuario()));
+        binding.etIdUsuario.setEnabled(false);
 
-        binding.etCedula.setText(String.valueOf(prefsManager.getIdUsuario()));
-        binding.etCedula.setEnabled(false);
+        binding.etArea.setText(prefsManager.getNombreArea());
+        binding.etArea.setEnabled(false);
 
-        // Spinners
+        // === Campos manuales ===
+        binding.etCargo.setEnabled(true);
+        binding.etCedula.setEnabled(true);
+
+        // === Configurar spinners ===
         String[] importancia = {"Alta", "Media", "Baja"};
         ArrayAdapter<String> adapterImp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, importancia);
         binding.spImportancia.setAdapter(adapterImp);
@@ -62,7 +68,10 @@ public class Form_gestionEpp extends AppCompatActivity {
         ArrayAdapter<String> adapterEst = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, estados);
         binding.spEstado.setAdapter(adapterEst);
 
+        // === Fecha ===
         binding.etFechaEntrega.setOnClickListener(v -> abrirDatePicker());
+
+        // === Botón enviar ===
         binding.btnEnviarGestion.setOnClickListener(v -> guardarGestion());
     }
 
@@ -86,32 +95,38 @@ public class Form_gestionEpp extends AppCompatActivity {
     }
 
     private void guardarGestion() {
-        String fecha = binding.etFechaEntrega.getText().toString().trim();
-        String cantidad = binding.etCantidad.getText().toString().trim();
-        String productos = binding.etProductos.getText().toString().trim();
+        String cedula = binding.etCedula.getText().toString().trim();
+        String cargo = binding.etCargo.getText().toString().trim();
+        String importancia = binding.spImportancia.getSelectedItem().toString();
+        String estado = binding.spEstado.getSelectedItem().toString();
+        String cantidadStr = binding.etCantidad.getText().toString().trim();
+        String productosStr = binding.etProductos.getText().toString().trim();
 
-        if (fecha.isEmpty() || cantidad.isEmpty() || productos.isEmpty()) {
+        if (cedula.isEmpty() || cargo.isEmpty() || cantidadStr.isEmpty() || productosStr.isEmpty()) {
             Toast.makeText(this, "⚠️ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        ApiService api = ApiClient.getClient(prefsManager).create(ApiService.class);
-        Call<ApiResponse<Crear_gestionEpp>> call = api.crearGestionEpp(
-                createPart(String.valueOf(prefsManager.getIdUsuario())),
-                createPart(String.valueOf(prefsManager.getIdEmpresa())),
-                createPart(prefsManager.getNombreUsuario()),
-                createPart(prefsManager.getNombreArea()),
-                createPart(binding.etCedula.getText().toString()),
-                createPart(fecha),
-                createPart(productos),
-                createPart("Entrega de EPP"),
-                createPart(binding.spEstado.getSelectedItem().toString())
+        int cantidad = Integer.parseInt(cantidadStr);
+        int[] productos = {Integer.parseInt(productosStr)};
+
+        Crear_gestionEpp gestion = new Crear_gestionEpp(
+                cedula,
+                Integer.parseInt(cargo),   // si el cargo es un número, si no, lo puedes ajustar
+                importancia,
+                estado,
+                cantidad,
+                3, // ejemplo: id_area fijo o obtenido de prefsManager
+                productos
         );
+
+        ApiService api = ApiClient.getClient(prefsManager).create(ApiService.class);
+        Call<ApiResponse<Crear_gestionEpp>> call = api.crearGestionEpp(gestion);
 
         call.enqueue(new Callback<ApiResponse<Crear_gestionEpp>>() {
             @Override
             public void onResponse(Call<ApiResponse<Crear_gestionEpp>> call, Response<ApiResponse<Crear_gestionEpp>> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     Toast.makeText(Form_gestionEpp.this, "✅ Gestión creada correctamente", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
@@ -126,4 +141,5 @@ public class Form_gestionEpp extends AppCompatActivity {
             }
         });
     }
+
 }

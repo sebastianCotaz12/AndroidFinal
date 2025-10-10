@@ -36,19 +36,9 @@ public interface ApiService {
     Call<List<Crear_listaChequeo>> getListasChequeo();
 
     // GESTIÓN EPP (sin imágenes)
-    @Multipart
+
     @POST("crearGestion")
-    Call<ApiResponse<Crear_gestionEpp>> crearGestionEpp(
-            @Part("id_usuario") RequestBody idUsuario,
-            @Part("id_empresa") RequestBody idEmpresa,
-            @Part("nombre_usuario") RequestBody nombreUsuario,
-            @Part("cargo") RequestBody cargo,
-            @Part("cedula") RequestBody cedula,
-            @Part("fecha_entrega") RequestBody fechaEntrega,
-            @Part("elemento_epp") RequestBody elementoEpp,
-            @Part("descripcion") RequestBody descripcion,
-            @Part("estado") RequestBody estado
-    );
+    Call<ApiResponse<Crear_gestionEpp>> crearGestionEpp(@Body Crear_gestionEpp gestionEpp);
 
     @GET("listarGestiones")
     Call<List<Crear_gestionEpp>> getGestiones();
