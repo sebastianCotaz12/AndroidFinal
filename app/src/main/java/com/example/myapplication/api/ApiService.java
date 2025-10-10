@@ -88,7 +88,7 @@ public interface ApiService {
     Call<ApiResponse<Object>> crearActividadBase64(
             @Field("id_usuario") int idUsuario,
             @Field("nombre_actividad") String nombreActividad,
-            @Field("fecha") String fecha,
+            @Field("fecha_actividad") String fechaActividad, // ← CAMBIO AQUÍ
             @Field("descripcion") String descripcion,
             @Field("imagen") String imagenBase64,
             @Field("extension") String extension

@@ -12,8 +12,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.PrefsManager;
@@ -33,7 +34,7 @@ public class Lista_actLudicas extends AppCompatActivity {
     private List<Item_actLudicas> lista = new ArrayList<>();
     private PrefsManager prefsManager;
 
-    private final String URL_API = "https://backsst.onrender.com/listarActividadesLudicas";
+    private final String URL_API = "https://backsst.onrender.com/listarActis";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +49,16 @@ public class Lista_actLudicas extends AppCompatActivity {
         adapter = new Adapter_actLudica(this, lista);
         recyclerView.setAdapter(adapter);
 
-        // Ajuste márgenes del sistema
         ViewCompat.setOnApplyWindowInsetsListener(recyclerView, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // --- Botón Crear nueva actividad ---
         ImageButton btnCrear = findViewById(R.id.imgButton_crearlista);
         btnCrear.setOnClickListener(v -> {
             Intent intent = new Intent(Lista_actLudicas.this, Form_actLudicas.class);
-            startActivity(intent); // Aquí reemplazamos crearLauncher
+            startActivity(intent);
         });
 
         obtenerActividades();
@@ -74,13 +73,16 @@ public class Lista_actLudicas extends AppCompatActivity {
             return;
         }
 
-        JsonArrayRequest request = new JsonArrayRequest(
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
                 URL_API,
+                null,
                 response -> {
                     try {
                         lista.clear();
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject obj = response.getJSONObject(i);
+                        JSONArray datos = response.getJSONArray("data");
+                        for (int i = 0; i < datos.length(); i++) {
+                            JSONObject obj = datos.getJSONObject(i);
                             Item_actLudicas item = new Item_actLudicas(
                                     obj.getInt("id"),
                                     obj.getString("nombreUsuario"),
@@ -93,7 +95,7 @@ public class Lista_actLudicas extends AppCompatActivity {
                         }
                         adapter.notifyDataSetChanged();
                     } catch (Exception e) {
-                        Toast.makeText(Lista_actLudicas.this, "Error parseando datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Error parseando datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 },
                 error -> Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show()
@@ -101,9 +103,7 @@ public class Lista_actLudicas extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                if (token != null) {
-                    headers.put("Authorization", "Bearer " + token);
-                }
+                headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
         };
