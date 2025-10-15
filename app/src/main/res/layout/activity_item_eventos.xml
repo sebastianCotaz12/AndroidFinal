@@ -11,47 +11,54 @@
     android:outlineProvider="background"
     android:foreground="?android:attr/selectableItemBackground">
 
-    <!-- Miniatura de la actividad -->
+    <!-- Imagen o miniatura del evento -->
     <ImageView
         android:id="@+id/imgMiniatura"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginEnd="12dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
-        android:contentDescription="Miniatura actividad" />
+        android:src="@drawable/placeholder_image"
+        android:contentDescription="Imagen del evento" />
 
-    <!-- Contenedor de texto y botones -->
+    <!-- Contenedor de textos y botones -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <!-- Nombre y fecha -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- Nombre del evento -->
+        <TextView
+            android:id="@+id/txtTituloEvento"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Título del evento"
+            android:textColor="#212121"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
-            <TextView
-                android:id="@+id/txtTituloEvento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre Evento"
-                android:textColor="#212121"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+        <!-- Nombre del usuario -->
+        <TextView
+            android:id="@+id/txtNombreUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Por: Usuario"
+            android:textColor="#424242"
+            android:textSize="14sp"
+            android:layout_marginTop="2dp" />
 
-            <TextView
-                android:id="@+id/txtFechaEvento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="01 Sept 2025"
-                android:textColor="#616161"
-                android:textSize="13sp"
-                android:layout_marginTop="2dp"/>
-        </LinearLayout>
+        <!-- Fecha del evento -->
+        <TextView
+            android:id="@+id/txtFechaEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15 Oct 2025"
+            android:textColor="#616161"
+            android:textSize="13sp"
+            android:layout_marginTop="2dp" />
 
         <!-- Botones -->
         <LinearLayout
@@ -79,7 +86,7 @@
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/stat_sys_download_done"
                 android:tint="#F44336"
-                android:contentDescription="Descargar" />
+                android:contentDescription="Descargar archivo" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

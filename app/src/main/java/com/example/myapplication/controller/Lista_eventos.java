@@ -1,4 +1,3 @@
-
 package com.example.myapplication.controller;
 
 import android.annotation.SuppressLint;
@@ -32,10 +31,11 @@ public class Lista_eventos extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Adapter_eventos adapter;
-    private List<Item_eventos> lista = new ArrayList<>();
+    private final List<Item_eventos> lista = new ArrayList<>();
     private PrefsManager prefsManager;
 
-    private final String URL_API = "https://backsst.onrender.com/listarblog";
+    // URL del backend (ajústala si es necesario)
+    private static final String URL_API = "https://backsst.onrender.com/eventos";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -51,20 +51,21 @@ public class Lista_eventos extends AppCompatActivity {
         adapter = new Adapter_eventos(this, lista);
         recyclerView.setAdapter(adapter);
 
-        // Ajuste márgenes del sistema
+        // Ajuste de márgenes del sistema
         ViewCompat.setOnApplyWindowInsetsListener(recyclerView, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // --- Botón Crear nueva actividad ---
+        // Botón para crear un nuevo evento
         ImageButton btnCrear = findViewById(R.id.imgButton_crearlista);
         btnCrear.setOnClickListener(v -> {
             Intent intent = new Intent(Lista_eventos.this, Form_eventos.class);
-            startActivity(intent); // Aquí reemplazamos crearLauncher
+            startActivity(intent);
         });
 
+        // Cargar lista de eventos
         obtenerEventos();
     }
 
@@ -84,27 +85,44 @@ public class Lista_eventos extends AppCompatActivity {
                         lista.clear();
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject obj = response.getJSONObject(i);
+
+                            // Obtener campos del modelo "Eventos"
+                            int id = obj.getInt("id");
+                            int idUsuario = obj.optInt("id_usuario");
+                            String nombreUsuario = obj.optString("nombre_usuario", "Sin nombre");
+                            String titulo = obj.optString("titulo", "Sin título");
+                            String fechaActividad = obj.optString("fecha_actividad", "");
+                            String descripcion = obj.optString("descripcion", "");
+                            String imagen = obj.optString("imagen", "");
+                            String archivo = obj.optString("archivo", "");
+                            int idEmpresa = obj.optInt("id_empresa");
+
+                            // Crear objeto para el RecyclerView
                             Item_eventos item = new Item_eventos(
-                                    obj.getString("tituloEvento"),
-                                    obj.getString("fechaEvento"),
-                                    obj.getString("descripcionEvento"),
-                                    obj.optString("adjuntarEvento")
+                                    id,
+                                    idUsuario,
+                                    nombreUsuario,
+                                    titulo,
+                                    fechaActividad,
+                                    descripcion,
+                                    imagen,
+                                    archivo,
+                                    idEmpresa
                             );
+
                             lista.add(item);
                         }
                         adapter.notifyDataSetChanged();
                     } catch (Exception e) {
-                        Toast.makeText(Lista_eventos.this, "Error parseando datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Error al procesar datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 },
-                error -> Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show()
+                error -> Toast.makeText(this, "Error al obtener eventos: " + error.getMessage(), Toast.LENGTH_LONG).show()
         ) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                if (token != null) {
-                    headers.put("Authorization", "Bearer " + token);
-                }
+                headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
         };
