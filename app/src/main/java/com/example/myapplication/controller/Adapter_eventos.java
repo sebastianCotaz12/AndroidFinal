@@ -94,7 +94,7 @@ public class Adapter_eventos extends RecyclerView.Adapter<Adapter_eventos.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgMiniatura = itemView.findViewById(R.id.imgMiniatura);
+            imgMiniatura = itemView.findViewById(R.id.imgPoster);
             txtTituloEvento = itemView.findViewById(R.id.txtTituloEvento);
             txtFechaEvento = itemView.findViewById(R.id.txtFechaEvento);
             txtNombreUsuario = itemView.findViewById(R.id.txtNombreUsuario);

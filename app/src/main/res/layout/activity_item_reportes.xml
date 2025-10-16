@@ -1,83 +1,95 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="12dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="14dp"
-    android:background="@android:drawable/dialog_holo_light_frame"
-    android:elevation="8dp"
-    android:clipToOutline="true"
-    android:outlineProvider="background"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
-    <!-- Encabezado -->
-    <LinearLayout
+
+
+    <!-- CONTENEDOR SCROLL PARA LOS REPORTES -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp">
+        android:layout_height="match_parent"
+        android:padding="12dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtNombre"
-                android:layout_width="wrap_content"
+            <!-- PRIMER RECUADRO DE REPORTE -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Juan Pérez"
-                android:textColor="#212121"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_margin="12dp"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:background="@drawable/gradient_background"
+                android:clipToOutline="true"
+                android:outlineProvider="background"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/txtFecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="01 Sept 2025, 10:45 AM"
-                android:textColor="#616161"
-                android:textSize="13sp" />
+                <!-- Imagen del reporte -->
+                <ImageView
+                    android:id="@+id/imgPoster"
+                    android:layout_width="80dp"
+                    android:layout_height="110dp"
+                    android:layout_marginEnd="12dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/reportes"
+                    android:contentDescription="Imagen del reporte" />
+
+                <!-- Contenedor de texto y botón -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtNombre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Juan Pérez"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtFecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="01 Sept 2025, 10:45 AM"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="4dp" />
+
+                    <Button
+                        android:id="@+id/btnDetalles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="6dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="Detalles"
+                        android:textAllCaps="false"
+                        android:backgroundTint="@color/white"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Botón de descarga -->
+                <ImageButton
+                    android:id="@+id/btnDownload"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@android:color/transparent"
+                    android:padding="6dp"
+                    android:scaleType="centerInside"
+                    android:src="@android:drawable/stat_sys_download_done"
+                    android:tint="@color/white"
+                    android:contentDescription="Descargar" />
+            </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Línea divisoria -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E0E0E0"
-        android:layout_marginVertical="8dp"/>
-
-    <!-- Botones -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end">
-
-        <Button
-            android:id="@+id/btnDetalles"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginEnd="12dp"
-            android:backgroundTint="#2196F3"
-            android:text="Detalles"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:paddingHorizontal="18dp"
-            android:elevation="3dp" />
-
-        <ImageButton
-            android:id="@+id/btnDownload"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:background="@android:color/transparent"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:src="@android:drawable/stat_sys_download_done"
-            android:tint="#F44336"
-            android:contentDescription="Descargar" />
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

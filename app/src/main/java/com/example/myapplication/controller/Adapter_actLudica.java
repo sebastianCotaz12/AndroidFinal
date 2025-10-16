@@ -88,7 +88,7 @@ public class Adapter_actLudica extends RecyclerView.Adapter<Adapter_actLudica.Vi
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgMiniatura = itemView.findViewById(R.id.imgMiniatura);
+            imgMiniatura = itemView.findViewById(R.id.imgPoster);
             txtNombre = itemView.findViewById(R.id.txtNombre);
             txtFecha = itemView.findViewById(R.id.txtFecha);
             btnDetalles = itemView.findViewById(R.id.btnDetalles);

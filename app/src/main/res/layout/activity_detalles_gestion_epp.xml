@@ -3,355 +3,362 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F9FC">
+    android:background="#F4F8FC">
 
+    <!-- ENCABEZADO CON DEGRADADO AZUL -->
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/gradient_background"
+        android:elevation="6dp"
+        android:paddingTop="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalle Gestión EPP"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+    </LinearLayout>
+
+    <!-- CONTENIDO SCROLLABLE -->
     <ScrollView
+        android:layout_below="@id/header"
+        android:layout_above="@+id/fab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:layout_above="@+id/fab">
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
 
-            <!-- Encabezado -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:background="@android:drawable/screen_background_dark_transparent"
-                android:backgroundTintMode="src_in"
-                android:backgroundTint="@android:color/holo_blue_dark"
-                android:layout_marginBottom="20dp"
-                android:elevation="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Detalle Gestión EPP"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:letterSpacing="0.05"
-                    android:shadowColor="#66000000"
-                    android:shadowDx="2"
-                    android:shadowDy="2"
-                    android:shadowRadius="4"/>
-            </LinearLayout>
-
-            <!-- Nombre -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Id Usuario -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="14dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Id Usuario"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvIdG"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
-            <!-- Apellido -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Nombre -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="14dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Nombre"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvNombre"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Cédula -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="14dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Cédula"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvCedula"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Cargo -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="14dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Cargo"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvCargo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Productos -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="14dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Productos"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvProductos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Cantidad -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="14dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Cantidad"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvCantidad"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Importancia -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="14dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Importancia"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvImportancia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Estado -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
+                android:layout_marginBottom="14dp"
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Estado"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvEstado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Fecha Creación -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardCornerRadius="14dp"
+                app:cardUseCompatPadding="true"
                 android:layout_marginBottom="60dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                android:backgroundTint="#FFFFFF"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Fecha de Creación"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="#2E3A59"/>
+                        android:textSize="17sp"
+                        android:textColor="#0D47A1" />
 
                     <TextView
                         android:id="@+id/tvFechaCreacion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="14sp"
-                        android:textColor="#6C7A92"
-                        android:layout_marginTop="4dp"/>
+                        android:textColor="#455A64"
+                        android:textSize="15sp"
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón flotante -->
+    <!-- BOTÓN FLOTANTE -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
-        android:contentDescription="Editar"
-        app:backgroundTint="@android:color/holo_blue_dark"
+        android:layout_margin="24dp"
+        app:backgroundTint="#2196F3"
         app:tint="@android:color/white"
-        app:srcCompat="@android:drawable/ic_menu_edit"/>
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:elevation="10dp" />
 </RelativeLayout>
