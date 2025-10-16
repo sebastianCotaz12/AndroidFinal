@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="300dp"
+    android:height="300dp"
+    android:viewportWidth="300"
+    android:viewportHeight="300">
+
+    <!-- Patrón de puntos circulares -->
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M50,50a5,5 0 1,0 10,0a5,5 0 1,0 -10,0z"/>
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M150,80a3,3 0 1,0 6,0a3,3 0 1,0 -6,0z"/>
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M250,120a4,4 0 1,0 8,0a4,4 0 1,0 -8,0z"/>
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M80,180a6,6 0 1,0 12,0a6,6 0 1,0 -12,0z"/>
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M200,220a3,3 0 1,0 6,0a3,3 0 1,0 -6,0z"/>
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M120,260a5,5 0 1,0 10,0a5,5 0 1,0 -10,0z"/>
+    <path
+        android:fillColor="#80FFFFFF"
+        android:pathData="M280,280a4,4 0 1,0 8,0a4,4 0 1,0 -8,0z"/>
+
+</vector>

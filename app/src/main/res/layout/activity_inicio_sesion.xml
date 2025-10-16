@@ -1,103 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img"
-    android:padding="24dp"
+    android:background="@drawable/gradient_background"
     tools:context=".controller.InicioSesion">
 
-    <!-- Fondo semitransparente -->
+    <!-- Fondo animado con partículas -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background_particles"
+        android:scaleType="centerCrop" />
+
+    <!-- Capa de overlay con gradiente -->
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#80000000" />
+        android:background="@drawable/overlay_gradient" />
 
-    <!-- Contenido del login -->
-    <LinearLayout
+    <!-- Logo flotante con animación -->
+    <ImageView
+        android:id="@+id/imgUser"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@mipmap/logo"
+        android:elevation="16dp"
+        android:background="@drawable/logo_background"
+        android:padding="8dp" />
+
+    <!-- Tarjeta de login -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_centerInParent="true"
-        android:padding="20dp">
+        android:layout_margin="32dp"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="20dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardPreventCornerOverlap="true">
 
-        <!-- Icono de usuario -->
-        <ImageView
-            android:id="@+id/imgUser"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:src="@mipmap/logo"
-            android:layout_marginBottom="30dp" />
-
-        <!-- Usuario -->
-        <EditText
-            android:id="@+id/edtUsername"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
-            android:background="@android:drawable/edit_text"
-            android:hint="Correo"
-            android:inputType="text"
-            android:padding="10dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#BDBDBD" />
-
-        <!-- Contraseña -->
-        <EditText
-            android:id="@+id/edtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:background="@android:drawable/edit_text"
-            android:padding="10dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#BDBDBD"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Botón -->
-        <Button
-            android:id="@+id/btnSignIn"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:text="Iniciar Sesión"
-            android:backgroundTint="#3F7DFA"
-            android:textColor="@android:color/white"
-            android:textAllCaps="false"
-            android:layout_marginBottom="20dp" />
-
-        <!-- Olvidó contraseña -->
-        <TextView
-            android:id="@+id/txtForgot"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¿Olvidó su contraseña?"
-            android:textColor="#BDBDBD"
-            android:textSize="14sp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="12dp" />
+            android:orientation="vertical"
+            android:padding="40dp"
+            android:gravity="center">
 
-        <!-- Registrarse -->
-        <TextView
-            android:id="@+id/txtRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Registrarse"
-            android:textColor="#3F7DFA"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:layout_gravity="center" />
+            <!-- Título -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bienvenido"
+                android:textColor="#2C3E50"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicia sesión en tu cuenta"
+                android:textColor="#7F8C8D"
+                android:textSize="16sp"
+                android:layout_marginBottom="40dp" />
 
-    <!-- 🔹 ProgressBar centrado -->
-    <ProgressBar
+            <!-- Campo Email -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxStrokeColor="#3498DB"
+                app:boxBackgroundColor="#F8F9FA"
+                app:startIconDrawable="@drawable/ic_email"
+                app:startIconTint="#3498DB"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:hint="Correo electrónico"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#2C3E50"
+                    android:textSize="16sp"
+                    android:padding="16dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo Contraseña -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxStrokeColor="#3498DB"
+                app:boxBackgroundColor="#F8F9FA"
+                app:startIconDrawable="@drawable/ic_password"
+                app:startIconTint="#3498DB"
+                app:endIconMode="password_toggle"
+                app:endIconTint="#3498DB"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:textColor="#2C3E50"
+                    android:textSize="16sp"
+                    android:padding="16dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Recordar contraseña -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbRemember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recordar sesión"
+                    android:textColor="#7F8C8D"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:id="@+id/txtForgot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="¿Olvidó contraseña?"
+                    android:textColor="#3498DB"
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <!-- Botón de login -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Iniciar Sesión"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_login"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                android:backgroundTint="#3498DB"
+                app:elevation="8dp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Registro -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¿No tienes una cuenta?"
+                    android:textColor="#7F8C8D"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txtRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Regístrate ahora"
+                    android:textColor="#3498DB"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- ProgressBar personalizado -->
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_centerInParent="true"
         android:visibility="gone"
-        android:indeterminate="true" />
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/loading_animation" />
+
+    <!-- Versión de la app -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:text="v1.0.0"
+        android:textColor="#BDC3C7"
+        android:textSize="12sp" />
 
 </RelativeLayout>
