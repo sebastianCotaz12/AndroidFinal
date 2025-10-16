@@ -9,10 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 import com.example.myapplication.utils.PrefsManager;
+import com.google.android.material.card.MaterialCardView;
 
 public class Menu extends AppCompatActivity {
 
-    Button btnGestionEpp, btnReportes, btnAct, btnListaChequeo, btnBlog, btnAsesoramiento, btnCerrarSesion;
+    // Cambiar botones por MaterialCardView
+    MaterialCardView cardGestionEpp, cardReportes, cardActividades, cardListaChequeo,
+            cardBlog, cardAsesoramiento, cardCapacitacion, cardDocumentacion;
+    Button btnCerrarSesion;
     TextView tvBienvenida, tvEmpresa, tvArea;
 
     @Override
@@ -23,19 +27,19 @@ public class Menu extends AppCompatActivity {
         // Inicializamos PrefsManager
         PrefsManager prefsManager = new PrefsManager(this);
 
-        // Referencias de botones
-        btnGestionEpp     = findViewById(R.id.btn_GestionEpp);
-        btnReportes       = findViewById(R.id.btn_Reportes);
-        btnAct            = findViewById(R.id.btn_Act);
-        btnListaChequeo   = findViewById(R.id.btn_ListaChequeo);
-        btnBlog           = findViewById(R.id.btn_Blog);
-        btnAsesoramiento  = findViewById(R.id.btn_Asesoramiento);
-        btnCerrarSesion   = findViewById(R.id.btnCerrarSesion);
+        // Referencias de cards (reemplazan a los botones)
+        cardGestionEpp = findViewById(R.id.card_gestion_epp);
+        cardReportes = findViewById(R.id.card_reportes);
+        cardActividades = findViewById(R.id.card_actividades);
+        cardListaChequeo = findViewById(R.id.card_lista_chequeo);
+        cardBlog = findViewById(R.id.card_blog);
+        cardAsesoramiento = findViewById(R.id.card_asesoramiento);
 
-        // Referencias de textos para encabezado
+        // Referencias de botones y textos
+        btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
         tvBienvenida = findViewById(R.id.tvBienvenida);
-        tvEmpresa    = findViewById(R.id.tvEmpresa);
-        tvArea       = findViewById(R.id.tvArea);
+        tvEmpresa = findViewById(R.id.tvEmpresa);
+        tvArea = findViewById(R.id.tvArea);
 
         // Recuperamos datos del usuario logueado
         String nombreUsuario = prefsManager.getNombreUsuario();
@@ -47,35 +51,40 @@ public class Menu extends AppCompatActivity {
         tvEmpresa.setText("Empresa: " + (empresa != null ? empresa : "N/A"));
         tvArea.setText("Área: " + (area != null ? area : "N/A"));
 
-        // --- NAVEGACIONES ---
-        btnGestionEpp.setOnClickListener(v -> {
+        // --- EVENTOS CLICK PARA CARDS ---
+        cardGestionEpp.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, Lista_gestionEpp.class);
             startActivity(intent);
         });
 
-
-        btnReportes.setOnClickListener(v -> {
+        cardReportes.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, Lista_reportes.class);
             startActivity(intent);
         });
 
-        btnAct.setOnClickListener(v -> {
+        cardActividades.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, Lista_actLudicas.class);
             startActivity(intent);
         });
 
-        btnListaChequeo.setOnClickListener(v -> {
+        cardListaChequeo.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, Lista_listaChequeo.class);
             startActivity(intent);
         });
 
-        btnBlog.setOnClickListener(v -> {
+        cardBlog.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, Lista_eventos.class);
             startActivity(intent);
         });
 
+        cardAsesoramiento.setOnClickListener(v -> {
+            // Agregar la actividad correspondiente para asesoramiento
+            // Intent intent = new Intent(Menu.this, AsesoramientoActivity.class);
+            // startActivity(intent);
+        });
 
-        // --- BOTÓN CERRAR SESIÓN ---
+
+        // --- BOTÓN CERRAR SESIÓN (MANTENIDO) ---
         btnCerrarSesion.setOnClickListener(v -> {
             // Limpiar los datos del usuario guardados en las preferencias
             prefsManager.clearPrefs();
