@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "832016707859",
+    "project_id": "saludseguridadtrabajo-87b4d",
+    "storage_bucket": "saludseguridadtrabajo-87b4d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832016707859:android:46c2213396d83471dbaae6",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxMWxpcpSwixmoDbx5-QnFozuRY0mFuTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

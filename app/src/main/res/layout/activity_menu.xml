@@ -42,12 +42,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
-
     </LinearLayout>
 
-
-
-    <!-- Encabezado con bienvenida (versión compacta y moderna, sin archivos externos) -->
+    <!-- Encabezado con bienvenida -->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -61,7 +58,6 @@
         android:gravity="center_vertical"
         android:backgroundTint="#FAFAFA">
 
-        <!-- Texto de bienvenida -->
         <TextView
             android:id="@+id/tvBienvenida"
             android:layout_width="wrap_content"
@@ -72,7 +68,6 @@
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium" />
 
-        <!-- Empresa -->
         <TextView
             android:id="@+id/tvEmpresa"
             android:layout_width="wrap_content"
@@ -83,7 +78,6 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif" />
 
-        <!-- Área -->
         <TextView
             android:id="@+id/tvArea"
             android:layout_width="wrap_content"
@@ -94,7 +88,6 @@
             android:layout_marginTop="2dp"
             android:fontFamily="sans-serif" />
 
-        <!-- Botón cerrar sesión -->
         <Button
             android:id="@+id/btnCerrarSesion"
             android:layout_width="wrap_content"
@@ -110,9 +103,6 @@
             android:backgroundTint="#D32F2F"
             android:elevation="1dp" />
     </LinearLayout>
-
-
-
 
     <!-- Título -->
     <TextView
@@ -161,7 +151,6 @@
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Menú de opciones -->
-    <!-- Menú de opciones -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -174,7 +163,9 @@
             android:layout_marginTop="16dp"
             android:alignmentMode="alignMargins"
             android:columnCount="2"
-            android:useDefaultMargins="true"> <!-- Gestión EPP -->
+            android:useDefaultMargins="true">
+
+            <!-- Gestión EPP -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -209,7 +200,9 @@
                         app:icon="@android:drawable/ic_menu_manage"
                         app:iconTint="@android:color/white" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView> <!-- Reportes -->
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Reportes -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -244,7 +237,9 @@
                         app:icon="@android:drawable/ic_menu_agenda"
                         app:iconTint="@android:color/white" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView> <!-- Actividades Lúdicas -->
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Actividades Lúdicas -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -279,7 +274,9 @@
                         app:icon="@android:drawable/ic_menu_edit"
                         app:iconTint="@android:color/white" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView> <!-- Lista de Chequeo -->
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Lista de Chequeo -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -314,7 +311,9 @@
                         app:icon="@android:drawable/ic_menu_view"
                         app:iconTint="@android:color/white" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView> <!-- Blog -->
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Blog -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -349,7 +348,9 @@
                         app:icon="@android:drawable/ic_menu_info_details"
                         app:iconTint="@android:color/white" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView> <!-- Asesoramiento -->
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Asesoramiento -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
