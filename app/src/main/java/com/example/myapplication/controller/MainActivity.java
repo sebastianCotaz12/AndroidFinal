@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -20,46 +22,76 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 🔹 Referencias de vista
         ImageView logo = findViewById(R.id.imginicio);
-        Button btnInicio = findViewById(R.id.btninicio);
+        Button btnInicio = findViewById(R.id.btnStart);
 
-        // 🔹 Animación Logo (fade + scale)
-        Animation animLogo = new AlphaAnimation(0f, 1f);
-        animLogo.setDuration(1000);
+        // ---------------------------
+        // 🔹 ANIMACIÓN DEL LOGO
+        // ---------------------------
+        // Fade in suave
+        AlphaAnimation fadeIn = new AlphaAnimation(0f, 1f);
+        fadeIn.setDuration(1200);
+        fadeIn.setInterpolator(new DecelerateInterpolator());
 
-        Animation scaleLogo = new ScaleAnimation(
-                0.7f, 1.0f, // X
-                0.7f, 1.0f, // Y
-                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot X
-                Animation.RELATIVE_TO_SELF, 0.5f  // Pivot Y
+        // Zoom-in elegante
+        ScaleAnimation scaleUp = new ScaleAnimation(
+                0.7f, 1f,
+                0.7f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
         );
-        scaleLogo.setDuration(1000);
+        scaleUp.setDuration(1200);
+        scaleUp.setInterpolator(new DecelerateInterpolator());
 
-        logo.startAnimation(animLogo);
-        logo.startAnimation(scaleLogo);
+        // Combinar fade + scale
+        AnimationSet logoAnimSet = new AnimationSet(true);
+        logoAnimSet.addAnimation(fadeIn);
+        logoAnimSet.addAnimation(scaleUp);
+        logoAnimSet.setFillAfter(true);
+        logo.startAnimation(logoAnimSet);
 
-        // 🔹 Animación Botón (slide-up + fade)
-        Animation animBtn = new TranslateAnimation(
+        // ---------------------------
+        // 🔹 ANIMACIÓN DEL BOTÓN
+        // ---------------------------
+        // Deslizamiento desde abajo
+        TranslateAnimation slideUp = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, 1f,
                 Animation.RELATIVE_TO_SELF, 0f
         );
-        animBtn.setDuration(800);
-        animBtn.setStartOffset(1000);
+        slideUp.setDuration(900);
+        slideUp.setInterpolator(new DecelerateInterpolator());
+        slideUp.setStartOffset(1000); // comienza después del logo
 
-        Animation fadeBtn = new AlphaAnimation(0f, 1f);
-        fadeBtn.setDuration(800);
-        fadeBtn.setStartOffset(1000);
+        // Aparición gradual
+        AlphaAnimation fadeButton = new AlphaAnimation(0f, 1f);
+        fadeButton.setDuration(900);
+        fadeButton.setStartOffset(1000);
+        fadeButton.setInterpolator(new DecelerateInterpolator());
 
-        btnInicio.startAnimation(animBtn);
-        btnInicio.startAnimation(fadeBtn);
+        // Combinar ambas animaciones
+        AnimationSet btnAnimSet = new AnimationSet(true);
+        btnAnimSet.addAnimation(slideUp);
+        btnAnimSet.addAnimation(fadeButton);
+        btnAnimSet.setFillAfter(true);
+        btnInicio.startAnimation(btnAnimSet);
 
-        // 🔹 Evento click → Ir al login (inicioSesion)
+        // ---------------------------
+        // 🔹 EVENTO CLICK → LOGIN
+        // ---------------------------
         btnInicio.setOnClickListener(v -> {
+            btnInicio.startAnimation(new ScaleAnimation(
+                    1f, 0.95f,
+                    1f, 0.95f,
+                    Animation.RELATIVE_TO_SELF, 0.5f,
+                    Animation.RELATIVE_TO_SELF, 0.5f
+            ));
             Intent intent = new Intent(MainActivity.this, InicioSesion.class);
             startActivity(intent);
-            finish(); // cerrar MainActivity para que no regrese
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out); // transición suave
+            finish();
         });
     }
 }

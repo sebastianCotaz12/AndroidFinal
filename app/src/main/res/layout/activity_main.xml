@@ -1,78 +1,312 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/img"
-    android:padding="24dp"
+    android:background="#F9FAFB"
     tools:context=".controller.MainActivity">
 
-    <!-- Fondo con overlay oscuro para contraste -->
+    <!-- Fondo superior con gradiente -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#B3000000" /> <!-- negro más opaco -->
+        android:layout_height="380dp"
+        android:background="@drawable/header_gradient_dark"
+        android:elevation="3dp" />
 
-    <!-- Contenido centrado -->
+    <!-- Logo y título -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_centerInParent="true"
-        android:padding="20dp">
+        android:gravity="center">
 
-        <!-- Texto de bienvenida -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            app:cardCornerRadius="65dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardElevation="10dp"
+            app:strokeColor="#90CAF9"
+            app:strokeWidth="1dp">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/logo"
+                android:tint="#1565C0" />
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
-            android:id="@+id/tvBienvenida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="BIENVENIDO"
-            android:textSize="22sp"
+            android:text="SafeWork"
+            android:textSize="34sp"
             android:textStyle="bold"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="8dp" />
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:letterSpacing="0.04"/>
 
-
-
-        <!-- Subtítulo motivador -->
         <TextView
-            android:id="@+id/tvSubtitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="La mejor experiencia a un clic de distancia"
-            android:textSize="16sp"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:layout_marginBottom="30dp" />
-
-        <!-- Logo -->
-        <ImageView
-            android:id="@+id/imginicio"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:src="@mipmap/logo"
-            android:contentDescription="Logo"
-            android:layout_marginBottom="30dp" />
-
-        <!-- Botón principal SIN archivos externos -->
-        <Button
-            android:id="@+id/btninicio"
-            android:layout_width="240dp"
-            android:layout_height="60dp"
-            android:text="Comencemos"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-medium"
-            android:textAllCaps="false"
-            android:elevation="8dp"
-            android:padding="12dp"
-            android:backgroundTint="#3F7DFA"
-            android:clipToOutline="true" />
-
+            android:text="Sistema SST"
+            android:textSize="18sp"
+            android:textColor="#E3F2FD"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
+
+    <!-- Tarjeta inferior -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottomCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:strokeColor="#E3F2FD"
+        app:strokeWidth="1dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="28dp"
+                android:gravity="center">
+
+                <!-- Icono central -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="-70dp"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="50dp"
+                    app:cardBackgroundColor="#E3F2FD"
+                    app:cardElevation="8dp">
+
+                    <ImageView
+                        android:id="@+id/imginicio"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/logo"
+                        android:tint="#1976D2" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Títulos -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sistema Integral de"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A237E"
+                    android:gravity="center"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seguridad Laboral"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A237E"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- Descripción -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Implementa y gestiona protocolos de seguridad para proteger a tu equipo y cumplir con normativas vigentes."
+                    android:textSize="15sp"
+                    android:textColor="#455A64"
+                    android:gravity="center"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_marginBottom="28dp" />
+
+                <!-- Línea divisoria -->
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="3dp"
+                    android:background="#BBDEFB"
+                    android:layout_marginBottom="28dp"
+                    android:alpha="0.5" />
+
+                <!-- Sección de características -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <!-- Prevención -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:cardCornerRadius="30dp"
+                            app:cardBackgroundColor="#E8F5E9"
+                            app:cardElevation="4dp"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_check_circle"
+                                android:tint="#2E7D32" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Prevención"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A237E"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="de Riesgos"
+                            android:textSize="13sp"
+                            android:textColor="#1A237E"
+                            android:gravity="center" />
+                    </LinearLayout>
+
+                    <!-- Gestión -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:cardCornerRadius="30dp"
+                            app:cardBackgroundColor="#E3F2FD"
+                            app:cardElevation="4dp"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_clock"
+                                android:tint="#1565C0" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gestión"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A237E"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Eficiente"
+                            android:textSize="13sp"
+                            android:textColor="#1A237E"
+                            android:gravity="center" />
+                    </LinearLayout>
+
+                    <!-- Normativa -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:cardCornerRadius="30dp"
+                            app:cardBackgroundColor="#FFF3E0"
+                            app:cardElevation="4dp"
+                            android:layout_marginBottom="10dp">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_verified"
+                                android:tint="#EF6C00" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Normativa"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#1A237E"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Certificada"
+                            android:textSize="13sp"
+                            android:textColor="#1A237E"
+                            android:gravity="center" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Botón principal -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Comenzar Ahora"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_shield"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    android:backgroundTint="#1565C0"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginBottom="12dp"
+                    app:elevation="6dp" />
+
+                <!-- Texto secundario -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tu seguridad es nuestra prioridad"
+                    android:textSize="12sp"
+                    android:textColor="#78909C"
+                    android:gravity="center" />
+
+            </LinearLayout>
+        </ScrollView>
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>
