@@ -7,65 +7,19 @@
     android:background="#F9FAFB"
     tools:context=".controller.MainActivity">
 
-    <!-- Fondo superior con gradiente -->
     <View
         android:layout_width="match_parent"
         android:layout_height="380dp"
         android:background="@drawable/header_gradient_dark"
         android:elevation="3dp" />
 
-    <!-- Logo y título -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:orientation="vertical"
-        android:gravity="center">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            app:cardCornerRadius="65dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardElevation="10dp"
-            app:strokeColor="#90CAF9"
-            app:strokeWidth="1dp">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:src="@mipmap/logo"
-                android:tint="#1565C0" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SafeWork"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_marginTop="20dp"
-            android:letterSpacing="0.04"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sistema SST"
-            android:textSize="18sp"
-            android:textColor="#E3F2FD"
-            android:layout_marginTop="4dp" />
-    </LinearLayout>
-
-    <!-- Tarjeta inferior -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottomCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="260dp"
         app:cardCornerRadius="32dp"
         app:cardElevation="10dp"
         app:cardBackgroundColor="@color/white"
@@ -85,11 +39,9 @@
                 android:padding="28dp"
                 android:gravity="center">
 
-                <!-- Icono central -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginTop="-70dp"
                     android:layout_marginBottom="16dp"
                     app:cardCornerRadius="50dp"
                     app:cardBackgroundColor="#E3F2FD"
@@ -104,7 +56,6 @@
                         android:tint="#1976D2" />
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Títulos -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,7 +76,6 @@
                     android:gravity="center"
                     android:layout_marginBottom="20dp" />
 
-                <!-- Descripción -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,7 +86,6 @@
                     android:lineSpacingExtra="6dp"
                     android:layout_marginBottom="28dp" />
 
-                <!-- Línea divisoria -->
                 <View
                     android:layout_width="120dp"
                     android:layout_height="3dp"
@@ -144,14 +93,12 @@
                     android:layout_marginBottom="28dp"
                     android:alpha="0.5" />
 
-                <!-- Sección de características -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center">
 
-                    <!-- Prevención -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -193,7 +140,6 @@
                             android:gravity="center" />
                     </LinearLayout>
 
-                    <!-- Gestión -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -235,7 +181,6 @@
                             android:gravity="center" />
                     </LinearLayout>
 
-                    <!-- Normativa -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -278,7 +223,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Botón principal -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnStart"
                     android:layout_width="match_parent"
@@ -296,7 +240,6 @@
                     android:layout_marginBottom="12dp"
                     app:elevation="6dp" />
 
-                <!-- Texto secundario -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

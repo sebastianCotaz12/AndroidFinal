@@ -18,7 +18,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/overlay_gradient" />
+        android:background="@drawable/header_gradient_dark" />
 
     <!-- Logo flotante con animación -->
     <ImageView
