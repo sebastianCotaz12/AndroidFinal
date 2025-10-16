@@ -1,7 +1,9 @@
 package com.example.myapplication.controller;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,33 +14,59 @@ import com.example.myapplication.R;
 
 public class Detalles_eventos extends AppCompatActivity {
 
-    TextView tvUsuario, tvTituloEvento, tvFechaEventos, tvDescripcionEventos;
-    ImageView ivEvidencia;
+    private ImageView imgEventoDetalle;
+    private TextView tvTituloEventoDetalle, tvFechaEventoDetalle, tvUsuarioEventoDetalle, tvDescripcionEventoDetalle;
+    private Button btnAbrirArchivo, btnVolver;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalles_act_ludicas);
+        setContentView(R.layout.activity_detalles_eventos);
 
-        tvUsuario = findViewById(R.id.tvUsuario);
-        tvTituloEvento= findViewById(R.id.txtTituloEvento);
-        tvFechaEventos = findViewById(R.id.tvFechaEvento);
-        tvDescripcionEventos = findViewById(R.id.tvDescripcion);
-        ivEvidencia = findViewById(R.id.ivEvidencia);
+        // Enlazar vistas
+        imgEventoDetalle = findViewById(R.id.imgEventoDetalle);
+        tvTituloEventoDetalle = findViewById(R.id.tvTituloEventoDetalle);
+        tvFechaEventoDetalle = findViewById(R.id.tvFechaEventoDetalle);
+        tvUsuarioEventoDetalle = findViewById(R.id.tvUsuarioEventoDetalle);
+        tvDescripcionEventoDetalle = findViewById(R.id.tvDescripcionEventoDetalle);
+        btnAbrirArchivo = findViewById(R.id.btnAbrirArchivo);
+        btnVolver = findViewById(R.id.btnVolver);
 
-        tvUsuario.setText(getIntent().getStringExtra("usuario"));
-        tvTituloEvento.setText(getIntent().getStringExtra("Titulo"));
-        tvFechaEventos.setText(getIntent().getStringExtra("fecha"));
-        tvDescripcionEventos.setText(getIntent().getStringExtra("descripcion"));
+        // Obtener datos del Intent
+        Intent intent = getIntent();
+        String titulo = intent.getStringExtra("titulo");
+        String fecha = intent.getStringExtra("fecha");
+        String descripcion = intent.getStringExtra("descripcion");
+        String imagen = intent.getStringExtra("imagen");
+        String archivo = intent.getStringExtra("archivo");
+        String nombreUsuario = intent.getStringExtra("nombre_usuario");
 
-        String adjuntarEventos = getIntent().getStringExtra("adjuntarEventos");
-        if (adjuntarEventos != null && !adjuntarEventos.isEmpty()) {
+        // Asignar valores
+        tvTituloEventoDetalle.setText(titulo);
+        tvFechaEventoDetalle.setText("Fecha: " + fecha);
+        tvUsuarioEventoDetalle.setText("Publicado por: " + nombreUsuario);
+        tvDescripcionEventoDetalle.setText(descripcion);
+
+        // Cargar imagen (o placeholder)
+        if (imagen != null && !imagen.isEmpty()) {
             Glide.with(this)
-                    .load(adjuntarEventos)
-                    .placeholder(R.drawable.ic_launcher_foreground)
-                    .error(R.drawable.ic_launcher_foreground)
-                    .into(ivEvidencia);
+                    .load(imagen)
+                    .placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.placeholder_image)
+                    .into(imgEventoDetalle);
+        } else {
+            imgEventoDetalle.setImageResource(R.drawable.placeholder_image);
         }
+
+        // Acción para abrir archivo adjunto
+        btnAbrirArchivo.setOnClickListener(v -> {
+            if (archivo != null && !archivo.isEmpty()) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(archivo));
+                startActivity(browserIntent);
+            }
+        });
+
+        // Acción volver
+        btnVolver.setOnClickListener(v -> finish());
     }
 }
