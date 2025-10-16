@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -16,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.api.ApiClient;
 import com.example.myapplication.api.ApiResponse;
 import com.example.myapplication.api.ApiService;
-import com.example.myapplication.databinding.ActivityFormActLudicasBinding;
 import com.example.myapplication.databinding.ActivityFormEventosBinding;
 import com.example.myapplication.utils.PrefsManager;
 import com.example.myapplication.utils.SesionManager;
@@ -44,8 +42,7 @@ public class Form_eventos extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     imagenUri = result.getData().getData();
                     if (imagenUri != null) {
-                        // Mostrar imagen en ImageView en lugar de solo el nombre
-                        binding.ivPreview.setVisibility(View.VISIBLE);
+                        binding.ivPreview.setVisibility(android.view.View.VISIBLE);
                         binding.ivPreview.setImageURI(imagenUri);
                     }
                 }
@@ -62,15 +59,11 @@ public class Form_eventos extends AppCompatActivity {
 
         // --- Verificar sesión ---
         if (!sesionManager.haySesionActiva()) {
-            Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "⚠ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
             finish();
             return;
         }
-
-        // --- Asignar usuario automáticamente ---
-        binding.etUsuario.setText(prefsManager.getNombreUsuario());
-        binding.etUsuario.setVisibility(android.view.View.GONE); // Ocultar campo editable
 
         // --- Listeners ---
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
@@ -96,26 +89,25 @@ public class Form_eventos extends AppCompatActivity {
     }
 
     private void seleccionarImagen() {
-        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        seleccionarImagenLauncher.launch(android.content.Intent.createChooser(intent, "Seleccionar Imagen"));
+        seleccionarImagenLauncher.launch(Intent.createChooser(intent, "Seleccionar Imagen"));
     }
 
     private void guardarEventosBase64() {
-        int idUsuario = prefsManager.getIdUsuario();
         String token = prefsManager.getToken();
 
-        String tituloEvento = binding.etTituloEvento.getText().toString().trim();
-        String fecha = binding.etFecha.getText().toString().trim();
+        String titulo = binding.etTituloEvento.getText().toString().trim();
+        String fecha_actividad = binding.etFecha.getText().toString().trim();
         String descripcion = binding.etDescripcion.getText().toString().trim();
 
-        if (tituloEvento.isEmpty() || fecha.isEmpty() || descripcion.isEmpty()) {
-            Toast.makeText(this, "⚠️ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
+        if (titulo.isEmpty() || fecha_actividad.isEmpty() || descripcion.isEmpty()) {
+            Toast.makeText(this, "⚠ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
             return;
         }
 
         if (imagenUri == null) {
-            Toast.makeText(this, "⚠️ Selecciona una imagen.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "⚠ Selecciona una imagen.", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -133,17 +125,16 @@ public class Form_eventos extends AppCompatActivity {
             inputStream.close();
             String imagenBase64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
 
-            // Obtener extensión de la imagen
+            // Obtener extensión
             String extension = getContentResolver().getType(imagenUri).split("/")[1];
 
-            // ApiService con token incluido automáticamente desde ApiClient
+            // Llamada API
             ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
             Log.d("TOKEN_DEBUG", "Token usado al crear evento: " + token);
 
             Call<ApiResponse<Object>> call = apiService.crearEventoBase64(
-                    idUsuario,
-                    tituloEvento,
-                    fecha,
+                    titulo,
+                    fecha_actividad,
                     descripcion,
                     imagenBase64,
                     extension
@@ -157,19 +148,19 @@ public class Form_eventos extends AppCompatActivity {
                         setResult(RESULT_OK);
                         finish();
                     } else {
-                        String errorMsg = "⚠️ Error API (" + response.code() + ")";
+                        String errorMsg = "⚠ Error API (" + response.code() + ")";
                         try {
                             if (response.errorBody() != null)
                                 errorMsg += " → " + response.errorBody().string();
                         } catch (Exception ignored) {}
-                        Log.e("ACTLUDICA_ERR", errorMsg);
+                        Log.e("EVENTO_ERR", errorMsg);
                         Toast.makeText(Form_eventos.this, errorMsg, Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ApiResponse<Object>> call, Throwable t) {
-                    Log.e("ACTLUDICA_FAIL", "Error conexión: " + t.getMessage());
+                    Log.e("EVENTO_FAIL", "Error conexión: " + t.getMessage());
                     Toast.makeText(Form_eventos.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });

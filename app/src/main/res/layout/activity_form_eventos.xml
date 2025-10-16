@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Usuario -->
+            <!-- Título del Evento -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,35 +78,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Usuario"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/etUsuario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ingrese usuario"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <!-- Nombre Actividad -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Titulo del Evento"
+                    android:text="Título del Evento"
                     android:textColor="#1565C0"
                     android:textStyle="bold"
                     android:textSize="15sp" />
@@ -115,13 +87,13 @@
                     android:id="@+id/etTituloEvento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese el titulo"
+                    android:hint="Ingrese el título"
                     android:background="@android:color/transparent"
                     android:padding="8dp"
                     android:inputType="text" />
             </LinearLayout>
 
-            <!-- Fecha -->
+            <!-- Fecha del Evento -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,7 +185,7 @@
                     android:textColor="#808080"
                     android:paddingTop="4dp" />
 
-                <!-- ImageView para previsualizar la imagen seleccionada -->
+                <!-- Previsualización -->
                 <ImageView
                     android:id="@+id/ivPreview"
                     android:layout_width="150dp"
@@ -222,10 +194,7 @@
                     android:visibility="gone"
                     android:layout_marginTop="8dp"
                     android:background="#E0E0E0" />
-
             </LinearLayout>
-
-
 
         </LinearLayout>
     </ScrollView>

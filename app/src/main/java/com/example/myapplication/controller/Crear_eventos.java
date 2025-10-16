@@ -4,78 +4,63 @@ import com.google.gson.annotations.SerializedName;
 
 public class Crear_eventos {
 
-    @SerializedName("tituloEvento")
-    private String tituloEvento;
+    @SerializedName("titulo")
+    private String titulo;
 
-    @SerializedName("fechaEvento")
-    private String fechaEvento;
+    @SerializedName("fecha_actividad")
+    private String fechaActividad;
 
-    @SerializedName("descripcionEvento")
-    private String descripcionEvento;
+    @SerializedName("descripcion")
+    private String descripcion;
 
-    @SerializedName("adjuntarEvento")
-    private String adjuntarEvento;
+    @SerializedName("archivo")
+    private String archivo;
 
     @SerializedName("imagen")
     private String imagen;
 
-    public  Crear_eventos(){
+    public Crear_eventos() {
     }
 
-
-
-
-    public Crear_eventos(String tituloEvento, String fechaEvento, String descripcionEvento, String adjuntarEvento, String imagen) {
-
-        this.tituloEvento = tituloEvento;
-        this.fechaEvento = fechaEvento;
-        this.descripcionEvento = descripcionEvento;
-        this.adjuntarEvento = adjuntarEvento;
+    public Crear_eventos(String titulo, String fechaActividad, String descripcion, String archivo, String imagen) {
+        this.titulo = titulo;
+        this.fechaActividad = fechaActividad;
+        this.descripcion = descripcion;
+        this.archivo = archivo;
         this.imagen = imagen;
     }
 
-
-
-    public String getTituloEvento() {
-        return tituloEvento;
+    // Getters y Setters
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setTituloEvento(String tituloEvento) {
-        this.tituloEvento = tituloEvento;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public String getFechaEvento() {
-        return fechaEvento;
+    public String getFechaActividad() {
+        return fechaActividad;
     }
 
-    public void setFechaEvento(String fechaEvento) {
-        this.fechaEvento = fechaEvento;
+    public void setFechaActividad(String fechaActividad) {
+        this.fechaActividad = fechaActividad;
     }
 
-    public String getDescripcionEvento() {
-        return descripcionEvento;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescripcionEvento(String descripcionEvento) {
-        this.descripcionEvento = descripcionEvento;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public String getAdjuntarEvento() {
-        return adjuntarEvento;
+    public String getArchivo() {
+        return archivo;
     }
 
-    public void setAdjuntarEvento(String adjuntarEvento) {
-        this.adjuntarEvento = adjuntarEvento;
-    }
-
-    @Override
-    public String toString() {
-        return "CrearEventos{" +
-                ", tituloEvento='" + tituloEvento + '\'' +
-                ", fechaEvento='" + fechaEvento + '\'' +
-                ", descripcionEvento='" + descripcionEvento + '\'' +
-                ", adjuntarEvento='" +adjuntarEvento + '\'' +
-                '}';
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
     }
 
     public String getImagen() {
@@ -84,5 +69,16 @@ public class Crear_eventos {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    @Override
+    public String toString() {
+        return "Crear_eventos{" +
+                "titulo='" + titulo + '\'' +
+                ", fechaActividad='" + fechaActividad + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", archivo='" + archivo + '\'' +
+                ", imagen='" + imagen + '\'' +
+                '}';
     }
 }
