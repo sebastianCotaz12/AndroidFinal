@@ -1,142 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F4F6F8"
+    android:background="#F8FAFC"
     tools:context=".controller.Lista_actLudicas">
 
-    <!-- Encabezado -->
-    <RelativeLayout
+    <!-- Encabezado mejorado -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#3F7DFA"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:elevation="4dp">
+        android:layout_height="64dp"
+        app:cardBackgroundColor="#1976D2"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="8dp"
+        app:strokeColor="#1565C0"
+        app:strokeWidth="1dp">
 
-        <ImageView
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_centerVertical="true"
-            android:src="@android:drawable/ic_menu_sort_by_size"
-            android:tint="#FFFFFF" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Actividades Ludicas"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF" />
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_back"
+                android:tint="#FFFFFF" />
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/logo"/>
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Actividades Lúdicas"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:letterSpacing="0.02" />
 
-    <!-- Contenido -->
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/logo"
+                android:background="@drawable/circle_background"
+                android:padding="4dp" />
+
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Contenido principal -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="24dp">
 
-            <!-- Título -->
+            <!-- Título mejorado -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Listas de Actividades recibidos"
+                android:text="Gestión de Actividades Lúdicas"
                 android:textAlignment="center"
-                android:textColor="#1C1C1C"
-                android:textSize="20sp"
+                android:textColor="#1A237E"
+                android:textSize="24sp"
                 android:textStyle="bold"
+                android:layout_marginBottom="8dp"
+                android:letterSpacing="0.03" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Actividades recreativas recibidas y gestionadas"
+                android:textAlignment="center"
+                android:textColor="#455A64"
+                android:textSize="14sp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Barra de búsqueda mejorada -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeColor="#E3F2FD"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_search"
+                        android:tint="#64748B"
+                        android:layout_marginEnd="12dp" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:hint="Buscar actividad por nombre, fecha o estado..."
+                        android:padding="8dp"
+                        android:textColor="#1A237E"
+                        android:textColorHint="#94A3B8"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="24dp"
+                        android:background="#E2E8F0"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_filter"
+                        android:tint="#1976D2" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Botón crear nueva actividad lúdica mejorado -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_actividad_ludica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="#E3F2FD"
+                app:strokeColor="#BBDEFB"
+                app:strokeWidth="2dp"
+                android:layout_marginBottom="28dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="20dp"
+                    android:paddingHorizontal="24dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Crear Nueva Actividad"
+                            android:textColor="#1A237E"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Organiza actividades recreativas y lúdicas"
+                            android:textColor="#455A64"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:cardCornerRadius="24dp"
+                        app:cardBackgroundColor="#1976D2"
+                        app:cardElevation="4dp">
+
+                        <ImageButton
+                            android:id="@+id/imgButton_crearlista"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_add"
+                            android:tint="#FFFFFF" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Contenedor de actividades lúdicas con recuadro -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeColor="#E3F2FD"
+                app:strokeWidth="1.5dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Header de la sección dentro del recuadro -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/section_header_bordered">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_celebration"
+                            android:tint="#1A237E"
+                            android:layout_marginEnd="12dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Actividades Lúdicas Recientes"
+                            android:textColor="#1A237E"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.01" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ver todos"
+                            android:textColor="#1976D2"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <!-- Línea separadora -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F1F5F9"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp" />
+
+                    <!-- Lista de actividades ENCERRADA en el recuadro -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewListaChequeo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        android:padding="16dp"
+                        android:clipToPadding="false"
+                        android:minHeight="200dp"
+                        android:background="@drawable/recycler_background" />
+
+                    <!-- Footer del recuadro -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center"
+                        android:background="#FAFBFC">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total de actividades: 12"
+                            android:textColor="#64748B"
+                            android:textSize="12sp" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="12dp"
+                            android:background="#E2E8F0"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Actualizado hoy"
+                            android:textColor="#64748B"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Elemento decorativo inferior -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sistema Integral de Seguridad Laboral"
+                android:textAlignment="center"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp" />
-
-            <!-- Barra de búsqueda -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:elevation="4dp"
-                android:padding="12dp"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="20dp"
-                android:layout_marginHorizontal="8dp"
-                android:clipToPadding="false"
-                android:backgroundTint="#FFFFFF"
-                android:background="@android:drawable/editbox_background">
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:hint="Buscar solicitud..."
-                    android:padding="6dp"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@android:drawable/ic_menu_search"
-                    android:tint="#3F7DFA" />
-            </LinearLayout>
-
-            <!-- Crear nuevo actividad -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:paddingVertical="12dp"
-                android:elevation="3dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginHorizontal="20dp"
-                android:paddingHorizontal="16dp"
-                android:clipToPadding="false"
-                android:layout_gravity="center"
-                android:backgroundTint="#EAF0FF"
-                android:background="@android:drawable/editbox_background">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Crear nueva actividad ludica"
-                    android:textColor="#3F7DFA"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="12dp" />
-
-                <ImageButton
-                    android:id="@+id/imgButton_crearlista"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="@android:color/transparent"
-                    android:src="@android:drawable/ic_input_add"
-                    android:tint="#3F7DFA" />
-            </LinearLayout>
-
-            <!-- Lista de reportes -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewListaChequeo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical"
-                android:layout_marginTop="10dp" />
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
