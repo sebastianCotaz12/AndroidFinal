@@ -9,5 +9,6 @@
     <color name="back">#831C1C</color>
     <color name="fondo2">#AB9C9FA4</color>
     <color name="teal_700">#018786</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

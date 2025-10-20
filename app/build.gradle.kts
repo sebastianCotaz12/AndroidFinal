@@ -45,7 +45,6 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
-    implementation("com.google.android.material:material:1.6.0")
     implementation("com.google.android.material:material:1.8.0")
     implementation("com.airbnb.android:lottie:5.2.0")
     implementation(libs.constraintlayout)

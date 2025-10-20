@@ -1,179 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F4F6"
+    android:background="@drawable/background_gradient"
     tools:context=".controller.Registro">
 
-    <!-- Header con color primario -->
+    <!-- Header con gradiente mejorado -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="240dp"
         android:orientation="vertical"
-        android:background="#2196F3"
-        android:gravity="center">
+        android:background="@drawable/header_gradient"
+        android:gravity="center"
+        android:paddingTop="40dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bienvenido"
-            android:textSize="24sp"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-medium"/>
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.05"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Crea tu cuenta"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="8dp"
+            android:alpha="0.9"/>
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="140dp"
-        android:fillViewport="true">
+        android:layout_marginTop="160dp"
+        android:fillViewport="true"
+        android:paddingHorizontal="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:orientation="vertical">
 
-            <!-- Tarjeta contenedora -->
-            <LinearLayout
+            <!-- Tarjeta contenedora mejorada -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
-                android:background="#FFFFFF"
-                android:backgroundTint="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="8dp"
-                android:orientation="vertical"
-                android:padding="24dp"
-                android:translationZ="4dp">
+                app:cardCornerRadius="28dp"
+                app:cardElevation="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeColor="#1976D2"
+                app:strokeWidth="1.5dp">
 
-                <!-- Título -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="Crear cuenta"
-                    android:textColor="#2196F3"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <!-- Campos -->
-                <EditText
-                    android:id="@+id/etNombre"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="#2196F3"
-                    android:hint="Nombre"
-                    android:padding="10dp"
-                    android:textColor="#333" />
+                    android:orientation="vertical"
+                    android:padding="32dp">
 
-                <EditText
-                    android:id="@+id/etApellido"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="#2196F3"
-                    android:hint="Apellido"
-                    android:padding="10dp"
-                    android:textColor="#333" />
+                    <!-- Título mejorado -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:text="Crear cuenta"
+                        android:textColor="#0D47A1"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0.05"/>
 
-                <EditText
-                    android:id="@+id/etNombreUsuario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="#2196F3"
-                    android:hint="Nombre de usuario"
-                    android:padding="10dp"
-                    android:textColor="#333" />
+                    <!-- Campos mejorados -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="#1976D2"
+                        app:hintTextColor="#1976D2"
+                        app:startIconDrawable="@drawable/ic_edit"
+                        app:startIconTint="#1976D2">
 
-                <EditText
-                    android:id="@+id/etCorreo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="#2196F3"
-                    android:hint="Correo electrónico"
-                    android:inputType="textEmailAddress"
-                    android:padding="10dp"
-                    android:textColor="#333" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etNombre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nombre"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/etCargo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="#2196F3"
-                    android:hint="Cargo"
-                    android:padding="10dp"
-                    android:textColor="#333" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="#1976D2"
+                        app:hintTextColor="#1976D2"
+                        app:startIconDrawable="@drawable/ic_edit"
+                        app:startIconTint="#1976D2">
 
-                <EditText
-                    android:id="@+id/etContrasena"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="#2196F3"
-                    android:hint="Contraseña"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textColor="#333" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etApellido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Apellido"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/etConfirmContrasena"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:backgroundTint="#2196F3"
-                    android:hint="Confirmar contraseña"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:textColor="#333" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="#1976D2"
+                        app:hintTextColor="#1976D2"
+                        app:startIconDrawable="@drawable/ic_person"
+                        app:startIconTint="#1976D2">
 
-                <!-- NUEVOS CAMPOS -->
-                <Spinner
-                    android:id="@+id/spinnerEmpresa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="#2196F3" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etNombreUsuario"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nombre de usuario"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <Spinner
-                    android:id="@+id/spinnerArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:backgroundTint="#2196F3" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="#1976D2"
+                        app:hintTextColor="#1976D2"
+                        app:startIconDrawable="@drawable/ic_email"
+                        app:startIconTint="#1976D2">
 
-                <!-- Botones -->
-                <Button
-                    android:id="@+id/btnRegistrarse"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="#2196F3"
-                    android:elevation="6dp"
-                    android:padding="14dp"
-                    android:text="Registrarse"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCorreo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Correo electrónico"
+                            android:inputType="textEmailAddress"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <Button
-                    android:id="@+id/btnVolver"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#E0E0E0"
-                    android:padding="14dp"
-                    android:text="Volver al inicio"
-                    android:textColor="#2196F3"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="#1976D2"
+                        app:hintTextColor="#1976D2"
+                        app:startIconDrawable="@drawable/ic_work"
+                        app:startIconTint="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCargo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Cargo"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="#1976D2"
+                        app:hintTextColor="#1976D2"
+                        app:startIconDrawable="@drawable/ic_lock"
+                        app:startIconTint="#1976D2"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etContrasena"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Contraseña"
+                            android:inputType="textPassword"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxStrokeColor="#1976D2"
+                        app:hintTextColor="#1976D2"
+                        app:startIconDrawable="@drawable/ic_lock"
+                        app:startIconTint="#1976D2"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etConfirmContrasena"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Confirmar contraseña"
+                            android:inputType="textPassword"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Spinners mejorados -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Empresa"
+                        android:textColor="#1976D2"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif-medium"/>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerEmpresa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/spinner_background"
+                        android:padding="16dp"
+                        android:textColor="#333333"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Área"
+                        android:textColor="#1976D2"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="sans-serif-medium"/>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinnerArea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:background="@drawable/spinner_background"
+                        android:padding="16dp"
+                        android:textColor="#333333"/>
+
+                    <!-- Botones mejorados -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRegistrarse"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Registrarse"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="#0D47A1"
+                        app:cornerRadius="20dp"
+                        app:icon="@drawable/ic_save"
+                        app:iconTint="@color/white"
+                        app:iconSize="24dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:elevation="8dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnVolver"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Volver al inicio"
+                        android:textColor="#0D47A1"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/transparent"
+                        app:cornerRadius="20dp"
+                        app:strokeColor="#0D47A1"
+                        app:strokeWidth="2dp"
+                        app:icon="@drawable/ic_arrow_back"
+                        app:iconTint="#0D47A1"
+                        app:iconSize="24dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
