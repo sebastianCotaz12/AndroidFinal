@@ -79,11 +79,11 @@ public class Form_reportes extends AppCompatActivity {
         }
 
         // --- Autocompletar datos de sesión ---
-        binding.etCargo.setText(prefsManager.getCargo());
-        binding.etCargo.setEnabled(false);
+        binding.etNombreUsuario.setText(prefsManager.getNombreUsuario());
+        binding.etNombreUsuario.setEnabled(false);
 
-        binding.etCedula.setText(String.valueOf(prefsManager.getIdUsuario()));
-        binding.etCedula.setEnabled(false);
+        binding.etCargoUsuario.setText(prefsManager.getCargo());
+        binding.etCargoUsuario.setEnabled(false);
 
         // --- Spinner de estado ---
         String[] opcionesEstado = {"Pendiente", "En Proceso", "Realizado"};
@@ -156,14 +156,16 @@ public class Form_reportes extends AppCompatActivity {
     }
 
     private void guardarReporteMultipart() {
-        String nombreUsuario = prefsManager.getNombreUsuario();
+        // --- Datos del usuario (desde login) ---
         int idUsuario = prefsManager.getIdUsuario();
         int idEmpresa = prefsManager.getIdEmpresa();
         String token = prefsManager.getToken();
 
-        String cargoTextoPlano = binding.etCargo.getText().toString().trim();
-        String cargoJsonArray = "[\"" + cargoTextoPlano + "\"]";
-        String cedula = binding.etCedula.getText().toString().trim();
+        String nombreUsuario = binding.etNombreUsuario.getText().toString().trim();
+        String cargoTextoPlano = binding.etCargoUsuario.getText().toString().trim();
+        String cargoJsonArray = "[\"" + cargoTextoPlano + "\"]"; // mantener si la API espera array
+
+        // --- Datos ingresados manualmente ---
         String fecha = binding.etFecha.getText().toString().trim();
         String lugar = binding.etLugar.getText().toString().trim();
         String descripcion = binding.etDescripcion.getText().toString().trim();
@@ -180,7 +182,7 @@ public class Form_reportes extends AppCompatActivity {
             return;
         }
 
-        // 🔹 Cliente con token JWT
+        // --- Cliente con token JWT ---
         ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
         Log.d("TOKEN_DEBUG", "Token usado al crear reporte: " + token);
 
@@ -192,7 +194,7 @@ public class Form_reportes extends AppCompatActivity {
                 createPartFromString(String.valueOf(idEmpresa)),
                 createPartFromString(nombreUsuario),
                 createPartFromString(cargoJsonArray),
-                createPartFromString(cedula),
+                createPartFromString(""), // cedula eliminado (no usado)
                 createPartFromString(fecha),
                 createPartFromString(lugar),
                 createPartFromString(descripcion),
@@ -206,7 +208,7 @@ public class Form_reportes extends AppCompatActivity {
             public void onResponse(Call<ApiResponse<Crear_reportes>> call, Response<ApiResponse<Crear_reportes>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse<Crear_reportes> apiResponse = response.body();
-                    Toast.makeText(Form_reportes.this, "melooo " + apiResponse.getMsj(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_reportes.this, "✅ " + apiResponse.getMsj(), Toast.LENGTH_LONG).show();
                     Log.d("REPORTE_OK", "Reporte creado correctamente: " + apiResponse.getMsj());
                     setResult(RESULT_OK);
                     finish();

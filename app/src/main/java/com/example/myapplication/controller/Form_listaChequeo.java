@@ -44,11 +44,17 @@ public class Form_listaChequeo extends AppCompatActivity {
             return;
         }
 
-        // --- Autocompletar datos de sesión ---
-        binding.etUsuarioNombre.setText(prefsManager.getNombreUsuario());
-        binding.etUsuarioNombre.setEnabled(false); // campo solo lectura
+        // --- Autocompletar datos del usuario ---
+        String nombreUsuario = prefsManager.getNombreUsuario();
+        String cargoUsuario = prefsManager.getCargo();
 
-        // Acción al hacer clic en el botón Guardar
+        binding.etUsuarioNombre.setText(nombreUsuario);
+        binding.etUsuarioCargo.setText(cargoUsuario);
+
+        binding.etUsuarioNombre.setEnabled(false); // solo lectura
+        binding.etUsuarioCargo.setEnabled(false); // solo lectura
+
+        // --- Acción al hacer clic en Guardar ---
         binding.btnGuardarlista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +64,7 @@ public class Form_listaChequeo extends AppCompatActivity {
     }
 
     private void guardarDatos() {
-        // --- Datos desde PrefsManager ---
+        // --- Datos de sesión ---
         int idUsuario = prefsManager.getIdUsuario();
         int idEmpresa = prefsManager.getIdEmpresa();
         String token = prefsManager.getToken();
@@ -71,6 +77,8 @@ public class Form_listaChequeo extends AppCompatActivity {
 
         // --- Datos del formulario ---
         String nombreUsuario = prefsManager.getNombreUsuario();
+        String cargoUsuario = prefsManager.getCargo();
+
         String fecha = binding.etFecha.getText().toString().trim();
         String hora = binding.etHora.getText().toString().trim();
         String modelo = binding.etModelo.getText().toString().trim();
@@ -78,12 +86,9 @@ public class Form_listaChequeo extends AppCompatActivity {
         String kilometraje = binding.etKilometraje.getText().toString().trim();
         String soat = getRadioValue(binding.rbSoatSi, binding.rbSoatNo);
         String tecnico = getRadioValue(binding.rbTecnicoSi, binding.rbTecnicoNo);
-
-        // 🔹 Nuevos campos agregados
         String placa = binding.etPlaca.getText().toString().trim();
         String observaciones = binding.etObservaciones.getText().toString().trim();
 
-        // --- Validación de campos ---
         if (fecha.isEmpty() || hora.isEmpty() || modelo.isEmpty() || marca.isEmpty() ||
                 kilometraje.isEmpty() || placa.isEmpty() || soat == null || tecnico == null) {
             Toast.makeText(this, "⚠️ Por favor completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
@@ -94,6 +99,7 @@ public class Form_listaChequeo extends AppCompatActivity {
         Crear_listaChequeo nuevaLista = new Crear_listaChequeo();
         nuevaLista.setIdUsuario(idUsuario);
         nuevaLista.setUsuarioNombre(nombreUsuario);
+        nuevaLista.setCargo(cargoUsuario);
         nuevaLista.setFecha(fecha);
         nuevaLista.setHora(hora);
         nuevaLista.setModelo(modelo);
@@ -104,9 +110,8 @@ public class Form_listaChequeo extends AppCompatActivity {
         nuevaLista.setPlaca(placa);
         nuevaLista.setObservaciones(observaciones);
 
-        // --- Cliente API con token de sesión ---
+        // --- Enviar datos al backend ---
         ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
-
         Call<ApiResponse<Crear_listaChequeo>> call = apiService.crearListaChequeo(nuevaLista);
 
         call.enqueue(new Callback<ApiResponse<Crear_listaChequeo>>() {

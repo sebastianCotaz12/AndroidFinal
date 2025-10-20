@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5"
+    android:background="#E3F2FD"
     tools:context=".controller.Form_gestionEpp">
 
     <!-- Barra superior -->
@@ -15,13 +15,14 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="12dp"
-        android:background="#3F7DFA"
+        android:background="#1565C0"
         android:elevation="6dp">
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@drawable/ic_form"
+            android:tint="@android:color/white"
             android:contentDescription="Icono Gestión EPP" />
 
         <TextView
@@ -33,18 +34,26 @@
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="@android:color/white" />
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/logo"
+            android:contentDescription="Logo" />
     </LinearLayout>
 
+    <!-- Título -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Registrar Entrega de EPP"
         android:textSize="22sp"
-        android:textColor="#212121"
+        android:textStyle="bold"
+        android:textColor="#0D47A1"
         android:gravity="center"
-        android:layout_marginVertical="16dp"
-        android:textStyle="bold" />
+        android:layout_marginVertical="16dp" />
 
+    <!-- Contenedor desplazable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -56,249 +65,286 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- ID Usuario -->
+            <!-- Nombre -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp">
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ID Usuario"
-                    android:textColor="#1565C0"
+                    android:text="Nombre Usuario"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
-                    android:id="@+id/etIdUsuario"
+                    android:id="@+id/etNombreUsuario"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Se completa automáticamente"
-                    android:enabled="false"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Área -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Área"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
-
-                <EditText
-                    android:id="@+id/etArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Se completa automáticamente"
-                    android:enabled="false"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Cédula -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cédula"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
-
-                <EditText
-                    android:id="@+id/etCedula"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:hint="Cédula del empleado"
-                    android:inputType="number"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:hint="Nombre usuario"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="text"
+                    android:enabled="false" />
             </LinearLayout>
 
             <!-- Cargo -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp">
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Cargo"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/etCargoUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cargo"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="text"
+                    android:enabled="false" />
+            </LinearLayout>
+
+            <!-- Área -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Área"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/etArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Se completa automáticamente"
+                    android:enabled="false"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp" />
+            </LinearLayout>
+
+            <!-- Cédula -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cédula"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/etCedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cédula del empleado"
+                    android:inputType="number"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp" />
+            </LinearLayout>
+
+            <!-- Cargo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargo"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etCargo"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:hint="Cargo del empleado"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp" />
             </LinearLayout>
 
             <!-- Fecha entrega -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp">
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Fecha de entrega"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etFechaEntrega"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:hint="Selecciona una fecha"
                     android:focusable="false"
                     android:clickable="true"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp" />
             </LinearLayout>
 
             <!-- Producto -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp">
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Producto EPP"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etProductos"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:hint="Ejemplo: Guantes, Casco"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp" />
             </LinearLayout>
 
             <!-- Cantidad -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp">
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Cantidad"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etCantidad"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:hint="Cantidad de elementos"
                     android:inputType="number"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp" />
             </LinearLayout>
 
             <!-- Importancia -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="12dp">
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Importancia"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginBottom="6dp" />
 
                 <Spinner
                     android:id="@+id/spImportancia"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edittext_blue" />
             </LinearLayout>
 
             <!-- Estado -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp"
-                android:layout_marginBottom="16dp">
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Estado"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginBottom="6dp" />
 
                 <Spinner
                     android:id="@+id/spEstado"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_edittext_blue" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
+    <!-- Botón principal -->
     <Button
         android:id="@+id/btnEnviarGestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Guardar Gestión EPP"
-        android:backgroundTint="#3F7DFA"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:backgroundTint="#0D47A1"
         android:textColor="@android:color/white"
+        android:elevation="8dp"
         android:layout_margin="16dp"
-        android:paddingVertical="12dp" />
+        android:paddingVertical="14dp" />
 </LinearLayout>

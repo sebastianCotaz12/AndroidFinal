@@ -4,8 +4,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
     android:orientation="vertical"
+    android:background="#E3F2FD"
     tools:context=".controller.Form_actLudicas">
 
     <!-- Barra superior -->
@@ -15,14 +15,16 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="12dp"
-        android:background="#2196F3"
+        android:background="#1565C0"
         android:elevation="6dp">
 
         <ImageView
             android:id="@+id/ivLogo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:contentDescription="Icono Actividades" />
+            android:contentDescription="Icono Actividades"
+            android:src="@drawable/ic_form"
+            android:tint="@color/white" />
 
         <TextView
             android:layout_width="0dp"
@@ -38,7 +40,7 @@
             android:id="@+id/imgLogo"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:src="@drawable/img"
+            android:src="@drawable/logo"
             android:contentDescription="Logo" />
     </LinearLayout>
 
@@ -48,12 +50,12 @@
         android:layout_height="wrap_content"
         android:text="Formulario Actividad Lúdica"
         android:textSize="22sp"
-        android:textColor="#212121"
+        android:textStyle="bold"
+        android:textColor="#0D47A1"
         android:gravity="center"
-        android:layout_marginVertical="16dp"
-        android:textStyle="bold" />
+        android:layout_marginVertical="16dp" />
 
-    <!-- Formulario scrollable -->
+    <!-- Contenedor scrollable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -65,32 +67,62 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Usuario -->
+            <!-- Nombre -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="14dp"
                 android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Usuario"
-                    android:textColor="#1565C0"
+                    android:text="Nombre Usuario"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
-                    android:id="@+id/etUsuario"
+                    android:id="@+id/etNombreUsuario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Ingrese usuario"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"
-                    android:inputType="text" />
+                    android:hint="Nombre usuario"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="text"
+                    android:enabled="false" />
+            </LinearLayout>
+
+            <!-- Cargo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargo"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/etCargoUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cargo"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="text"
+                    android:enabled="false" />
             </LinearLayout>
 
             <!-- Nombre Actividad -->
@@ -98,26 +130,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="14dp"
                 android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nombre de la Actividad"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etNombreActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Ingrese nombre de la actividad"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
                     android:inputType="text" />
             </LinearLayout>
 
@@ -126,18 +158,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="14dp"
                 android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Fecha"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etFecha"
@@ -145,8 +177,9 @@
                     android:layout_height="wrap_content"
                     android:hint="Seleccione fecha"
                     android:focusable="false"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"
+                    android:clickable="true"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
                     android:inputType="date" />
             </LinearLayout>
 
@@ -155,18 +188,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="14dp"
                 android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Descripción"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etDescripcion"
@@ -174,8 +207,8 @@
                     android:layout_height="100dp"
                     android:hint="Ingrese descripción"
                     android:gravity="top|start"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
                     android:inputType="textMultiLine" />
             </LinearLayout>
 
@@ -184,18 +217,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp"
+                android:padding="14dp"
                 android:layout_marginBottom="16dp"
-                android:background="#FFFFFF"
-                android:elevation="2dp">
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Adjuntar Imagen"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
 
                 <ImageView
                     android:id="@+id/ivAdjuntar"
@@ -213,7 +246,6 @@
                     android:textColor="#808080"
                     android:paddingTop="4dp" />
 
-                <!-- ImageView para previsualizar la imagen seleccionada -->
                 <ImageView
                     android:id="@+id/ivPreview"
                     android:layout_width="150dp"
@@ -222,10 +254,7 @@
                     android:visibility="gone"
                     android:layout_marginTop="8dp"
                     android:background="#E0E0E0" />
-
             </LinearLayout>
-
-
 
         </LinearLayout>
     </ScrollView>
@@ -238,9 +267,10 @@
         android:text="Enviar Actividad"
         android:textAllCaps="false"
         android:textStyle="bold"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="#0D47A1"
         android:textColor="@android:color/white"
+        android:elevation="8dp"
         android:layout_margin="16dp"
-        android:paddingVertical="12dp" />
+        android:paddingVertical="14dp" />
 
 </LinearLayout>

@@ -19,8 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,8 +28,7 @@ public class Form_gestionEpp extends AppCompatActivity {
     private ActivityFormGestionEppBinding binding;
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
-
-    private int areaUsuario; // 🔹 Variable global para el id del área
+    private int areaUsuario; // ID del área
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,31 +39,27 @@ public class Form_gestionEpp extends AppCompatActivity {
         prefsManager = new PrefsManager(this);
         sesionManager = new SesionManager(this);
 
-        // === Validar sesión activa ===
+        // Validar sesión activa
         if (!sesionManager.haySesionActiva()) {
-            Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "⚠ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
             finish();
             return;
         }
 
-        // === Llenar campos automáticos visibles ===
-        binding.etIdUsuario.setText(String.valueOf(prefsManager.getIdUsuario()));
-        binding.etIdUsuario.setEnabled(false);
-
-        // Área automática
-        areaUsuario = prefsManager.getIdArea();
+        // === Asignar datos automáticos del usuario ===
+        String nombreUsuario = prefsManager.getNombreUsuario();
+        String cargoUsuario = prefsManager.getCargo();
         String nombreArea = prefsManager.getNombreArea();
-        if (nombreArea != null && areaUsuario != -1) {
-            binding.etArea.setText(nombreArea);
-        } else {
-            binding.etArea.setText("Área no asignada");
-        }
-        binding.etArea.setEnabled(false); // No editable
+        areaUsuario = prefsManager.getIdArea();
 
-        // === Campos manuales ===
-        binding.etCargo.setEnabled(true);
-        binding.etCedula.setEnabled(true);
+        binding.etNombreUsuario.setText(nombreUsuario != null ? nombreUsuario : "No disponible");
+        binding.etCargoUsuario.setText(cargoUsuario != null ? cargoUsuario : "No disponible");
+        binding.etArea.setText(nombreArea != null ? nombreArea : "Área no asignada");
+
+        binding.etNombreUsuario.setEnabled(false);
+        binding.etCargoUsuario.setEnabled(false);
+        binding.etArea.setEnabled(false);
 
         // === Configurar spinners ===
         String[] importancia = {"Alta", "Media", "Baja"};
@@ -99,35 +92,30 @@ public class Form_gestionEpp extends AppCompatActivity {
         picker.show();
     }
 
-    private RequestBody createPart(String value) {
-        return RequestBody.create(value != null ? value : "", MediaType.parse("text/plain"));
-    }
-
     private void guardarGestion() {
         String cedula = binding.etCedula.getText().toString().trim();
-        String cargo = binding.etCargo.getText().toString().trim();
+        String cargoManual = binding.etCargo.getText().toString().trim();
         String importancia = binding.spImportancia.getSelectedItem().toString();
         String estado = binding.spEstado.getSelectedItem().toString();
         String cantidadStr = binding.etCantidad.getText().toString().trim();
         String productosStr = binding.etProductos.getText().toString().trim();
 
-        if (cedula.isEmpty() || cargo.isEmpty() || cantidadStr.isEmpty() || productosStr.isEmpty()) {
-            Toast.makeText(this, "⚠️ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
+        if (cedula.isEmpty() || cargoManual.isEmpty() || cantidadStr.isEmpty() || productosStr.isEmpty()) {
+            Toast.makeText(this, "⚠ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
             return;
         }
 
         int cantidad = Integer.parseInt(cantidadStr);
-        int[] productos = {Integer.parseInt(productosStr)};
 
-        // ✅ Usar idArea dinámico del usuario logueado
+        // 🔹 Crear objeto de gestión
         Crear_gestionEpp gestion = new Crear_gestionEpp(
                 cedula,
-                Integer.parseInt(cargo),
+                cargoManual,
                 importancia,
                 estado,
                 cantidad,
                 areaUsuario,
-                productos
+                new int[]{1} // Ejemplo, reemplazar con IDs válidos desde backend si aplica
         );
 
         ApiService api = ApiClient.getClient(prefsManager).create(ApiService.class);
@@ -137,10 +125,10 @@ public class Form_gestionEpp extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponse<Crear_gestionEpp>> call, Response<ApiResponse<Crear_gestionEpp>> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(Form_gestionEpp.this, "✅ Gestión creada correctamente", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_gestionEpp.this, "✅ Gestión EPP registrada correctamente", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    Toast.makeText(Form_gestionEpp.this, "⚠️ Error en la API (" + response.code() + ")", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_gestionEpp.this, "⚠ Error en la API (" + response.code() + ")", Toast.LENGTH_LONG).show();
                 }
             }
 

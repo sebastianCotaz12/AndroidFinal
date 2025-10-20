@@ -32,7 +32,6 @@ public class Form_actLudicas extends AppCompatActivity {
     private ActivityFormActLudicasBinding binding;
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
-
     private Uri imagenUri = null;
 
     // Selector de imagen
@@ -41,9 +40,9 @@ public class Form_actLudicas extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     imagenUri = result.getData().getData();
                     if (imagenUri != null) {
-                        // Mostrar imagen en ImageView en lugar de solo el nombre
                         binding.ivPreview.setVisibility(android.view.View.VISIBLE);
                         binding.ivPreview.setImageURI(imagenUri);
+                        binding.tvImagenSeleccionada.setText("Imagen seleccionada ✅");
                     }
                 }
             });
@@ -57,7 +56,7 @@ public class Form_actLudicas extends AppCompatActivity {
         prefsManager = new PrefsManager(this);
         sesionManager = new SesionManager(this);
 
-        // --- Verificar sesión ---
+        // --- Verificar sesión activa ---
         if (!sesionManager.haySesionActiva()) {
             Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
@@ -65,11 +64,18 @@ public class Form_actLudicas extends AppCompatActivity {
             return;
         }
 
-        // --- Asignar usuario automáticamente ---
-        binding.etUsuario.setText(prefsManager.getNombreUsuario());
-        binding.etUsuario.setVisibility(android.view.View.GONE); // Ocultar campo editable
+        // --- Mostrar nombre y cargo desde login ---
+        String nombre = prefsManager.getNombreUsuario();
+        String cargo = prefsManager.getCargo(); // asegúrate que este método existe en PrefsManager
 
-        // --- Listeners ---
+        binding.etNombreUsuario.setText(nombre != null ? nombre : "No disponible");
+        binding.etCargoUsuario.setText(cargo != null ? cargo : "No disponible");
+
+        // Evitar edición manual
+        binding.etNombreUsuario.setEnabled(false);
+        binding.etCargoUsuario.setEnabled(false);
+
+        // --- Eventos ---
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
         binding.ivAdjuntar.setOnClickListener(v -> seleccionarImagen());
         binding.btnEnviarEvidencia.setOnClickListener(v -> guardarActividadBase64());
@@ -123,17 +129,14 @@ public class Form_actLudicas extends AppCompatActivity {
         }
 
         try {
-            // Convertir imagen a Base64
             InputStream inputStream = getContentResolver().openInputStream(imagenUri);
             byte[] bytes = new byte[inputStream.available()];
             inputStream.read(bytes);
             inputStream.close();
             String imagenBase64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
 
-            // Obtener extensión de la imagen
             String extension = getContentResolver().getType(imagenUri).split("/")[1];
 
-            // ApiService con token incluido automáticamente desde ApiClient
             ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
             Log.d("TOKEN_DEBUG", "Token usado al crear actividad: " + token);
 
@@ -145,7 +148,6 @@ public class Form_actLudicas extends AppCompatActivity {
                     imagenBase64,
                     extension
             );
-
 
             call.enqueue(new Callback<ApiResponse<Object>>() {
                 @Override
@@ -177,4 +179,6 @@ public class Form_actLudicas extends AppCompatActivity {
             Toast.makeText(this, "Error leyendo la imagen: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
+
 }

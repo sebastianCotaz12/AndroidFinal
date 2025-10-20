@@ -10,6 +10,9 @@ public class Crear_listaChequeo {
     @SerializedName("usuario_nombre")
     private String usuarioNombre;
 
+    @SerializedName("cargo")
+    private String cargo;
+
     @SerializedName("fecha")
     private String fecha;
 
@@ -39,11 +42,12 @@ public class Crear_listaChequeo {
     private String observaciones;
 
 
-    public Crear_listaChequeo(int idUsuario, String usuarioNombre, String fecha, String hora,
+    public Crear_listaChequeo(int idUsuario, String usuarioNombre,String cargo, String fecha, String hora,
                               String modelo, String marca, String soat, String tecnico,
                               String kilometraje, String placa, String observaciones) {
         this.idUsuario = idUsuario;
         this.usuarioNombre = usuarioNombre;
+        this.cargo = cargo;
         this.fecha = fecha;
         this.hora = hora;
         this.modelo = modelo;
@@ -75,6 +79,9 @@ public class Crear_listaChequeo {
     public void setUsuarioNombre(String usuarioNombre) {
         this.usuarioNombre = usuarioNombre;
     }
+
+    public String getCargo() { return cargo; }
+    public void setCargo(String cargo) { this.cargo = cargo; }
 
     public String getFecha() {
         return fecha;

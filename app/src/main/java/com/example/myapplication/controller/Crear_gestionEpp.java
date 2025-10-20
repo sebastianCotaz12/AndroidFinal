@@ -7,8 +7,8 @@ public class Crear_gestionEpp {
     @SerializedName("cedula")
     private String cedula;
 
-    @SerializedName("id_cargo")
-    private int idCargo;
+    @SerializedName("cargo")
+    private String cargo;
 
     @SerializedName("importancia")
     private String importancia;
@@ -29,9 +29,9 @@ public class Crear_gestionEpp {
     public Crear_gestionEpp() {}
 
     // Constructor completo
-    public Crear_gestionEpp(String cedula, int idCargo, String importancia, String estado, int cantidad, int idArea, int[] productos) {
+    public Crear_gestionEpp(String cedula, String cargo, String importancia, String estado, int cantidad, int idArea, int[] productos) {
         this.cedula = cedula;
-        this.idCargo = idCargo;
+        this.cargo = cargo;
         this.importancia = importancia;
         this.estado = estado;
         this.cantidad = cantidad;
@@ -48,13 +48,8 @@ public class Crear_gestionEpp {
         this.cedula = cedula;
     }
 
-    public int getIdCargo() {
-        return idCargo;
-    }
-
-    public void setIdCargo(int idCargo) {
-        this.idCargo = idCargo;
-    }
+    public String getCargo() { return cargo; }
+    public void setCargo(String cargo) { this.cargo = cargo; }
 
     public String getImportancia() {
         return importancia;

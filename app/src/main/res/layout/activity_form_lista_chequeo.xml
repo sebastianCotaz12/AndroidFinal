@@ -4,8 +4,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
     android:orientation="vertical"
+    android:background="#E3F2FD"
     tools:context=".controller.Form_listaChequeo">
 
     <!-- Barra superior -->
@@ -14,16 +14,17 @@
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        android:background="#3F7DFA"
+        android:paddingHorizontal="12dp"
+        android:background="#1565C0"
         android:elevation="6dp">
 
         <ImageView
             android:id="@+id/iv_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:contentDescription="Icono Lista"
-            android:tint="@android:color/white" />
+            android:src="@drawable/ic_form"
+            android:tint="@android:color/white"
+            android:contentDescription="Icono Lista" />
 
         <TextView
             android:layout_width="0dp"
@@ -39,7 +40,7 @@
             android:id="@+id/img_logo"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:src="@drawable/img"
+            android:src="@drawable/logo"
             android:contentDescription="Logo" />
     </LinearLayout>
 
@@ -50,325 +51,283 @@
         android:text="Crear Lista de Chequeo"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:textColor="#212121"
+        android:textColor="#0D47A1"
         android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginVertical="16dp" />
 
-    <!-- Contenido con Scroll -->
-
-    <!-- Botón Guardar -->
+    <!-- Contenedor con Scroll -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingHorizontal="16dp">
+        android:paddingHorizontal="16dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingVertical="8dp">
+            android:orientation="vertical">
 
-            <!-- ID Lista -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="2dp"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:backgroundTintMode="src_in"
-                android:clipToOutline="true"
-                android:elevation="5dp"
-                android:orientation="vertical"
-                android:padding="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:text="ID Reporte"
-                    android:textColor="#1565C0"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/etIdlista"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
-                    android:hint="ID (autogenerado)"
-                    android:inputType="number"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
-            </LinearLayout>
 
             <!-- Nombre Usuario -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:text="Nombre Usuario"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etUsuarioNombre"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
+                    android:layout_height="wrap_content"
                     android:hint="Ingrese nombre"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargo"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="6dp" />
+
+                <EditText
+                    android:id="@+id/etUsuarioCargo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cargo del usuario"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:enabled="false" />
             </LinearLayout>
 
             <!-- Fecha -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:text="Fecha"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etFecha"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
-                    android:hint="Ingrese fecha"
-                    android:inputType="date"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
+                    android:layout_height="wrap_content"
+                    android:hint="Seleccione fecha"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:focusable="false"
+                    android:inputType="date" />
             </LinearLayout>
 
             <!-- Hora -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:text="Hora"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etHora"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
-                    android:hint="Ingrese hora"
-                    android:inputType="time"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
+                    android:layout_height="wrap_content"
+                    android:hint="Seleccione hora"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="time" />
             </LinearLayout>
 
             <!-- Modelo -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:text="Modelo"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etModelo"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
+                    android:layout_height="wrap_content"
                     android:hint="Ingrese modelo"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="text" />
             </LinearLayout>
 
             <!-- Marca -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:text="Marca"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etMarca"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
+                    android:layout_height="wrap_content"
                     android:hint="Ingrese marca"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="text" />
             </LinearLayout>
 
             <!-- Placa -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:text="Placa"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etPlaca"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
-                    android:hint="Ingrese placa del vehículo"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
+                    android:layout_height="wrap_content"
+                    android:hint="Ingrese placa"
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="text" />
             </LinearLayout>
 
             <!-- Kilometraje -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:text="Kilometraje"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etKilometraje"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
+                    android:layout_height="wrap_content"
                     android:hint="Ingrese kilometraje"
-                    android:inputType="number"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="number" />
             </LinearLayout>
 
-            <!-- SOAT vigente -->
+            <!-- SOAT -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:text="SOAT vigente"
-                    android:textColor="#1565C0"
+                    android:text="SOAT"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <RadioGroup
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rbSoatSi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sí" />
+                        android:text="Si" />
 
                     <RadioButton
                         android:id="@+id/rbSoatNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
                         android:text="No" />
                 </RadioGroup>
             </LinearLayout>
@@ -377,39 +336,35 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:text="Revisado por técnico"
-                    android:textColor="#1565C0"
+                    android:text="Revisión Técnica"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <RadioGroup
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rbTecnicoSi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sí" />
+                        android:text="Si" />
 
                     <RadioButton
                         android:id="@+id/rbTecnicoNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
                         android:text="No" />
                 </RadioGroup>
             </LinearLayout>
@@ -418,39 +373,35 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="#FFFFFF"
-                android:clipToOutline="true"
-                android:elevation="5dp"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="14dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_card_blue">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:text="Observaciones"
-                    android:textColor="#1565C0"
+                    android:textColor="#0D47A1"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="6dp" />
 
                 <EditText
                     android:id="@+id/etObservaciones"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="#DDDDDD"
+                    android:hint="Ingrese observaciones"
                     android:gravity="top|start"
-                    android:hint="Ingrese observaciones adicionales"
-                    android:inputType="textMultiLine"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="#212121"
-                    android:textSize="15sp" />
+                    android:background="@drawable/bg_edittext_blue"
+                    android:padding="10dp"
+                    android:inputType="textMultiLine" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
+    <!-- Botón Guardar -->
     <Button
         android:id="@+id/btnGuardarlista"
         android:layout_width="match_parent"
@@ -458,11 +409,9 @@
         android:text="Guardar Lista de Chequeo"
         android:textAllCaps="false"
         android:textStyle="bold"
-        android:backgroundTint="#3F7DFA"
+        android:backgroundTint="#0D47A1"
         android:textColor="@android:color/white"
+        android:elevation="8dp"
         android:layout_margin="16dp"
-        android:paddingVertical="14dp"
-        android:elevation="5dp"
-        android:layout_gravity="bottom" />
-
+        android:paddingVertical="14dp" />
 </LinearLayout>

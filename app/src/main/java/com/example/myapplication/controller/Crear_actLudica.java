@@ -11,6 +11,9 @@ public class Crear_actLudica {
     @SerializedName("nombre_usuario")
     private String nombreUsuario;
 
+    @SerializedName("cargo")
+    private String cargo;
+
     @SerializedName("nombre_actividad")
     private String nombreActividad;
 
@@ -31,10 +34,11 @@ public class Crear_actLudica {
     }
 
 
-    public Crear_actLudica(int idUsuario, String nombreUsuario, String nombreActividad, String fechaActividad, String descripcion, String evidencia, String imagenVideo) {
+    public Crear_actLudica(int idUsuario, String nombreUsuario, String cargo, String nombreActividad, String fechaActividad, String descripcion, String evidencia, String imagenVideo) {
 
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
+        this.cargo = cargo;
         this.nombreActividad = nombreActividad;
         this.fechaActividad = fechaActividad;
         this.descripcion = descripcion;
@@ -52,6 +56,9 @@ public class Crear_actLudica {
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
+
+    public String getCargo() { return cargo; }
+    public void setCargo(String cargo) { this.cargo = cargo; }
 
     public String getNombreActividad() {
         return nombreActividad;
