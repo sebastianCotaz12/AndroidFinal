@@ -1,169 +1,205 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:orientation="vertical"
+    android:background="#F8FAFC"
+    android:fitsSystemWindows="true">
 
     <!-- CONTENEDOR SCROLL PARA LOS REPORTES -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-            <!-- PRIMER RECUADRO DE REPORTE MEJORADO -->
+            <!-- TARJETA DE REPORTE MEJORADA -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
-                app:strokeColor="#E3F2FD"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp"
-                android:layout_marginBottom="12dp"
-                android:padding="0dp">
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
 
+                <!-- CONTENEDOR PRINCIPAL -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/gradient_background_improved">
+                    android:orientation="vertical">
 
-                    <!-- Imagen del reporte mejorada -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="80dp"
-                        android:layout_height="100dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp"
-                        app:cardBackgroundColor="#FFFFFF"
-                        android:layout_marginEnd="16dp">
-
-                        <ImageView
-                            android:id="@+id/imgPoster"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/epp"
-                            android:contentDescription="Imagen del reporte" />
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- Contenedor de texto y botón mejorado -->
+                    <!-- CONTENIDO SUPERIOR -->
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:padding="20dp"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/gradient_background_improved">
 
-                        <TextView
-                            android:id="@+id/txtNombre"
-                            android:layout_width="wrap_content"
+                        <!-- CONTENEDOR DE IMAGEN MEJORADO -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="84dp"
+                            android:layout_height="108dp"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="4dp"
+                            app:cardBackgroundColor="@android:color/white"
+                            android:layout_marginEnd="18dp"
+                            android:outlineSpotShadowColor="#601976D2">
+
+                            <ImageView
+                                android:id="@+id/imgPoster"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/epp"
+                                android:contentDescription="Imagen del reporte"
+                                android:adjustViewBounds="true" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- CONTENEDOR DE TEXTO Y BOTÓN -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Juan Pérez"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.01"
-                            android:shadowColor="#40000000"
-                            android:shadowDx="1"
-                            android:shadowDy="1"
-                            android:shadowRadius="2" />
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingVertical="4dp">
 
-                        <TextView
-                            android:id="@+id/txtFecha"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="01 Sept 2025, 10:45 AM"
-                            android:textColor="#E3F2FD"
-                            android:textSize="13sp"
-                            android:layout_marginBottom="8dp"
-                            android:letterSpacing="0.01" />
+                            <!-- NOMBRE CON MEJOR TIPOGRAFÍA -->
+                            <TextView
+                                android:id="@+id/txtNombre"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Juan Pérez"
+                                android:textColor="#FFFFFF"
+                                android:textSize="19sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.02"
+                                android:shadowColor="#40000000"
+                                android:shadowDx="1"
+                                android:shadowDy="1"
+                                android:shadowRadius="3"
+                                android:textAllCaps="false"
+                                tools:text="Juan Pérez" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnDetalles"
-                            android:layout_width="wrap_content"
-                            android:layout_height="36dp"
-                            android:paddingHorizontal="20dp"
-                            android:text="Ver Detalles"
-                            android:textAllCaps="false"
-                            android:textSize="13sp"
-                            app:cornerRadius="18dp"
-                            android:backgroundTint="#FFFFFF"
-                            android:textColor="#1976D2"
-                            app:icon="@drawable/ic_visibility"
-                            app:iconGravity="textStart"
-                            app:iconPadding="4dp"
-                            app:iconSize="16dp"
-                            app:elevation="2dp" />
+                            <!-- FECHA MEJORADA -->
+                            <TextView
+                                android:id="@+id/txtFecha"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="01 Sept 2025, 10:45 AM"
+                                android:textColor="#E3F2FD"
+                                android:textSize="14sp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginBottom="12dp"
+                                android:letterSpacing="0.01"
+                                android:alpha="0.95"
+                                tools:text="01 Sept 2025, 10:45 AM" />
+
+                            <!-- BOTÓN DE DETALLES MEJORADO -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnDetalles"
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:paddingStart="22dp"
+                                android:paddingEnd="22dp"
+                                android:text="Ver Detalles"
+                                android:textAllCaps="false"
+                                android:textSize="14sp"
+                                app:cornerRadius="19dp"
+                                android:backgroundTint="#FFFFFF"
+                                android:textColor="#1976D2"
+                                app:icon="@drawable/ic_visibility"
+                                app:iconGravity="textStart"
+                                app:iconPadding="6dp"
+                                app:iconSize="18dp"
+                                app:iconTint="#1976D2"
+                                app:elevation="3dp"
+                                app:rippleColor="#301976D2" />
+
+                        </LinearLayout>
+
+                        <!-- BOTÓN DE DESCARGA MEJORADO -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            app:cardCornerRadius="24dp"
+                            app:cardBackgroundColor="#20FFFFFF"
+                            app:cardElevation="3dp"
+                            app:strokeColor="#40FFFFFF"
+                            app:strokeWidth="1.5dp"
+                            android:layout_marginStart="8dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageButton
+                                android:id="@+id/btnDownload"
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_download"
+                                android:tint="#FFFFFF"
+                                android:contentDescription="Descargar reporte" />
+
+                        </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
 
-                    <!-- Botón de descarga mejorado -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        app:cardCornerRadius="22dp"
-                        app:cardBackgroundColor="#1AFFFFFF"
-                        app:cardElevation="2dp"
-                        app:strokeColor="#30FFFFFF"
-                        app:strokeWidth="1dp"
-                        android:layout_marginStart="8dp">
-
-                        <ImageButton
-                            android:id="@+id/btnDownload"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/ic_download"
-                            android:tint="#FFFFFF"
-                            android:contentDescription="Descargar" />
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                </LinearLayout>
-
-                <!-- Footer del card con estado -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:background="#FAFBFC"
-                    android:gravity="center_vertical">
-
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:background="@drawable/circle_online"
-                        android:layout_marginEnd="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
+                    <!-- FOOTER MEJORADO -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Estado: Completado"
-                        android:textColor="#64748B"
-                        android:textSize="12sp" />
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="14dp"
+                        android:background="#FAFBFC"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="EPP"
-                        android:textColor="#1976D2"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        android:background="@drawable/badge_category"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="2dp" />
+                        <!-- INDICADOR DE ESTADO MEJORADO -->
+                        <View
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/circle_online"
+                            android:layout_marginEnd="10dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Estado: Completado"
+                            android:textColor="#64748B"
+                            android:textSize="13sp"
+                            android:letterSpacing="0.01" />
+
+                        <!-- BADGE DE CATEGORÍA MEJORADO -->
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="EPP"
+                            android:textColor="#1976D2"
+                            android:textSize="12sp"
+                            app:chipBackgroundColor="#E3F2FD"
+                            app:chipCornerRadius="10dp"
+                            app:chipStrokeColor="#BBDEFB"
+                            app:chipStrokeWidth="1dp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -171,4 +207,5 @@
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
