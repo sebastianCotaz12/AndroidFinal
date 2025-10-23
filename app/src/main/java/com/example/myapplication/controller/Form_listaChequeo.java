@@ -1,5 +1,7 @@
 package com.example.myapplication.controller;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,10 @@ import com.example.myapplication.databinding.ActivityFormListaChequeoBinding;
 import com.example.myapplication.utils.PrefsManager;
 import com.example.myapplication.utils.SesionManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,6 +30,7 @@ public class Form_listaChequeo extends AppCompatActivity {
     private ActivityFormListaChequeoBinding binding;
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +39,10 @@ public class Form_listaChequeo extends AppCompatActivity {
         binding = ActivityFormListaChequeoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // --- Inicializar gestores de sesión ---
         prefsManager = new PrefsManager(this);
         sesionManager = new SesionManager(this);
+        calendar = Calendar.getInstance();
 
-        // --- Verificar si hay sesión activa ---
         if (!sesionManager.haySesionActiva()) {
             Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
@@ -44,17 +50,18 @@ public class Form_listaChequeo extends AppCompatActivity {
             return;
         }
 
-        // --- Autocompletar datos del usuario ---
         String nombreUsuario = prefsManager.getNombreUsuario();
         String cargoUsuario = prefsManager.getCargo();
 
         binding.etUsuarioNombre.setText(nombreUsuario);
         binding.etUsuarioCargo.setText(cargoUsuario);
 
-        binding.etUsuarioNombre.setEnabled(false); // solo lectura
-        binding.etUsuarioCargo.setEnabled(false); // solo lectura
+        binding.etUsuarioNombre.setEnabled(false);
+        binding.etUsuarioCargo.setEnabled(false);
 
-        // --- Acción al hacer clic en Guardar ---
+        binding.etFecha.setOnClickListener(v -> mostrarDatePicker());
+        binding.etHora.setOnClickListener(v -> mostrarTimePicker());
+
         binding.btnGuardarlista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,8 +75,48 @@ public class Form_listaChequeo extends AppCompatActivity {
         });
     }
 
+    private void mostrarDatePicker() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, year, month, dayOfMonth) -> {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    actualizarFecha();
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
+    private void mostrarTimePicker() {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                (view, hourOfDay, minute) -> {
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calendar.set(Calendar.MINUTE, minute);
+                    actualizarHora();
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                false
+        );
+        timePickerDialog.show();
+    }
+
+    private void actualizarFecha() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        binding.etFecha.setText(dateFormat.format(calendar.getTime()));
+    }
+
+    private void actualizarHora() {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        binding.etHora.setText(timeFormat.format(calendar.getTime()));
+    }
+
     private void guardarDatos() {
-        // --- Datos de sesión ---
         int idUsuario = prefsManager.getIdUsuario();
         int idEmpresa = prefsManager.getIdEmpresa();
         String token = prefsManager.getToken();
@@ -80,7 +127,6 @@ public class Form_listaChequeo extends AppCompatActivity {
             return;
         }
 
-        // --- Datos del formulario ---
         String nombreUsuario = prefsManager.getNombreUsuario();
         String cargoUsuario = prefsManager.getCargo();
 
@@ -100,7 +146,6 @@ public class Form_listaChequeo extends AppCompatActivity {
             return;
         }
 
-        // --- Crear objeto lista de chequeo ---
         Crear_listaChequeo nuevaLista = new Crear_listaChequeo();
         nuevaLista.setIdUsuario(idUsuario);
         nuevaLista.setUsuarioNombre(nombreUsuario);
@@ -115,7 +160,6 @@ public class Form_listaChequeo extends AppCompatActivity {
         nuevaLista.setPlaca(placa);
         nuevaLista.setObservaciones(observaciones);
 
-        // --- Enviar datos al backend ---
         ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
         Call<ApiResponse<Crear_listaChequeo>> call = apiService.crearListaChequeo(nuevaLista);
 
