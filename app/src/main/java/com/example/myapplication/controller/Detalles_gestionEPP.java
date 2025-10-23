@@ -28,6 +28,11 @@ public class Detalles_gestionEPP extends AppCompatActivity {
         tvCargo = findViewById(R.id.tvCargo);
         tvArea = findViewById(R.id.tvNombre);
         tvCantidad = findViewById(R.id.tvCantidad);
+        findViewById(R.id.btnVolver).setOnClickListener(v -> {
+            Intent intent = new Intent(Detalles_gestionEPP.this, Lista_gestionEpp.class);
+            startActivity(intent);
+            finish();
+        });
 
         // Obtener los datos del Intent
         Intent intent = getIntent();

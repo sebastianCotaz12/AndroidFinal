@@ -24,6 +24,13 @@ public class Detalles_reportes extends AppCompatActivity {
         TextView tvImagen = findViewById(R.id.tvImagen);
         TextView tvArchivos = findViewById(R.id.tvArchivos);
         TextView tvEstado = findViewById(R.id.tvEstado);
+        findViewById(R.id.btnVolver).setOnClickListener(v -> {
+            Intent intent = new Intent(Detalles_reportes.this, Lista_reportes.class);
+            startActivity(intent);
+            finish();
+        });
+
+
 
         Intent intent = getIntent();
 

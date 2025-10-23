@@ -25,7 +25,12 @@ public class Detalles_listaChequeo extends AppCompatActivity {
         TextView tvTecnico = findViewById(R.id.tvTecnico);
         TextView tvKilometraje = findViewById(R.id.tvKilometraje);
         TextView tvPlaca = findViewById(R.id.tvPlaca); // 🔹 Nuevo campo
-        TextView tvObservaciones = findViewById(R.id.tvObservaciones); // 🔹 Nuevo campo
+        TextView tvObservaciones = findViewById(R.id.tvObservaciones);
+        findViewById(R.id.btnVolver).setOnClickListener(v -> {
+            Intent intent = new Intent(Detalles_listaChequeo.this, Lista_listaChequeo.class);
+            startActivity(intent);
+            finish();
+        });
 
         // Obtener datos del intent
         Intent intent = getIntent();

@@ -95,6 +95,12 @@ public class Form_reportes extends AppCompatActivity {
         binding.btnSeleccionarImagen.setOnClickListener(v -> seleccionarImagen());
         binding.btnSeleccionarArchivo.setOnClickListener(v -> seleccionarArchivo());
         binding.btnEnviarReporte.setOnClickListener(v -> guardarReporteMultipart());
+        binding.btnCancelar.setOnClickListener(v -> {
+            Intent intent = new Intent(Form_reportes.this, Lista_reportes.class);
+            startActivity(intent);
+            finish();
+        });
+
     }
 
     private void abrirDatePicker() {

@@ -31,6 +31,11 @@ public class Detalles_eventos extends AppCompatActivity {
         tvDescripcionEventoDetalle = findViewById(R.id.tvDescripcionEventoDetalle);
         btnAbrirArchivo = findViewById(R.id.btnAbrirArchivo);
         btnVolver = findViewById(R.id.btnVolver);
+        findViewById(R.id.btnVolver).setOnClickListener(v -> {
+            Intent intent = new Intent(Detalles_eventos.this, Lista_eventos.class);
+            startActivity(intent);
+            finish();
+        });
 
         // Obtener datos del Intent
         Intent intent = getIntent();

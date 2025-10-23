@@ -324,6 +324,50 @@
         app:strokeColor="#E0E0E0"
         app:strokeWidth="0.5dp"
         android:backgroundTint="#FFFFFF">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingHorizontal="24dp"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVolver"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Volver"
+                android:textColor="#2196F3"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:cornerRadius="24dp"
+                app:strokeColor="#2196F3"
+                app:strokeWidth="1dp"
+                android:backgroundTint="@android:color/transparent"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fab"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Editar"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_edit"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:cornerRadius="24dp"
+                android:backgroundTint="#2196F3"
+                style="@style/Widget.Material3.Button" />
+
+        </LinearLayout>
 
 
     </com.google.android.material.card.MaterialCardView>

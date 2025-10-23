@@ -3,6 +3,7 @@ package com.example.myapplication.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,6 +55,15 @@ public class Lista_gestionEpp extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // 🔹 Botón de regresar al inicio de sesión
+        ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
+        btnVolverLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(Lista_gestionEpp.this, Menu.class);
+            startActivity(intent);
+            finish();
+        });
+
+
         obtenerGestiones();
     }
 
@@ -68,17 +78,16 @@ public class Lista_gestionEpp extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                "https://backsst.onrender.com/listarGestions", // ✅ usa el endpoint filtrado por usuario
+                "https://backsst.onrender.com/listarGestions",
                 null,
                 response -> {
                     try {
-                        JSONArray datosArray = response.getJSONArray("data"); // ✅ accede a "data"
+                        JSONArray datosArray = response.getJSONArray("data");
                         lista.clear();
 
                         for (int i = 0; i < datosArray.length(); i++) {
                             JSONObject obj = datosArray.getJSONObject(i);
 
-                            // --- Extraer productos (solo nombres) ---
                             JSONArray productosArray = obj.optJSONArray("productos");
                             StringBuilder productosNombres = new StringBuilder();
                             if (productosArray != null) {
@@ -90,28 +99,23 @@ public class Lista_gestionEpp extends AppCompatActivity {
                                 }
                             }
 
-                            // --- Extraer área ---
                             String nombreArea = "Sin área";
                             JSONObject areaObj = obj.optJSONObject("area");
                             if (areaObj != null) {
                                 nombreArea = areaObj.optString("nombre", "Sin área");
                             }
 
-                            // --- Extraer y formatear fecha ---
                             String fechaRaw = obj.optString("createdAt", null);
                             String fechaFormateada = "Sin fecha";
                             if (fechaRaw != null && !fechaRaw.equals("null")) {
                                 fechaFormateada = formatearFecha(fechaRaw);
                             }
 
-                            // --- Estado lógico (boolean a texto) ---
                             boolean estadoBool = obj.optBoolean("estado", false);
                             String estadoTexto = estadoBool ? "Activo" : "Inactivo";
 
-                            // --- Extraer cargo (solo ID disponible) ---
                             String cargo = "ID: " + obj.optInt("idCargo", 0);
 
-                            // --- Crear el ítem ---
                             Item_gestionEpp item = new Item_gestionEpp(
                                     obj.getInt("id"),
                                     obj.optString("cedula", "Sin cédula"),
@@ -146,7 +150,6 @@ public class Lista_gestionEpp extends AppCompatActivity {
         queue.add(request);
     }
 
-    // 🔹 Método auxiliar para convertir fecha ISO a formato legible
     private String formatearFecha(String fechaIso) {
         try {
             SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault());

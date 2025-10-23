@@ -1,6 +1,7 @@
 package com.example.myapplication.controller;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -79,6 +80,11 @@ public class Form_actLudicas extends AppCompatActivity {
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
         binding.ivAdjuntar.setOnClickListener(v -> seleccionarImagen());
         binding.btnEnviarEvidencia.setOnClickListener(v -> guardarActividadBase64());
+        binding.btnCancelar.setOnClickListener(v -> {
+            Intent intent = new Intent(Form_actLudicas.this, Lista_actLudicas.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void abrirDatePicker() {

@@ -3,6 +3,7 @@ package com.example.myapplication.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityListaListaChequeoBinding;
 import com.example.myapplication.utils.PrefsManager;
 import com.example.myapplication.utils.SesionManager;
@@ -76,6 +78,13 @@ public class Lista_listaChequeo extends AppCompatActivity {
         // Botón para crear nueva lista de chequeo
         binding.imgButtonCrearlista.setOnClickListener(v -> {
             startActivity(new Intent(Lista_listaChequeo.this, Form_listaChequeo.class));
+        });
+        // 🔹 Botón de regresar al inicio de sesión
+        ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
+        btnVolverLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(Lista_listaChequeo.this, Menu.class);
+            startActivity(intent);
+            finish();
         });
     }
 

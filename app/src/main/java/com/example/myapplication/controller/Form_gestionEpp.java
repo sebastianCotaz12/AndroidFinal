@@ -1,6 +1,7 @@
 package com.example.myapplication.controller;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -82,6 +83,11 @@ public class Form_gestionEpp extends AppCompatActivity {
 
         // === Botón enviar ===
         binding.btnEnviarGestion.setOnClickListener(v -> guardarGestion());
+        binding.btnCancelar.setOnClickListener(v -> {
+            Intent intent = new Intent(Form_gestionEpp.this, Lista_gestionEpp.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void abrirDatePicker() {

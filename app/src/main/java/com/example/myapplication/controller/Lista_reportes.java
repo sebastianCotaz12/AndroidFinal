@@ -2,6 +2,7 @@ package com.example.myapplication.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityListaReportesBinding;
 import com.example.myapplication.utils.PrefsManager;
 
@@ -69,6 +71,13 @@ public class Lista_reportes extends AppCompatActivity {
         binding.imgButtonCrearreporte.setOnClickListener(v -> {
             Intent intent = new Intent(Lista_reportes.this, Form_reportes.class);
             formLauncher.launch(intent);
+        });
+        // 🔹 Botón de regresar al inicio de sesión
+        ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
+        btnVolverLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(Lista_reportes.this, Menu.class);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -144,4 +153,5 @@ public class Lista_reportes extends AppCompatActivity {
 
         queue.add(request);
     }
+
 }

@@ -3,6 +3,7 @@ package com.example.myapplication.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,6 +60,13 @@ public class Lista_actLudicas extends AppCompatActivity {
         btnCrear.setOnClickListener(v -> {
             Intent intent = new Intent(Lista_actLudicas.this, Form_actLudicas.class);
             startActivity(intent);
+        });
+        // 🔹 Botón de regresar al inicio de sesión
+        ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
+        btnVolverLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(Lista_actLudicas.this, Menu.class);
+            startActivity(intent);
+            finish();
         });
 
         obtenerActividades();

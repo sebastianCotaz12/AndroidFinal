@@ -61,6 +61,11 @@ public class Form_listaChequeo extends AppCompatActivity {
                 guardarDatos();
             }
         });
+        binding.btnCancelar.setOnClickListener(v -> {
+            Intent intent = new Intent(Form_listaChequeo.this, Lista_listaChequeo.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void guardarDatos() {

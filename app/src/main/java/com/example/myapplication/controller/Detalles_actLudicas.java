@@ -1,5 +1,6 @@
 package com.example.myapplication.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,5 +39,10 @@ public class Detalles_actLudicas extends AppCompatActivity {
                     .error(R.drawable.ic_launcher_foreground)
                     .into(ivEvidencia);
         }
+        findViewById(R.id.btnVolver).setOnClickListener(v -> {
+            Intent intent = new Intent(Detalles_actLudicas.this, Lista_actLudicas.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }

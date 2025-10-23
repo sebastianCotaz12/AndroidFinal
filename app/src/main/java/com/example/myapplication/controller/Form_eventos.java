@@ -69,6 +69,11 @@ public class Form_eventos extends AppCompatActivity {
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
         binding.ivAdjuntar.setOnClickListener(v -> seleccionarImagen());
         binding.btnEnviarEvidencia.setOnClickListener(v -> guardarEventosBase64());
+        binding.btnCancelar.setOnClickListener(v -> {
+            Intent intent = new Intent(Form_eventos.this, Lista_eventos.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void abrirDatePicker() {

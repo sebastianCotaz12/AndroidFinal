@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +64,13 @@ public class Lista_eventos extends AppCompatActivity {
         btnCrear.setOnClickListener(v -> {
             Intent intent = new Intent(Lista_eventos.this, Form_eventos.class);
             startActivity(intent);
+        });
+        // 🔹 Botón de regresar al inicio de sesión
+        ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
+        btnVolverLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(Lista_eventos.this, Menu.class);
+            startActivity(intent);
+            finish();
         });
 
         // Cargar lista de eventos
