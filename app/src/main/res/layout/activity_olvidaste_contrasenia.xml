@@ -140,54 +140,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="24dp">
-
-                    <!-- Código Captcha -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="70dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="12dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardBackgroundColor="#F8FAFC"
-                        app:cardElevation="4dp"
-                        app:strokeColor="#E2E8F0"
-                        app:strokeWidth="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:background="@drawable/captcha_background">
-
-                            <TextView
-                                android:id="@+id/txtCodigo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="SST"
-                                android:textColor="#1A237E"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="2"
-                                android:padding="16dp" />
-
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <!-- Botón Refrescar -->
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:text="🔄"
-                        android:textSize="18sp"
-                        app:cornerRadius="30dp"
-                        android:backgroundTint="#1976D2"
-                        android:textColor="@android:color/white"
-                        app:elevation="4dp"
-                        app:iconPadding="0dp" />
-
-                </LinearLayout>
+                    android:layout_marginBottom="24dp"/>
 
                 <!-- Campo Código de Verificación -->
                 <LinearLayout

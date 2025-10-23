@@ -1,417 +1,842 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#E3F2FD"
+    android:background="#F8FAFC"
     tools:context=".controller.Form_listaChequeo">
 
-    <!-- Barra superior -->
-    <LinearLayout
+    <!-- HEADER MODERNO -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="12dp"
-        android:background="#1565C0"
-        android:elevation="6dp">
+        android:layout_height="200dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        android:outlineProvider="none">
 
-        <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_form"
-            android:tint="@android:color/white"
-            android:contentDescription="Icono Lista" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Lista de Chequeo"
-            android:textSize="20sp"
-            android:textStyle="bold"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/gradient_background"
             android:gravity="center"
-            android:textColor="@android:color/white" />
+            android:paddingTop="50dp">
 
-        <ImageView
-            android:id="@+id/img_logo"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:src="@drawable/logo"
-            android:contentDescription="Logo" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_checklist"
+                android:tint="#FFFFFF"
+                android:contentDescription="Lista de Chequeo"
+                android:layout_marginBottom="12dp" />
 
-    <!-- Título -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Crear Lista de Chequeo"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#0D47A1"
-        android:gravity="center"
-        android:layout_marginVertical="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lista de Chequeo"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.02" />
 
-    <!-- Contenedor con Scroll -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Formulario de Registro"
+                android:textColor="#E3F2FD"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- CONTENIDO PRINCIPAL -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingHorizontal="16dp"
-        android:scrollbars="none">
+        android:padding="20dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
 
-
-
-            <!-- Nombre Usuario -->
-            <LinearLayout
+            <!-- TARJETA DE INFORMACIÓN BÁSICA -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#E3F2FD"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FFFFFF">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nombre Usuario"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                <EditText
-                    android:id="@+id/etUsuarioNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ingrese nombre"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Cargo"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
-
-                <EditText
-                    android:id="@+id/etUsuarioCargo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Cargo del usuario"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:enabled="false" />
-            </LinearLayout>
-
-            <!-- Fecha -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Fecha"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
-
-                <EditText
-                    android:id="@+id/etFecha"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Seleccione fecha"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:focusable="false"
-                    android:inputType="date" />
-            </LinearLayout>
-
-            <!-- Hora -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hora"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
-
-                <EditText
-                    android:id="@+id/etHora"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Seleccione hora"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:inputType="time" />
-            </LinearLayout>
-
-            <!-- Modelo -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Modelo"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
-
-                <EditText
-                    android:id="@+id/etModelo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ingrese modelo"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <!-- Marca -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Marca"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
-
-                <EditText
-                    android:id="@+id/etMarca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ingrese marca"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <!-- Placa -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Placa"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
-
-                <EditText
-                    android:id="@+id/etPlaca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ingrese placa"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <!-- Kilometraje -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Kilometraje"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
-
-                <EditText
-                    android:id="@+id/etKilometraje"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ingrese kilometraje"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:inputType="number" />
-            </LinearLayout>
-
-            <!-- SOAT -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="SOAT"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
-
-                <RadioGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rbSoatSi"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Si" />
+                        android:text="INFORMACIÓN BÁSICA"
+                        android:textColor="#2196F3"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="16dp" />
 
-                    <RadioButton
-                        android:id="@+id/rbSoatNo"
-                        android:layout_width="wrap_content"
+                    <!-- Nombre Usuario -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No" />
-                </RadioGroup>
-            </LinearLayout>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
 
-            <!-- Técnico -->
-            <LinearLayout
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_person"
+                            android:tint="#2196F3"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="NOMBRE USUARIO"
+                                android:textColor="#78909C"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.05" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:boxBackgroundMode="outline"
+                                app:boxBackgroundColor="@android:color/transparent"
+                                app:boxCornerRadiusBottomEnd="12dp"
+                                app:boxCornerRadiusBottomStart="12dp"
+                                app:boxCornerRadiusTopEnd="12dp"
+                                app:boxCornerRadiusTopStart="12dp"
+                                app:boxStrokeColor="#E3F2FD"
+                                android:layout_marginTop="4dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etUsuarioNombre"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Ingrese nombre"
+                                    android:textSize="16sp"
+                                    android:textColor="#263238" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Cargo -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_work"
+                            android:tint="#2196F3"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CARGO"
+                                android:textColor="#78909C"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.05" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:boxBackgroundMode="outline"
+                                app:boxBackgroundColor="@android:color/transparent"
+                                app:boxCornerRadiusBottomEnd="12dp"
+                                app:boxCornerRadiusBottomStart="12dp"
+                                app:boxCornerRadiusTopEnd="12dp"
+                                app:boxCornerRadiusTopStart="12dp"
+                                app:boxStrokeColor="#E3F2FD"
+                                android:layout_marginTop="4dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etUsuarioCargo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Cargo del usuario"
+                                    android:textSize="16sp"
+                                    android:textColor="#263238"
+                                    android:enabled="false" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Fecha y Hora -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <!-- Fecha -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_date"
+                                android:tint="#2196F3"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="FECHA"
+                                    android:textColor="#78909C"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:letterSpacing="0.05" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxBackgroundColor="@android:color/transparent"
+                                    app:boxCornerRadiusBottomEnd="12dp"
+                                    app:boxCornerRadiusBottomStart="12dp"
+                                    app:boxCornerRadiusTopEnd="12dp"
+                                    app:boxCornerRadiusTopStart="12dp"
+                                    app:boxStrokeColor="#E3F2FD"
+                                    android:layout_marginTop="4dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etFecha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Seleccione fecha"
+                                        android:textSize="16sp"
+                                        android:textColor="#263238" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Hora -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingStart="16dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_time"
+                                android:tint="#2196F3"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="HORA"
+                                    android:textColor="#78909C"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:letterSpacing="0.05" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxBackgroundColor="@android:color/transparent"
+                                    app:boxCornerRadiusBottomEnd="12dp"
+                                    app:boxCornerRadiusBottomStart="12dp"
+                                    app:boxCornerRadiusTopEnd="12dp"
+                                    app:boxCornerRadiusTopStart="12dp"
+                                    app:boxStrokeColor="#E3F2FD"
+                                    android:layout_marginTop="4dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etHora"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Seleccione hora"
+                                        android:textSize="16sp"
+                                        android:textColor="#263238" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- TARJETA DE INFORMACIÓN DEL VEHÍCULO -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/bg_card_blue">
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#E3F2FD"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FFFFFF">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Revisión Técnica"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                <RadioGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rbTecnicoSi"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Si" />
+                        android:text="INFORMACIÓN DEL VEHÍCULO"
+                        android:textColor="#2196F3"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="16dp" />
 
-                    <RadioButton
-                        android:id="@+id/rbTecnicoNo"
-                        android:layout_width="wrap_content"
+                    <!-- Marca y Modelo -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No" />
-                </RadioGroup>
-            </LinearLayout>
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
 
-            <!-- Observaciones -->
-            <LinearLayout
+                        <!-- Marca -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_brand"
+                                android:tint="#2196F3"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="MARCA"
+                                    android:textColor="#78909C"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:letterSpacing="0.05" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxBackgroundColor="@android:color/transparent"
+                                    app:boxCornerRadiusBottomEnd="12dp"
+                                    app:boxCornerRadiusBottomStart="12dp"
+                                    app:boxCornerRadiusTopEnd="12dp"
+                                    app:boxCornerRadiusTopStart="12dp"
+                                    app:boxStrokeColor="#E3F2FD"
+                                    android:layout_marginTop="4dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etMarca"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Ingrese marca"
+                                        android:textSize="16sp"
+                                        android:textColor="#263238" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Modelo -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingStart="16dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_model"
+                                android:tint="#2196F3"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="MODELO"
+                                    android:textColor="#78909C"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:letterSpacing="0.05" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxBackgroundColor="@android:color/transparent"
+                                    app:boxCornerRadiusBottomEnd="12dp"
+                                    app:boxCornerRadiusBottomStart="12dp"
+                                    app:boxCornerRadiusTopEnd="12dp"
+                                    app:boxCornerRadiusTopStart="12dp"
+                                    app:boxStrokeColor="#E3F2FD"
+                                    android:layout_marginTop="4dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etModelo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Ingrese modelo"
+                                        android:textSize="16sp"
+                                        android:textColor="#263238" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Placa y Kilometraje -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <!-- Placa -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_plate"
+                                android:tint="#2196F3"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="PLACA"
+                                    android:textColor="#78909C"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:letterSpacing="0.05" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxBackgroundColor="@android:color/transparent"
+                                    app:boxCornerRadiusBottomEnd="12dp"
+                                    app:boxCornerRadiusBottomStart="12dp"
+                                    app:boxCornerRadiusTopEnd="12dp"
+                                    app:boxCornerRadiusTopStart="12dp"
+                                    app:boxStrokeColor="#E3F2FD"
+                                    android:layout_marginTop="4dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etPlaca"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Ingrese placa"
+                                        android:textSize="16sp"
+                                        android:textColor="#263238" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Kilometraje -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:paddingStart="16dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_odometer"
+                                android:tint="#2196F3"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="KILOMETRAJE"
+                                    android:textColor="#78909C"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:letterSpacing="0.05" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:boxBackgroundMode="outline"
+                                    app:boxBackgroundColor="@android:color/transparent"
+                                    app:boxCornerRadiusBottomEnd="12dp"
+                                    app:boxCornerRadiusBottomStart="12dp"
+                                    app:boxCornerRadiusTopEnd="12dp"
+                                    app:boxCornerRadiusTopStart="12dp"
+                                    app:boxStrokeColor="#E3F2FD"
+                                    android:layout_marginTop="4dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etKilometraje"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Ingrese kilometraje"
+                                        android:textSize="16sp"
+                                        android:textColor="#263238"
+                                        android:inputType="number" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- SOAT y Revisión Técnica -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- SOAT -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="8dp">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/ic_insurance"
+                                    android:tint="#2196F3"
+                                    android:layout_marginEnd="12dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="SOAT"
+                                    android:textColor="#78909C"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:letterSpacing="0.05" />
+                            </LinearLayout>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="#E3F2FD"
+                                app:strokeWidth="1dp"
+                                android:padding="8dp">
+
+                                <RadioGroup
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center">
+
+                                    <com.google.android.material.radiobutton.MaterialRadioButton
+                                        android:id="@+id/rbSoatSi"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Sí"
+                                        android:textColor="#263238" />
+
+                                    <com.google.android.material.radiobutton.MaterialRadioButton
+                                        android:id="@+id/rbSoatNo"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="No"
+                                        android:textColor="#263238" />
+                                </RadioGroup>
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                        <!-- Revisión Técnica -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingStart="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                android:layout_marginBottom="8dp">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:src="@drawable/ic_technician"
+                                    android:tint="#2196F3"
+                                    android:layout_marginEnd="12dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="REVISIÓN TÉCNICA"
+                                    android:textColor="#78909C"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:letterSpacing="0.05" />
+                            </LinearLayout>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="#E3F2FD"
+                                app:strokeWidth="1dp"
+                                android:padding="8dp">
+
+                                <RadioGroup
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center">
+
+                                    <com.google.android.material.radiobutton.MaterialRadioButton
+                                        android:id="@+id/rbTecnicoSi"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Sí"
+                                        android:textColor="#263238" />
+
+                                    <com.google.android.material.radiobutton.MaterialRadioButton
+                                        android:id="@+id/rbTecnicoNo"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="No"
+                                        android:textColor="#263238" />
+                                </RadioGroup>
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- TARJETA DE OBSERVACIONES -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_card_blue">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#E3F2FD"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FFFFFF">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Observaciones"
-                    android:textColor="#0D47A1"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="6dp" />
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                <EditText
-                    android:id="@+id/etObservaciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:hint="Ingrese observaciones"
-                    android:gravity="top|start"
-                    android:background="@drawable/bg_edittext_blue"
-                    android:padding="10dp"
-                    android:inputType="textMultiLine" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_observation"
+                            android:tint="#2196F3"
+                            android:layout_marginEnd="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OBSERVACIONES"
+                            android:textColor="#78909C"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.05" />
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxBackgroundMode="outline"
+                        app:boxBackgroundColor="@android:color/transparent"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="#E3F2FD"
+                        android:layout_marginTop="4dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etObservaciones"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            android:hint="Ingrese observaciones"
+                            android:gravity="top|start"
+                            android:textSize="16sp"
+                            android:textColor="#263238"
+                            android:inputType="textMultiLine" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón Guardar -->
-    <Button
-        android:id="@+id/btnGuardarlista"
+    <!-- BARRA INFERIOR DE ACCIONES -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Guardar Lista de Chequeo"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:backgroundTint="#0D47A1"
-        android:textColor="@android:color/white"
-        android:elevation="8dp"
-        android:layout_margin="16dp"
-        android:paddingVertical="14dp" />
+        android:layout_height="72dp"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="12dp"
+        app:strokeColor="#E0E0E0"
+        app:strokeWidth="0.5dp"
+        android:backgroundTint="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingHorizontal="24dp"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Cancelar"
+                android:textColor="#2196F3"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:cornerRadius="24dp"
+                app:strokeColor="#2196F3"
+                app:strokeWidth="1dp"
+                android:backgroundTint="@android:color/transparent"
+                style="@style/Widget.Material3.Button.OutlinedButton" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuardarlista"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="Guardar Lista"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_save"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:cornerRadius="24dp"
+                android:backgroundTint="#2196F3"
+                style="@style/Widget.Material3.Button" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>

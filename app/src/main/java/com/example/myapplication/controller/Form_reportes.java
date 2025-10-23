@@ -130,11 +130,26 @@ public class Form_reportes extends AppCompatActivity {
         return RequestBody.create(value != null ? value : "", MediaType.parse("text/plain"));
     }
 
+    /**
+     * Prepara un archivo multipart conservando su extensión real.
+     * Evita el error "Invalid file extension tmp".
+     */
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
-        if (fileUri == null) return null;
+        if (fileUri == null) return null; // si no hay archivo, no se incluye
+
         try {
+            // Obtener nombre y extensión original
+            String fileName = "upload_" + System.currentTimeMillis();
+            String mimeType = getContentResolver().getType(fileUri);
+
+            if (mimeType != null && mimeType.contains("/")) {
+                String extension = mimeType.substring(mimeType.lastIndexOf("/") + 1);
+                fileName += "." + extension;
+            }
+
+            // Crear archivo temporal con la extensión correcta
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
-            File tempFile = File.createTempFile("upload_", null, getCacheDir());
+            File tempFile = new File(getCacheDir(), fileName);
             FileOutputStream outputStream = new FileOutputStream(tempFile);
 
             byte[] buffer = new byte[4096];
@@ -145,7 +160,8 @@ public class Form_reportes extends AppCompatActivity {
             inputStream.close();
             outputStream.close();
 
-            RequestBody requestFile = RequestBody.create(tempFile, MediaType.parse("multipart/form-data"));
+            // Crear parte multipart
+            RequestBody requestFile = RequestBody.create(tempFile, MediaType.parse(mimeType != null ? mimeType : "application/octet-stream"));
             return MultipartBody.Part.createFormData(partName, tempFile.getName(), requestFile);
 
         } catch (Exception e) {
@@ -163,7 +179,7 @@ public class Form_reportes extends AppCompatActivity {
 
         String nombreUsuario = binding.etNombreUsuario.getText().toString().trim();
         String cargoTextoPlano = binding.etCargoUsuario.getText().toString().trim();
-        String cargoJsonArray = "[\"" + cargoTextoPlano + "\"]"; // mantener si la API espera array
+        String cargoJsonArray = "[\"" + cargoTextoPlano + "\"]";
 
         // --- Datos ingresados manualmente ---
         String fecha = binding.etFecha.getText().toString().trim();
@@ -199,8 +215,8 @@ public class Form_reportes extends AppCompatActivity {
                 createPartFromString(lugar),
                 createPartFromString(descripcion),
                 createPartFromString(estado),
-                imagenPart,
-                archivoPart
+                imagenPart,  // puede ser null
+                archivoPart  // puede ser null
         );
 
         call.enqueue(new Callback<ApiResponse<Crear_reportes>>() {
