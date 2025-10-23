@@ -474,13 +474,13 @@
                                 android:textStyle="bold"
                                 android:letterSpacing="0.05" />
 
-                            <TextView
-                                android:id="@+id/tvImagen"
+                            <ImageView
+                                android:id="@+id/imgReporte"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textSize="14sp"
-                                android:textColor="#455A64"
-                                android:layout_marginTop="4dp" />
+                                android:layout_height="200dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/placeholder_image"
+                                android:contentDescription="Imagen del reporte" />
                         </LinearLayout>
                     </LinearLayout>
 

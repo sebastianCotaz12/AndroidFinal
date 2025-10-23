@@ -46,4 +46,8 @@
     <color name="evento_emergencia">#D32F2F</color>
     <color name="evento_default">#546E7A</color>
 
+    <color name="estado_realizado">#4CAF50</color>
+    <color name="estado_proceso">#FF9800</color>
+    <color name="estado_pendiente">#2196F3</color>
+
 </resources>

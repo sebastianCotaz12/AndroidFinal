@@ -147,6 +147,7 @@
                         </LinearLayout>
                     </LinearLayout>
 
+
                     <!-- Cargo -->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -196,6 +197,61 @@
                                     android:textSize="16sp"
                                     android:textColor="#263238"
                                     android:enabled="false" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Cédula -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_id"
+                            android:tint="#2196F3"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CÉDULA"
+                                android:textColor="#78909C"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.05" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:boxBackgroundMode="outline"
+                                app:boxBackgroundColor="@android:color/transparent"
+                                app:boxCornerRadiusBottomEnd="12dp"
+                                app:boxCornerRadiusBottomStart="12dp"
+                                app:boxCornerRadiusTopEnd="12dp"
+                                app:boxCornerRadiusTopStart="12dp"
+                                app:boxStrokeColor="#E3F2FD"
+                                android:layout_marginTop="4dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etCedula"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Cédula"
+                                    android:textSize="16sp"
+                                    android:textColor="#263238"
+                                    android:inputType="number" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>

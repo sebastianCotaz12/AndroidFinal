@@ -72,7 +72,7 @@ public class Lista_reportes extends AppCompatActivity {
             Intent intent = new Intent(Lista_reportes.this, Form_reportes.class);
             formLauncher.launch(intent);
         });
-        // 🔹 Botón de regresar al inicio de sesión
+
         ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
         btnVolverLogin.setOnClickListener(v -> {
             Intent intent = new Intent(Lista_reportes.this, Menu.class);
@@ -115,33 +115,58 @@ public class Lista_reportes extends AppCompatActivity {
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
 
+                            // Manejar cargo correctamente
+                            String cargo = "No disponible";
+                            if (obj.has("cargo")) {
+                                if (obj.isNull("cargo")) {
+                                    cargo = "No disponible";
+                                } else if (obj.get("cargo") instanceof String) {
+                                    cargo = obj.getString("cargo");
+                                } else if (obj.get("cargo") instanceof JSONObject) {
+                                    JSONObject cargoObj = obj.getJSONObject("cargo");
+                                    cargo = cargoObj.optString("nombre", "No disponible");
+                                }
+                            }
+                            cargo = cargo.replace("[", "").replace("]", "").replace("\"", "").trim();
 
-                            String cargoRaw = obj.getString("cargo");
-                            String cargoLimpio = cargoRaw.replace("{", "").replace("}", "").replace("\"", "");
+                            // 🔹 OBTENER CÉDULA COMO STRING
+                            String cedula = "";
+                            if (obj.has("cedula") && !obj.isNull("cedula")) {
+                                if (obj.get("cedula") instanceof Integer) {
+                                    cedula = String.valueOf(obj.getInt("cedula"));
+                                } else if (obj.get("cedula") instanceof String) {
+                                    cedula = obj.getString("cedula");
+                                } else if (obj.get("cedula") instanceof Double) {
+                                    cedula = String.valueOf(obj.getDouble("cedula")).split("\\.")[0];
+                                }
+                            }
 
                             ItemReporte item = new ItemReporte(
                                     obj.getInt("idReporte"),
                                     obj.getString("nombreUsuario"),
-                                    cargoLimpio,
-                                    obj.getString("cedula"),
+                                    cargo,
+                                    cedula, // 🔹 ENVIAR COMO STRING
                                     obj.getString("fecha"),
                                     obj.getString("lugar"),
                                     obj.getString("descripcion"),
-                                    obj.optString("imagen"),
-                                    obj.optString("archivos"),
-                                    obj.optString("estado")
+                                    obj.optString("imagen", ""),
+                                    obj.optString("archivos", ""),
+                                    obj.optString("estado", "Pendiente")
                             );
                             listaReportes.add(item);
-
                         }
 
                         adapter.notifyDataSetChanged();
 
                     } catch (Exception e) {
                         Toast.makeText(this, "Error parseando datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
                     }
                 },
-                error -> Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show()
+                error -> {
+                    Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    error.printStackTrace();
+                }
         ) {
             @Override
             public java.util.Map<String, String> getHeaders() {
@@ -153,5 +178,4 @@ public class Lista_reportes extends AppCompatActivity {
 
         queue.add(request);
     }
-
 }

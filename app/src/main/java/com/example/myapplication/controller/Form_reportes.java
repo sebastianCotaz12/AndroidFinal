@@ -42,7 +42,6 @@ public class Form_reportes extends AppCompatActivity {
     private Uri imagenUri = null;
     private Uri archivoUri = null;
 
-    // ---- Selectores ----
     private final ActivityResultLauncher<Intent> seleccionarImagenLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -70,7 +69,6 @@ public class Form_reportes extends AppCompatActivity {
         prefsManager = new PrefsManager(this);
         sesionManager = new SesionManager(this);
 
-        // --- Verificar sesión ---
         if (!sesionManager.haySesionActiva()) {
             Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
@@ -78,19 +76,20 @@ public class Form_reportes extends AppCompatActivity {
             return;
         }
 
-        // --- Autocompletar datos de sesión ---
         binding.etNombreUsuario.setText(prefsManager.getNombreUsuario());
         binding.etNombreUsuario.setEnabled(false);
 
         binding.etCargoUsuario.setText(prefsManager.getCargo());
         binding.etCargoUsuario.setEnabled(false);
 
-        // --- Spinner de estado ---
+        // 🔹 REMOVIDO: No autocompletar la cédula, el usuario la digitará
+        // binding.etCedula.setText(String.valueOf(prefsManager.getCedula()));
+        // binding.etCedula.setEnabled(false);
+
         String[] opcionesEstado = {"Pendiente", "En Proceso", "Realizado"};
         ArrayAdapter<String> adapterEstado = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, opcionesEstado);
         binding.spEstado.setAdapter(adapterEstado);
 
-        // --- Listeners ---
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
         binding.btnSeleccionarImagen.setOnClickListener(v -> seleccionarImagen());
         binding.btnSeleccionarArchivo.setOnClickListener(v -> seleccionarArchivo());
@@ -100,7 +99,6 @@ public class Form_reportes extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-
     }
 
     private void abrirDatePicker() {
@@ -136,15 +134,14 @@ public class Form_reportes extends AppCompatActivity {
         return RequestBody.create(value != null ? value : "", MediaType.parse("text/plain"));
     }
 
-    /**
-     * Prepara un archivo multipart conservando su extensión real.
-     * Evita el error "Invalid file extension tmp".
-     */
+    private RequestBody createPartFromInt(int value) {
+        return RequestBody.create(String.valueOf(value), MediaType.parse("text/plain"));
+    }
+
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
-        if (fileUri == null) return null; // si no hay archivo, no se incluye
+        if (fileUri == null) return null;
 
         try {
-            // Obtener nombre y extensión original
             String fileName = "upload_" + System.currentTimeMillis();
             String mimeType = getContentResolver().getType(fileUri);
 
@@ -153,7 +150,6 @@ public class Form_reportes extends AppCompatActivity {
                 fileName += "." + extension;
             }
 
-            // Crear archivo temporal con la extensión correcta
             InputStream inputStream = getContentResolver().openInputStream(fileUri);
             File tempFile = new File(getCacheDir(), fileName);
             FileOutputStream outputStream = new FileOutputStream(tempFile);
@@ -166,7 +162,6 @@ public class Form_reportes extends AppCompatActivity {
             inputStream.close();
             outputStream.close();
 
-            // Crear parte multipart
             RequestBody requestFile = RequestBody.create(tempFile, MediaType.parse(mimeType != null ? mimeType : "application/octet-stream"));
             return MultipartBody.Part.createFormData(partName, tempFile.getName(), requestFile);
 
@@ -178,7 +173,6 @@ public class Form_reportes extends AppCompatActivity {
     }
 
     private void guardarReporteMultipart() {
-        // --- Datos del usuario (desde login) ---
         int idUsuario = prefsManager.getIdUsuario();
         int idEmpresa = prefsManager.getIdEmpresa();
         String token = prefsManager.getToken();
@@ -187,13 +181,20 @@ public class Form_reportes extends AppCompatActivity {
         String cargoTextoPlano = binding.etCargoUsuario.getText().toString().trim();
         String cargoJsonArray = "[\"" + cargoTextoPlano + "\"]";
 
-        // --- Datos ingresados manualmente ---
+        // 🔹 OBTENER CÉDULA COMO STRING (no como int)
+        String cedula = binding.etCedula.getText().toString().trim();
+        if (cedula.isEmpty()) {
+            Toast.makeText(this, "⚠️ Ingrese su cédula", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String fecha = binding.etFecha.getText().toString().trim();
         String lugar = binding.etLugar.getText().toString().trim();
         String descripcion = binding.etDescripcion.getText().toString().trim();
         String estado = binding.spEstado.getSelectedItem().toString();
 
-        if (fecha.isEmpty() || lugar.isEmpty() || descripcion.isEmpty()) {
+        // Validación de campos obligatorios
+        if (cedula.isEmpty() || fecha.isEmpty() || lugar.isEmpty() || descripcion.isEmpty()) {
             Toast.makeText(this, "⚠️ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
             return;
         }
@@ -204,7 +205,6 @@ public class Form_reportes extends AppCompatActivity {
             return;
         }
 
-        // --- Cliente con token JWT ---
         ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
         Log.d("TOKEN_DEBUG", "Token usado al crear reporte: " + token);
 
@@ -216,13 +216,13 @@ public class Form_reportes extends AppCompatActivity {
                 createPartFromString(String.valueOf(idEmpresa)),
                 createPartFromString(nombreUsuario),
                 createPartFromString(cargoJsonArray),
-                createPartFromString(""), // cedula eliminado (no usado)
+                createPartFromString(cedula), // 🔹 ENVIAR CÉDULA COMO STRING
                 createPartFromString(fecha),
                 createPartFromString(lugar),
                 createPartFromString(descripcion),
                 createPartFromString(estado),
-                imagenPart,  // puede ser null
-                archivoPart  // puede ser null
+                imagenPart,
+                archivoPart
         );
 
         call.enqueue(new Callback<ApiResponse<Crear_reportes>>() {

@@ -14,7 +14,7 @@ public class Crear_reportes {
     private String cargo;
 
     @SerializedName("cedula")
-    private String cedula;
+    private int cedula; // 🔹 Mantener como int
 
     @SerializedName("fecha")
     private String fecha;
@@ -39,13 +39,14 @@ public class Crear_reportes {
 
     public Crear_reportes() {}
 
-    public Crear_reportes(Integer idUsuario, String nombreUsuario, String cargo, String cedula,
+    // 🔹 CORREGIDO: Cambiar cedula de String a int en el constructor
+    public Crear_reportes(Integer idUsuario, String nombreUsuario, String cargo, int cedula,
                           String fecha, String lugar, String descripcion,
                           String imagen, String archivos, String estado, Integer idEmpresa) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.cargo = cargo;
-        this.cedula = cedula;
+        this.cedula = cedula; // 🔹 Ahora es int
         this.fecha = fecha;
         this.lugar = lugar;
         this.descripcion = descripcion;
@@ -59,7 +60,7 @@ public class Crear_reportes {
     public Integer getIdUsuario() { return idUsuario; }
     public String getNombreUsuario() { return nombreUsuario; }
     public String getCargo() { return cargo; }
-    public String getCedula() { return cedula; }
+    public int getCedula() { return cedula; } // 🔹 Cambiar de String a int
     public String getFecha() { return fecha; }
     public String getLugar() { return lugar; }
     public String getDescripcion() { return descripcion; }
@@ -71,7 +72,7 @@ public class Crear_reportes {
     public void setIdUsuario(Integer idUsuario) { this.idUsuario = idUsuario; }
     public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
     public void setCargo(String cargo) { this.cargo = cargo; }
-    public void setCedula(String cedula) { this.cedula = cedula; }
+    public void setCedula(int cedula) { this.cedula = cedula; } // 🔹 Cambiar de String a int
     public void setFecha(String fecha) { this.fecha = fecha; }
     public void setLugar(String lugar) { this.lugar = lugar; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
