@@ -3,6 +3,7 @@ package com.example.myapplication.controller;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -91,19 +92,42 @@ public class Lista_eventos extends AppCompatActivity {
                 response -> {
                     try {
                         lista.clear();
+                        Log.d("EVENTOS_API", "Respuesta recibida: " + response.length() + " elementos");
+
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject obj = response.getJSONObject(i);
 
-                            // Obtener campos del modelo "Eventos"
+                            // DEBUG: Ver el JSON completo
+                            Log.d("EVENTOS_API", "Elemento " + i + ": " + obj.toString());
+
+                            // Obtener campos principales
                             int id = obj.getInt("id");
-                            int idUsuario = obj.optInt("id_usuario");
-                            String nombreUsuario = obj.optString("nombre_usuario", "Sin nombre");
+                            int idUsuario = obj.optInt("idUsuario");
                             String titulo = obj.optString("titulo", "Sin título");
-                            String fechaActividad = obj.optString("fecha_actividad", "");
+                            String fechaActividad = obj.optString("fechaActividad", "");
                             String descripcion = obj.optString("descripcion", "");
                             String imagen = obj.optString("imagen", "");
                             String archivo = obj.optString("archivo", "");
-                            int idEmpresa = obj.optInt("id_empresa");
+                            int idEmpresa = obj.optInt("idEmpresa");
+
+                            // Obtener nombre de usuario desde el objeto "usuario"
+                            String nombreUsuario = "Usuario no disponible";
+                            if (obj.has("usuario") && !obj.isNull("usuario")) {
+                                JSONObject usuarioObj = obj.getJSONObject("usuario");
+                                String nombre = usuarioObj.optString("nombre", "");
+                                String apellido = usuarioObj.optString("apellido", "");
+
+                                if (!nombre.isEmpty() && !apellido.isEmpty()) {
+                                    nombreUsuario = nombre + " " + apellido;
+                                } else if (!nombre.isEmpty()) {
+                                    nombreUsuario = nombre;
+                                } else {
+                                    nombreUsuario = usuarioObj.optString("nombreUsuario", "Usuario no disponible");
+                                }
+                            }
+
+                            // DEBUG: Verificar campos específicos
+                            Log.d("EVENTOS_API", "Usuario: " + nombreUsuario + ", Fecha: " + fechaActividad + ", Título: " + titulo);
 
                             // Crear objeto para el RecyclerView
                             Item_eventos item = new Item_eventos(
@@ -121,16 +145,28 @@ public class Lista_eventos extends AppCompatActivity {
                             lista.add(item);
                         }
                         adapter.notifyDataSetChanged();
+
+                        if (lista.isEmpty()) {
+                            Toast.makeText(this, "No hay eventos disponibles", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Eventos cargados: " + lista.size(), Toast.LENGTH_SHORT).show();
+                        }
+
                     } catch (Exception e) {
+                        Log.e("EVENTOS_API", "Error al procesar datos: " + e.getMessage());
                         Toast.makeText(this, "Error al procesar datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 },
-                error -> Toast.makeText(this, "Error al obtener eventos: " + error.getMessage(), Toast.LENGTH_LONG).show()
+                error -> {
+                    Log.e("EVENTOS_API", "Error en la petición: " + error.getMessage());
+                    Toast.makeText(this, "Error al obtener eventos: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                }
         ) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + token);
+                headers.put("Content-Type", "application/json");
                 return headers;
             }
         };

@@ -11,4 +11,39 @@
     <color name="teal_700">#018786</color>
     <color name="transparent">#00000000</color>
 
+    <color name="prot_cabeza_bg">#E8F5E8</color>
+    <color name="prot_cabeza_text">#2E7D32</color>
+    <color name="prot_cabeza_border">#C8E6C9</color>
+
+    <color name="prot_manos_bg">#E3F2FD</color>
+    <color name="prot_manos_text">#1565C0</color>
+    <color name="prot_manos_border">#BBDEFB</color>
+
+    <color name="prot_visual_bg">#FFF3E0</color>
+    <color name="prot_visual_text">#EF6C00</color>
+    <color name="prot_visual_border">#FFE0B2</color>
+
+    <color name="prot_auditivo_bg">#F3E5F5</color>
+    <color name="prot_auditivo_text">#7B1FA2</color>
+    <color name="prot_auditivo_border">#E1BEE7</color>
+
+    <color name="prot_respiratorio_bg">#E8EAF6</color>
+    <color name="prot_respiratorio_text">#303F9F</color>
+    <color name="prot_respiratorio_border">#C5CAE9</color>
+
+    <color name="prot_pies_bg">#E0F2F1</color>
+    <color name="prot_pies_text">#00695C</color>
+    <color name="prot_pies_border">#B2DFDB</color>
+
+    <color name="epp_general_bg">#F5F5F5</color>
+    <color name="epp_general_text">#424242</color>
+    <color name="epp_general_border">#E0E0E0</color>
+
+    <!-- Colores para tipos de eventos -->
+    <color name="evento_salida">#1976D2</color>
+    <color name="evento_reunion">#7B1FA2</color>
+    <color name="evento_capacitacion">#2E7D32</color>
+    <color name="evento_emergencia">#D32F2F</color>
+    <color name="evento_default">#546E7A</color>
+
 </resources>

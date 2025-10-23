@@ -1,224 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#F8FAFC"
-    android:fitsSystemWindows="true">
+    android:padding="8dp">
 
-    <!-- CONTENEDOR SCROLL PARA LOS REPORTES -->
-    <ScrollView
+    <!-- TARJETA DE EVENTO MEJORADA -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        android:fillViewport="true"
-        android:clipToPadding="false">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:strokeColor="#E2E8F0"
+        app:strokeWidth="1dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
+        <!-- CONTENEDOR PRINCIPAL -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:orientation="vertical">
 
-            <!-- TARJETA DE REPORTE MEJORADA -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- CONTENIDO SUPERIOR CON GRADIENTE -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:strokeColor="#E2E8F0"
-                app:strokeWidth="1dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/gradient_background">
 
-                <!-- CONTENEDOR PRINCIPAL -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <!-- CONTENEDOR DE IMAGEN MEJORADO -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="84dp"
+                    android:layout_height="108dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@android:color/white"
+                    android:layout_marginEnd="18dp"
+                    app:strokeColor="#40FFFFFF"
+                    app:strokeWidth="1dp">
 
-                    <!-- CONTENIDO SUPERIOR -->
-                    <LinearLayout
+                    <ImageView
+                        android:id="@+id/imgPoster"
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_1"
+                        android:contentDescription="Imagen del evento"
+                        android:adjustViewBounds="true" />
+
+                    <!-- OVERLAY PARA IMÁGENES OSCURAS -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- CONTENEDOR DE TEXTO Y BOTÓN -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingVertical="2dp">
+
+                    <!-- TÍTULO DEL EVENTO -->
+                    <TextView
+                        android:id="@+id/txtTituloEvento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Salida de Campo"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.02"
+                        android:shadowColor="#60000000"
+                        android:shadowDx="2"
+                        android:shadowDy="2"
+                        android:shadowRadius="4"
+                        android:textAllCaps="false"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        tools:text="Salida de Campo" />
+
+                    <!-- FECHA DEL EVENTO CON ICONO -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="20dp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/gradient_background">
+                        android:layout_marginTop="6dp"
+                        android:gravity="center_vertical">
 
-                        <!-- CONTENEDOR DE IMAGEN MEJORADO -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="84dp"
-                            android:layout_height="108dp"
-                            app:cardCornerRadius="14dp"
-                            app:cardElevation="4dp"
-                            app:cardBackgroundColor="@android:color/white"
-                            android:layout_marginEnd="18dp"
-                            android:outlineSpotShadowColor="#60000000">
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_date"
+                            android:tint="#E3F2FD"
+                            android:layout_marginEnd="6dp" />
 
-                            <ImageView
-                                android:id="@+id/imgPoster"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/img_1"
-                                android:contentDescription="Imagen del reporte"
-                                android:adjustViewBounds="true" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <!-- CONTENEDOR DE TEXTO Y BOTÓN -->
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/txtFechaEvento"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:paddingVertical="2dp">
-
-                            <!-- TÍTULO DEL EVENTO -->
-                            <TextView
-                                android:id="@+id/txtTituloEvento"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Salida"
-                                android:textColor="#FFFFFF"
-                                android:textSize="19sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.02"
-                                android:shadowColor="#40000000"
-                                android:shadowDx="1"
-                                android:shadowDy="1"
-                                android:shadowRadius="3"
-                                android:textAllCaps="false"
-                                tools:text="Salida" />
-
-                            <!-- FECHA DEL EVENTO -->
-                            <TextView
-                                android:id="@+id/txtFechaEvento"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="01 Sept 2025, 10:45 AM"
-                                android:textColor="#E3F2FD"
-                                android:textSize="14sp"
-                                android:layout_marginTop="2dp"
-                                android:letterSpacing="0.01"
-                                android:alpha="0.95"
-                                tools:text="01 Sept 2025, 10:45 AM" />
-
-                            <!-- NOMBRE DEL USUARIO -->
-                            <TextView
-                                android:id="@+id/txtNombreUsuario"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Juan Perez"
-                                android:textColor="#E3F2FD"
-                                android:textSize="14sp"
-                                android:layout_marginTop="2dp"
-                                android:layout_marginBottom="12dp"
-                                android:letterSpacing="0.01"
-                                android:alpha="0.95"
-                                tools:text="Juan Perez" />
-
-                            <!-- BOTÓN DE DETALLES MEJORADO -->
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnDetalles"
-                                android:layout_width="wrap_content"
-                                android:layout_height="38dp"
-                                android:paddingStart="22dp"
-                                android:paddingEnd="22dp"
-                                android:text="Ver Detalles"
-                                android:textAllCaps="false"
-                                android:textSize="14sp"
-                                app:cornerRadius="19dp"
-                                android:backgroundTint="#FFFFFF"
-                                android:textColor="#1976D2"
-                                app:icon="@drawable/ic_visibility"
-                                app:iconGravity="textStart"
-                                app:iconPadding="6dp"
-                                app:iconSize="18dp"
-                                app:iconTint="#1976D2"
-                                app:elevation="3dp"
-                                app:rippleColor="#301976D2" />
-
-                        </LinearLayout>
-
-                        <!-- BOTÓN DE DESCARGA MEJORADO -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            app:cardCornerRadius="24dp"
-                            app:cardBackgroundColor="#20FFFFFF"
-                            app:cardElevation="3dp"
-                            app:strokeColor="#40FFFFFF"
-                            app:strokeWidth="1.5dp"
-                            android:layout_marginStart="8dp"
-                            android:clickable="true"
-                            android:focusable="true">
-
-                            <ImageButton
-                                android:id="@+id/btnDownload"
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_download"
-                                android:tint="#FFFFFF"
-                                android:contentDescription="Descargar reporte" />
-
-                        </com.google.android.material.card.MaterialCardView>
+                            android:text="01 Sept 2025, 10:45 AM"
+                            android:textColor="#E3F2FD"
+                            android:textSize="12sp"
+                            android:letterSpacing="0.01"
+                            android:alpha="0.95"
+                            tools:text="01 Sept 2025, 10:45 AM" />
 
                     </LinearLayout>
 
-                    <!-- FOOTER MEJORADO -->
+                    <!-- NOMBRE DEL USUARIO CON ICONO -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_person"
+                            android:tint="#E3F2FD"
+                            android:layout_marginEnd="6dp" />
+
+                        <TextView
+                            android:id="@+id/txtNombreUsuario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Juan Perez"
+                            android:textColor="#E3F2FD"
+                            android:textSize="14sp"
+                            android:letterSpacing="0.01"
+                            android:alpha="0.95"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            tools:text="Juan Perez" />
+
+                    </LinearLayout>
+
+                    <!-- BOTONES EN FILA -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="14dp"
-                        android:background="#FAFBFC"
-                        android:gravity="center_vertical">
+                        android:gravity="start">
 
-                        <!-- INDICADOR DE ESTADO -->
-                        <View
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
-                            android:background="@drawable/circle_online"
-                            android:layout_marginEnd="10dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Estado: Registrado"
-                            android:textColor="#64748B"
-                            android:textSize="13sp"
-                            android:letterSpacing="0.01" />
-
-                        <!-- BADGE DE TIPO DE EVENTO -->
-                        <com.google.android.material.chip.Chip
+                        <!-- BOTÓN DE DETALLES MEJORADO -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDetalles"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Salida"
+                            android:layout_height="38dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:text="Ver Detalles"
+                            android:textAllCaps="false"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="19dp"
+                            android:backgroundTint="#FFFFFF"
                             android:textColor="#1976D2"
-                            android:textSize="12sp"
-                            app:chipBackgroundColor="#E3F2FD"
-                            app:chipCornerRadius="10dp"
-                            app:chipStrokeColor="#BBDEFB"
-                            app:chipStrokeWidth="1dp" />
+                            app:icon="@drawable/ic_visibility"
+                            app:iconGravity="textStart"
+                            app:iconPadding="4dp"
+                            app:iconSize="16dp"
+                            app:iconTint="#1976D2"
+                            app:elevation="4dp"
+                            app:rippleColor="#401976D2" />
+
+                        <!-- ESPACIADOR -->
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="0dp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+                <!-- BOTÓN DE DESCARGA MEJORADO -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardBackgroundColor="#20FFFFFF"
+                    app:cardElevation="3dp"
+                    app:strokeColor="#40FFFFFF"
+                    app:strokeWidth="1.5dp"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageButton
+                        android:id="@+id/btnDownload"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_download"
+                        android:tint="#FFFFFF"
+                        android:contentDescription="Descargar archivo" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- FOOTER SIMPLIFICADO SOLO CON CHIP -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="16dp"
+                android:background="#FAFBFC"
+                android:gravity="center_vertical">
+
+                <!-- ESPACIADOR -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!-- BADGE DE TIPO DE EVENTO DINÁMICO -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTipoEvento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salida"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:chipBackgroundColor="#1976D2"
+                    app:chipCornerRadius="12dp"
+                    app:chipStrokeColor="#1565C0"
+                    app:chipStrokeWidth="1dp"
+                    app:chipStartPadding="8dp"
+                    app:chipEndPadding="8dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
