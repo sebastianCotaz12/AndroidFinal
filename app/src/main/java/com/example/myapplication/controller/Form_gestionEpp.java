@@ -52,8 +52,8 @@ public class Form_gestionEpp extends AppCompatActivity {
         }
 
         // === Llenar campos automáticos visibles ===
-        binding.etIdUsuario.setText(String.valueOf(prefsManager.getIdUsuario()));
-        binding.etIdUsuario.setEnabled(false);
+        binding.etnombreUsuario.setText(String.valueOf(prefsManager.getNombreUsuario()));
+        binding.etnombreUsuario.setEnabled(false);
 
         // Área automática
         areaUsuario = prefsManager.getIdArea();

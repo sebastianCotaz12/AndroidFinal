@@ -117,7 +117,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ID USUARIO"
+                                android:text="NOMBRE USUARIO"
                                 android:textColor="#78909C"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
@@ -136,7 +136,7 @@
                                 android:layout_marginTop="4dp">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/etIdUsuario"
+                                    android:id="@+id/etnombreUsuario"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Se completa automáticamente"

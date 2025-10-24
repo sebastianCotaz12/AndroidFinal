@@ -116,14 +116,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ID USUARIO"
+                                android:text="NOMBRE USUARIO"
                                 android:textColor="#78909C"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:letterSpacing="0.05" />
 
                             <TextView
-                                android:id="@+id/tvIdG"
+                                android:id="@+id/tvNombre"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
@@ -156,14 +156,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="NOMBRE"
+                                android:text="NOMBRE AREA"
                                 android:textColor="#78909C"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:letterSpacing="0.05" />
 
                             <TextView
-                                android:id="@+id/tvNombre"
+                                android:id="@+id/tvNombreArea"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
