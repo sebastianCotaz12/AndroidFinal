@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,6 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,7 +70,7 @@ public class Form_eventos extends AppCompatActivity {
         // --- Listeners ---
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
         binding.ivAdjuntar.setOnClickListener(v -> seleccionarImagen());
-        binding.btnEnviarEvidencia.setOnClickListener(v -> guardarEventosBase64());
+        binding.btnEnviarEvidencia.setOnClickListener(v -> guardarEventoConImagen());
         binding.btnCancelar.setOnClickListener(v -> {
             Intent intent = new Intent(Form_eventos.this, Lista_eventos.class);
             startActivity(intent);
@@ -99,7 +101,8 @@ public class Form_eventos extends AppCompatActivity {
         seleccionarImagenLauncher.launch(Intent.createChooser(intent, "Seleccionar Imagen"));
     }
 
-    private void guardarEventosBase64() {
+    // 🔹 Nuevo método para subir imagen correctamente al backend (Cloudinary)
+    private void guardarEventoConImagen() {
         String token = prefsManager.getToken();
 
         String titulo = binding.etTituloEvento.getText().toString().trim();
@@ -116,33 +119,29 @@ public class Form_eventos extends AppCompatActivity {
             return;
         }
 
-        if (token == null || token.trim().isEmpty()) {
-            Toast.makeText(this, "🚫 No hay token. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
-            sesionManager.cerrarSesion();
-            return;
-        }
-
         try {
-            // Convertir imagen a Base64
+            // 🔹 Convertir la imagen seleccionada a bytes
             InputStream inputStream = getContentResolver().openInputStream(imagenUri);
             byte[] bytes = new byte[inputStream.available()];
             inputStream.read(bytes);
             inputStream.close();
-            String imagenBase64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
 
-            // Obtener extensión
-            String extension = getContentResolver().getType(imagenUri).split("/")[1];
+            // 🔹 Crear el cuerpo del archivo
+            RequestBody requestFile = RequestBody.create(bytes, MediaType.parse("image/*"));
+            MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen", "evento.jpg", requestFile);
 
-            // Llamada API
+            // 🔹 Crear los demás campos
+            RequestBody tituloBody = RequestBody.create(titulo, MultipartBody.FORM);
+            RequestBody fechaBody = RequestBody.create(fecha_actividad, MultipartBody.FORM);
+            RequestBody descripcionBody = RequestBody.create(descripcion, MultipartBody.FORM);
+
+            // 🔹 Llamada a la API
             ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
-            Log.d("TOKEN_DEBUG", "Token usado al crear evento: " + token);
-
-            Call<ApiResponse<Object>> call = apiService.crearEventoBase64(
-                    titulo,
-                    fecha_actividad,
-                    descripcion,
-                    imagenBase64,
-                    extension
+            Call<ApiResponse<Object>> call = apiService.crearEventoMultipart(
+                    tituloBody,
+                    fechaBody,
+                    descripcionBody,
+                    imagenPart
             );
 
             call.enqueue(new Callback<ApiResponse<Object>>() {
@@ -150,7 +149,6 @@ public class Form_eventos extends AppCompatActivity {
                 public void onResponse(Call<ApiResponse<Object>> call, Response<ApiResponse<Object>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         Toast.makeText(Form_eventos.this, "✅ " + response.body().getMsj(), Toast.LENGTH_LONG).show();
-                        setResult(RESULT_OK);
                         finish();
                     } else {
                         String errorMsg = "⚠ Error API (" + response.code() + ")";

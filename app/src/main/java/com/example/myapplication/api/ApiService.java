@@ -103,16 +103,18 @@ public interface ApiService {
     Call<ApiResponse<Void>> forgotPassword(@Body ForgotPasswordRequest request);
 
 
-    // Crear evento con archivo e imagen
-    @FormUrlEncoded
+    @Multipart
     @POST("blogs")
-    Call<ApiResponse<Object>> crearEventoBase64(
-            @Field("titulo") String titulo,
-            @Field("fecha_actividad") String fechaActividad,
-            @Field("descripcion") String descripcion,
-            @Field("archivo") String archivo,         // aquí va la URL o base64 del adjunto
-            @Field("imagen") String imagen            // aquí va la imagen en Base64 o URL
+    Call<ApiResponse<Object>> crearEventoMultipart(
+            @Part("titulo") RequestBody titulo,
+            @Part("fecha_actividad") RequestBody fechaActividad,
+            @Part("descripcion") RequestBody descripcion,
+            @Part MultipartBody.Part imagen
     );
+
+
+
+
     @GET("eventos")
     Call<List<Item_eventos>> getEventos();
 
