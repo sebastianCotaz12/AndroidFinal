@@ -47,15 +47,22 @@ public class Adapter_actLudica extends RecyclerView.Adapter<Adapter_actLudica.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item_actLudicas item = lista.get(position);
 
-        // Configurar datos básicos
+        // Nombre y fecha
         holder.txtNombre.setText(item.getNombreActividad());
+        holder.txtFecha.setText(formatearFecha(item.getFechaActividad()));
 
-        // Formatear fecha
-        String fechaFormateada = formatearFecha(item.getFechaActividad());
-        holder.txtFecha.setText(fechaFormateada);
-
-        // Cargar imagen con Glide mejorado
-        cargarImagenActividad(holder, item.getArchivoAdjunto());
+        // Cargar imagen desde Cloudinary o placeholder
+        String urlImagen = item.getImagenVideo();
+        if (urlImagen != null && !urlImagen.isEmpty() && !urlImagen.equals("null")) {
+            Glide.with(context)
+                    .load(urlImagen)
+                    .transform(new CenterCrop(), new RoundedCorners(24))
+                    .placeholder(R.drawable.ludicas)
+                    .error(R.drawable.ludicas)
+                    .into(holder.imgMiniatura);
+        } else {
+            holder.imgMiniatura.setImageResource(R.drawable.ludicas);
+        }
 
         // Botón Detalles
         holder.btnDetalles.setOnClickListener(v -> {
@@ -65,17 +72,19 @@ public class Adapter_actLudica extends RecyclerView.Adapter<Adapter_actLudica.Vi
             intent.putExtra("fecha", item.getFechaActividad());
             intent.putExtra("descripcion", item.getDescripcion());
             intent.putExtra("archivoAdjunto", item.getArchivoAdjunto());
+            intent.putExtra("imagenVideo", item.getImagenVideo());
             context.startActivity(intent);
         });
 
-        // Botón Descargar
+        // Botón Descargar/abrir archivo
         holder.btnDownload.setOnClickListener(v -> {
-            if (item.getArchivoAdjunto() != null && !item.getArchivoAdjunto().isEmpty()) {
+            String archivo = item.getArchivoAdjunto();
+            if (archivo != null && !archivo.isEmpty()) {
                 try {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getArchivoAdjunto()));
-                    context.startActivity(browserIntent);
+                    Intent abrir = new Intent(Intent.ACTION_VIEW, Uri.parse(archivo));
+                    context.startActivity(abrir);
                 } catch (Exception e) {
-                    Toast.makeText(context, "No se puede abrir el archivo", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "⚠️ No se puede abrir el archivo", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(context, "No hay archivo disponible", Toast.LENGTH_SHORT).show();
@@ -83,53 +92,33 @@ public class Adapter_actLudica extends RecyclerView.Adapter<Adapter_actLudica.Vi
         });
     }
 
-    private String formatearFecha(String fechaOriginal) {
-        if (fechaOriginal == null || fechaOriginal.isEmpty()) {
-            return "Fecha no disponible";
-        }
-
-        try {
-            // Para formato: 2025-10-22T00:00:00.000Z
-            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-            Date fecha = formatoEntrada.parse(fechaOriginal);
-            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd MMM yyyy, hh:mm a", new Locale("es", "ES"));
-            return formatoSalida.format(fecha);
-
-        } catch (ParseException e) {
-            // Si falla, intentar con formato simple
-            try {
-                String soloFecha = fechaOriginal.split("T")[0];
-                SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                Date fecha = formatoEntrada.parse(soloFecha);
-                SimpleDateFormat formatoSalida = new SimpleDateFormat("dd MMM yyyy", new Locale("es", "ES"));
-                return formatoSalida.format(fecha);
-            } catch (Exception ex) {
-                return "Fecha inválida";
-            }
-        }
-    }
-
-    private void cargarImagenActividad(ViewHolder holder, String imagenUrl) {
-        if (imagenUrl != null && !imagenUrl.isEmpty()) {
-            Glide.with(context)
-                    .load(imagenUrl)
-                    .transform(new CenterCrop(), new RoundedCorners(16))
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .into(holder.imgMiniatura);
-        } else {
-            Glide.with(context)
-                    .load(R.mipmap.ic_launcher)
-                    .transform(new CenterCrop(), new RoundedCorners(16))
-                    .into(holder.imgMiniatura);
-        }
-    }
-
     @Override
     public int getItemCount() {
         return lista.size();
     }
 
+    // Formateo de fecha
+    private String formatearFecha(String fechaOriginal) {
+        if (fechaOriginal == null || fechaOriginal.isEmpty()) return "Fecha no disponible";
+        try {
+            SimpleDateFormat entrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+            Date fecha = entrada.parse(fechaOriginal);
+            SimpleDateFormat salida = new SimpleDateFormat("dd MMM yyyy, hh:mm a", new Locale("es", "ES"));
+            return salida.format(fecha);
+        } catch (ParseException e) {
+            try {
+                String soloFecha = fechaOriginal.split("T")[0];
+                SimpleDateFormat entrada = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date fecha = entrada.parse(soloFecha);
+                SimpleDateFormat salida = new SimpleDateFormat("dd MMM yyyy", new Locale("es", "ES"));
+                return salida.format(fecha);
+            } catch (Exception ex) {
+                return fechaOriginal;
+            }
+        }
+    }
+
+    // ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgMiniatura;
         TextView txtNombre, txtFecha;

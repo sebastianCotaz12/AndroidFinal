@@ -79,21 +79,18 @@ public interface ApiService {
     @POST("register")
     Call<RegistroResponse> registrarUsuario(@Body Crear_registro nuevoUsuario);
 
-    // Actividades Lúdicas
+    // 🔹 Crear Actividad Lúdica con Cloudinary (imagen/video + archivo adjunto opcional)
+    @Multipart
     @POST("crearActividadLudica")
-    Call<ApiResponse<Crear_actLudica>> crearActividad(@Body Crear_actLudica actividad);
-
-    // Actividades Lúdicas con Base64
-    @FormUrlEncoded
-    @POST("crearActividadLudica")
-    Call<ApiResponse<Object>> crearActividadBase64(
-            @Field("id_usuario") int idUsuario,
-            @Field("nombre_actividad") String nombreActividad,
-            @Field("fecha_actividad") String fechaActividad, // ← CAMBIO AQUÍ
-            @Field("descripcion") String descripcion,
-            @Field("imagen") String imagenBase64,
-            @Field("extension") String extension
+    Call<ApiResponse<Object>> crearActividadMultipart(
+            @Part("nombre_actividad") RequestBody nombreActividad,
+            @Part("fecha_actividad") RequestBody fechaActividad,
+            @Part("descripcion") RequestBody descripcion,
+            @Part MultipartBody.Part imagen_video,          // Puede ser jpg, png, mp4, mov
+            @Part MultipartBody.Part archivo_adjunto        // Puede ser pdf, doc, xlsx, etc. (opcional)
     );
+
+
 
     @GET("listarActividadesLudicas")
     Call<List<Crear_actLudica>> getActividad();

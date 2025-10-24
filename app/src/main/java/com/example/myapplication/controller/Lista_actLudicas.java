@@ -58,14 +58,12 @@ public class Lista_actLudicas extends AppCompatActivity {
 
         ImageButton btnCrear = findViewById(R.id.imgButton_crearlista);
         btnCrear.setOnClickListener(v -> {
-            Intent intent = new Intent(Lista_actLudicas.this, Form_actLudicas.class);
-            startActivity(intent);
+            startActivity(new Intent(Lista_actLudicas.this, Form_actLudicas.class));
         });
-        // 🔹 Botón de regresar al inicio de sesión
+
         ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
         btnVolverLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(Lista_actLudicas.this, Menu.class);
-            startActivity(intent);
+            startActivity(new Intent(Lista_actLudicas.this, Menu.class));
             finish();
         });
 
@@ -97,7 +95,8 @@ public class Lista_actLudicas extends AppCompatActivity {
                                     obj.getString("nombreActividad"),
                                     obj.getString("fechaActividad"),
                                     obj.getString("descripcion"),
-                                    obj.optString("archivoAdjunto")
+                                    obj.optString("archivoAdjunto"),
+                                    obj.optString("imagenVideo") // <-- Aquí pasamos la imagen de Cloudinary
                             );
                             lista.add(item);
                         }

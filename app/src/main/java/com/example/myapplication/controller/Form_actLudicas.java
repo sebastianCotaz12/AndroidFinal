@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,14 +15,18 @@ import com.example.myapplication.api.ApiClient;
 import com.example.myapplication.api.ApiResponse;
 import com.example.myapplication.api.ApiService;
 import com.example.myapplication.databinding.ActivityFormActLudicasBinding;
+import com.example.myapplication.utils.FileUtils;
 import com.example.myapplication.utils.PrefsManager;
 import com.example.myapplication.utils.SesionManager;
 
-import java.io.InputStream;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,20 +36,33 @@ public class Form_actLudicas extends AppCompatActivity {
     private ActivityFormActLudicasBinding binding;
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
-    private Uri imagenUri = null;
 
-    // Selector de imagen
-    private final ActivityResultLauncher<android.content.Intent> seleccionarImagenLauncher =
+    private Uri imagenUri = null;
+    private Uri archivoUri = null;
+
+    // Selector de imagen o video
+    private final ActivityResultLauncher<Intent> seleccionarImagenLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     imagenUri = result.getData().getData();
                     if (imagenUri != null) {
                         binding.ivPreview.setVisibility(android.view.View.VISIBLE);
                         binding.ivPreview.setImageURI(imagenUri);
-                        binding.tvImagenSeleccionada.setText("Imagen seleccionada ✅");
+                        binding.tvImagenSeleccionada.setText("Archivo multimedia seleccionado ✅");
                     }
                 }
             });
+
+    // Selector de archivo adjunto
+   /* private final ActivityResultLauncher<Intent> seleccionarArchivoLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    archivoUri = result.getData().getData();
+                    if (archivoUri != null) {
+                        binding.tvArchivoSeleccionado.setText("Archivo adjunto seleccionado ✅");
+                    }
+                }
+            });*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +73,6 @@ public class Form_actLudicas extends AppCompatActivity {
         prefsManager = new PrefsManager(this);
         sesionManager = new SesionManager(this);
 
-        // --- Verificar sesión activa ---
         if (!sesionManager.haySesionActiva()) {
             Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
@@ -65,24 +80,21 @@ public class Form_actLudicas extends AppCompatActivity {
             return;
         }
 
-        // --- Mostrar nombre y cargo desde login ---
+        // Mostrar nombre y cargo
         String nombre = prefsManager.getNombreUsuario();
-        String cargo = prefsManager.getCargo(); // asegúrate que este método existe en PrefsManager
-
+        String cargo = prefsManager.getCargo();
         binding.etNombreUsuario.setText(nombre != null ? nombre : "No disponible");
         binding.etCargoUsuario.setText(cargo != null ? cargo : "No disponible");
-
-        // Evitar edición manual
         binding.etNombreUsuario.setEnabled(false);
         binding.etCargoUsuario.setEnabled(false);
 
-        // --- Eventos ---
+        // Listeners
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
         binding.ivAdjuntar.setOnClickListener(v -> seleccionarImagen());
-        binding.btnEnviarEvidencia.setOnClickListener(v -> guardarActividadBase64());
+      //  binding.ivArchivo.setOnClickListener(v -> seleccionarArchivo());
+        binding.btnEnviarEvidencia.setOnClickListener(v -> guardarActividadMultipart());
         binding.btnCancelar.setOnClickListener(v -> {
-            Intent intent = new Intent(Form_actLudicas.this, Lista_actLudicas.class);
-            startActivity(intent);
+            startActivity(new Intent(Form_actLudicas.this, Lista_actLudicas.class));
             finish();
         });
     }
@@ -105,15 +117,16 @@ public class Form_actLudicas extends AppCompatActivity {
     }
 
     private void seleccionarImagen() {
-        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        seleccionarImagenLauncher.launch(android.content.Intent.createChooser(intent, "Seleccionar Imagen"));
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        String[] mimeTypes = {"image/*", "video/*"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        seleccionarImagenLauncher.launch(Intent.createChooser(intent, "Seleccionar imagen o video"));
     }
 
-    private void guardarActividadBase64() {
-        int idUsuario = prefsManager.getIdUsuario();
-        String token = prefsManager.getToken();
 
+
+    private void guardarActividadMultipart() {
         String nombreActividad = binding.etNombreActividad.getText().toString().trim();
         String fecha = binding.etFecha.getText().toString().trim();
         String descripcion = binding.etDescripcion.getText().toString().trim();
@@ -124,35 +137,39 @@ public class Form_actLudicas extends AppCompatActivity {
         }
 
         if (imagenUri == null) {
-            Toast.makeText(this, "⚠️ Selecciona una imagen.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if (token == null || token.trim().isEmpty()) {
-            Toast.makeText(this, "🚫 No hay token. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
-            sesionManager.cerrarSesion();
+            Toast.makeText(this, "⚠️ Debes seleccionar una imagen o video.", Toast.LENGTH_LONG).show();
             return;
         }
 
         try {
-            InputStream inputStream = getContentResolver().openInputStream(imagenUri);
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes);
-            inputStream.close();
-            String imagenBase64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
+            // Convertir campos a RequestBody
+            RequestBody nombreBody = RequestBody.create(MediaType.parse("text/plain"), nombreActividad);
+            RequestBody fechaBody = RequestBody.create(MediaType.parse("text/plain"), fecha);
+            RequestBody descripcionBody = RequestBody.create(MediaType.parse("text/plain"), descripcion);
 
-            String extension = getContentResolver().getType(imagenUri).split("/")[1];
+            // Imagen/video obligatorio
+            String imagenPath = FileUtils.getPath(this, imagenUri);
+            File imagenFile = new File(imagenPath);
+            RequestBody imagenBody = RequestBody.create(MediaType.parse(getContentResolver().getType(imagenUri)), imagenFile);
+            MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen_video", imagenFile.getName(), imagenBody);
+
+            // Archivo adjunto opcional
+            MultipartBody.Part archivoPart = null;
+            if (archivoUri != null) {
+                String archivoPath = FileUtils.getPath(this, archivoUri);
+                File archivoFile = new File(archivoPath);
+                RequestBody archivoBody = RequestBody.create(MediaType.parse(getContentResolver().getType(archivoUri)), archivoFile);
+                archivoPart = MultipartBody.Part.createFormData("archivo_adjunto", archivoFile.getName(), archivoBody);
+            }
 
             ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
-            Log.d("TOKEN_DEBUG", "Token usado al crear actividad: " + token);
 
-            Call<ApiResponse<Object>> call = apiService.crearActividadBase64(
-                    idUsuario,
-                    nombreActividad,
-                    fecha,
-                    descripcion,
-                    imagenBase64,
-                    extension
+            Call<ApiResponse<Object>> call = apiService.crearActividadMultipart(
+                    nombreBody,
+                    fechaBody,
+                    descripcionBody,
+                    imagenPart,
+                    archivoPart
             );
 
             call.enqueue(new Callback<ApiResponse<Object>>() {
@@ -160,7 +177,6 @@ public class Form_actLudicas extends AppCompatActivity {
                 public void onResponse(Call<ApiResponse<Object>> call, Response<ApiResponse<Object>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         Toast.makeText(Form_actLudicas.this, "✅ " + response.body().getMsj(), Toast.LENGTH_LONG).show();
-                        setResult(RESULT_OK);
                         finish();
                     } else {
                         String errorMsg = "⚠️ Error API (" + response.code() + ")";
@@ -182,9 +198,7 @@ public class Form_actLudicas extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error leyendo la imagen: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error al procesar archivo: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
-
-
 }
