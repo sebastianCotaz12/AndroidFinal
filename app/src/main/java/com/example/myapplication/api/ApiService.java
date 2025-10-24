@@ -46,9 +46,6 @@ public interface ApiService {
 
 
 
-    // Reportes (sin archivos, solo texto)
-    @POST("crearReporte")
-    Call<ApiResponse<Crear_reportes>> crearReporte(@Body Crear_reportes reporte);
 
     // Reportes (con archivos: imagen/documento)
     @Multipart

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -12,6 +13,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
 import com.example.myapplication.api.ApiClient;
 import com.example.myapplication.api.ApiResponse;
 import com.example.myapplication.api.ApiService;
@@ -46,8 +49,22 @@ public class Form_reportes extends AppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     imagenUri = result.getData().getData();
-                    if (imagenUri != null)
-                        binding.tvImagenSeleccionada.setText(imagenUri.getLastPathSegment());
+                    if (imagenUri != null) {
+                        // Mostrar nombre y tipo
+                        String nombreArchivo = getFileName(imagenUri);
+                        String tipoArchivo = getContentResolver().getType(imagenUri);
+                        binding.tvInfoImagen.setText(nombreArchivo + " (" + tipoArchivo + ")");
+
+                        // Mostrar previsualización en ImageView
+                        binding.ivPreviewImagen.setVisibility(View.VISIBLE);
+                        binding.llPlaceholderImagen.setVisibility(View.GONE);
+                        Glide.with(this)
+                                .load(imagenUri)
+                                .centerCrop()
+                                .placeholder(R.drawable.placeholder_image)
+                                .error(R.drawable.placeholder_image)
+                                .into(binding.ivPreviewImagen);
+                    }
                 }
             });
 
@@ -55,10 +72,60 @@ public class Form_reportes extends AppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     archivoUri = result.getData().getData();
-                    if (archivoUri != null)
-                        binding.tvArchivoSeleccionado.setText(archivoUri.getLastPathSegment());
+                    if (archivoUri != null) {
+                        // Mostrar nombre y tipo
+                        String nombreArchivo = getFileName(archivoUri);
+                        String tipoArchivo = getContentResolver().getType(archivoUri);
+
+                        // Mostrar información del archivo
+                        binding.tvArchivoSeleccionado.setText(nombreArchivo);
+                        binding.tvInfoArchivo.setText(getFileExtension(nombreArchivo) + " • " + getFileSize(archivoUri));
+                        binding.tvInfoArchivo.setVisibility(View.VISIBLE);
+                    }
                 }
             });
+
+    // Método auxiliar para obtener nombre real del archivo
+    private String getFileName(Uri uri) {
+        String result = uri.getLastPathSegment();
+        if (result != null) {
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) result = result.substring(cut + 1);
+        }
+        return result != null ? result : "archivo_desconocido";
+    }
+
+    // Método para obtener extensión del archivo
+    private String getFileExtension(String fileName) {
+        if (fileName == null) return "Sin extensión";
+        int lastDot = fileName.lastIndexOf('.');
+        if (lastDot != -1 && lastDot < fileName.length() - 1) {
+            return fileName.substring(lastDot + 1).toUpperCase();
+        }
+        return "Sin extensión";
+    }
+
+    // Método para obtener tamaño del archivo
+    private String getFileSize(Uri uri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            if (inputStream != null) {
+                long size = inputStream.available();
+                inputStream.close();
+
+                if (size < 1024) {
+                    return size + " B";
+                } else if (size < 1024 * 1024) {
+                    return String.format(Locale.getDefault(), "%.1f KB", size / 1024.0);
+                } else {
+                    return String.format(Locale.getDefault(), "%.1f MB", size / (1024.0 * 1024.0));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Tamaño desconocido";
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,17 +149,15 @@ public class Form_reportes extends AppCompatActivity {
         binding.etCargoUsuario.setText(prefsManager.getCargo());
         binding.etCargoUsuario.setEnabled(false);
 
-        // 🔹 REMOVIDO: No autocompletar la cédula, el usuario la digitará
-        // binding.etCedula.setText(String.valueOf(prefsManager.getCedula()));
-        // binding.etCedula.setEnabled(false);
-
         String[] opcionesEstado = {"Pendiente", "En Proceso", "Realizado"};
         ArrayAdapter<String> adapterEstado = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, opcionesEstado);
         binding.spEstado.setAdapter(adapterEstado);
 
+        // Configurar listeners para las nuevas áreas de carga
+        binding.cardImagen.setOnClickListener(v -> seleccionarImagen());
+        binding.cardArchivo.setOnClickListener(v -> seleccionarArchivo());
+
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
-        binding.btnSeleccionarImagen.setOnClickListener(v -> seleccionarImagen());
-        binding.btnSeleccionarArchivo.setOnClickListener(v -> seleccionarArchivo());
         binding.btnEnviarReporte.setOnClickListener(v -> guardarReporteMultipart());
         binding.btnCancelar.setOnClickListener(v -> {
             Intent intent = new Intent(Form_reportes.this, Lista_reportes.class);

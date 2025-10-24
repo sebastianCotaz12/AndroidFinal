@@ -2,18 +2,23 @@ package com.example.myapplication.controller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.myapplication.R;
-import com.example.myapplication.controller.ItemReporte;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.ParseException;
@@ -44,18 +49,23 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemReporte item = lista.get(position);
 
+        // Nombre y lugar
         String nombreTexto = item.getNombreUsuario() != null ? item.getNombreUsuario() : "Sin nombre";
         String lugarTexto = item.getLugar() != null ? item.getLugar() : "Sin lugar";
         holder.txtNombre.setText(nombreTexto + " - " + lugarTexto);
 
-        String fechaFormateada = formatearFecha(item.getFecha());
-        holder.txtFecha.setText(fechaFormateada);
+        // Fecha formateada
+        holder.txtFecha.setText(formatearFecha(item.getFecha()));
 
+        // Estado
         configurarEstado(holder, item.getEstado());
 
+        // ✅ Cargar imagen con Glide
+        cargarImagen(holder, item.getImagen());
+
+        // Botón Detalles
         holder.btnDetalles.setOnClickListener(v -> {
             Intent intent = new Intent(context, Detalles_reportes.class);
-
             intent.putExtra("nombre_usuario", item.getNombreUsuario());
             intent.putExtra("cargo", item.getCargo());
             intent.putExtra("cedula", item.getCedula());
@@ -65,35 +75,55 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
             intent.putExtra("imagen", item.getImagen());
             intent.putExtra("archivos", item.getArchivos());
             intent.putExtra("estado", item.getEstado());
-
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
 
+        // Botón Descargar/Abrir archivo
         holder.btnDownload.setOnClickListener(v -> {
-            // Aquí implementarás la descarga de archivos
+            String archivo = item.getArchivos();
+            if (archivo != null && !archivo.isEmpty() && !archivo.equals("null")) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(archivo));
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    Toast.makeText(context, "⚠️ No se puede abrir el archivo", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(context, "No hay archivo disponible", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
-    private String formatearFecha(String fechaOriginal) {
-        if (fechaOriginal == null || fechaOriginal.isEmpty()) {
-            return "Fecha no disponible";
+    private void cargarImagen(ViewHolder holder, String imagenUrl) {
+        if (imagenUrl != null && !imagenUrl.isEmpty() && !imagenUrl.equals("null")) {
+            Glide.with(context)
+                    .load(imagenUrl)
+                    .transform(new CenterCrop(), new RoundedCorners(16))
+                    .placeholder(R.drawable.reportes)
+                    .error(R.drawable.reportes)
+                    .into(holder.imgReporte);
+        } else {
+            Glide.with(context)
+                    .load(R.drawable.reportes)
+                    .transform(new CenterCrop(), new RoundedCorners(16))
+                    .into(holder.imgReporte);
         }
+    }
+
+    private String formatearFecha(String fechaOriginal) {
+        if (fechaOriginal == null || fechaOriginal.isEmpty()) return "Fecha no disponible";
 
         try {
             SimpleDateFormat formatoEntrada;
-            Date fecha;
-
             if (fechaOriginal.contains("T")) {
-                formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
             } else {
                 formatoEntrada = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             }
-
-            fecha = formatoEntrada.parse(fechaOriginal);
+            Date fecha = formatoEntrada.parse(fechaOriginal);
             SimpleDateFormat formatoSalida = new SimpleDateFormat("dd MMM yyyy, hh:mm a", new Locale("es", "ES"));
             return formatoSalida.format(fecha);
-
         } catch (ParseException e) {
             return fechaOriginal;
         }
@@ -106,29 +136,22 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
             return;
         }
 
-        String textoEstado = "Estado: " + estado;
-        holder.txtEstado.setText(textoEstado);
-
-        int colorEstado;
+        holder.txtEstado.setText("Estado: " + estado);
+        int color;
         switch (estado.toLowerCase()) {
             case "realizado":
-            case "completado":
-            case "finalizado":
-                colorEstado = ContextCompat.getColor(context, R.color.estado_realizado);
+                color = ContextCompat.getColor(context, R.color.estado_realizado);
                 break;
             case "en proceso":
-            case "en progreso":
-                colorEstado = ContextCompat.getColor(context, R.color.estado_proceso);
+                color = ContextCompat.getColor(context, R.color.estado_proceso);
                 break;
             case "pendiente":
-                colorEstado = ContextCompat.getColor(context, R.color.estado_pendiente);
+                color = ContextCompat.getColor(context, R.color.estado_pendiente);
                 break;
             default:
-                colorEstado = ContextCompat.getColor(context, android.R.color.darker_gray);
-                break;
+                color = ContextCompat.getColor(context, android.R.color.darker_gray);
         }
-
-        holder.indicadorEstado.setBackgroundColor(colorEstado);
+        holder.indicadorEstado.setBackgroundColor(color);
     }
 
     @Override
@@ -137,6 +160,7 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imgReporte;
         TextView txtNombre, txtFecha, txtEstado;
         MaterialButton btnDetalles;
         ImageButton btnDownload;
@@ -144,11 +168,12 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            imgReporte = itemView.findViewById(R.id.imgPoster);
             txtNombre = itemView.findViewById(R.id.txtNombre);
             txtFecha = itemView.findViewById(R.id.txtFecha);
+            txtEstado = itemView.findViewById(R.id.txtEstado);
             btnDetalles = itemView.findViewById(R.id.btnDetalles);
             btnDownload = itemView.findViewById(R.id.btnDownload);
-            txtEstado = itemView.findViewById(R.id.txtEstado);
             indicadorEstado = itemView.findViewById(R.id.indicadorEstado);
         }
     }

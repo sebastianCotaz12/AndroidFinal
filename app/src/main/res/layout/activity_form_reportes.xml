@@ -147,7 +147,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-
                     <!-- Cargo -->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -555,24 +554,64 @@
                                 android:letterSpacing="0.05" />
                         </LinearLayout>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnSeleccionarImagen"
+                        <!-- Área de carga de imagen (como en eventos) -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardImagen"
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:text="Seleccionar Imagen"
-                            android:textColor="#2196F3"
-                            android:textSize="14sp"
-                            app:icon="@drawable/ic_add_photo"
-                            app:iconGravity="textStart"
-                            app:iconPadding="8dp"
-                            app:cornerRadius="24dp"
-                            app:strokeColor="#2196F3"
+                            android:layout_height="200dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="4dp"
+                            app:strokeColor="#BBDEFB"
                             app:strokeWidth="1dp"
-                            android:backgroundTint="@android:color/transparent"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground">
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:background="#F5F5F5">
+
+                                <ImageView
+                                    android:id="@+id/ivPreviewImagen"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
+                                    android:visibility="gone" />
+
+                                <LinearLayout
+                                    android:id="@+id/llPlaceholderImagen"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:visibility="visible">
+
+                                    <ImageView
+                                        android:layout_width="48dp"
+                                        android:layout_height="48dp"
+                                        android:src="@drawable/ic_add_photo"
+                                        android:tint="#2196F3"
+                                        android:contentDescription="Seleccionar imagen" />
+
+                                    <TextView
+                                        android:id="@+id/tvImagenSeleccionada"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Toca para seleccionar imagen"
+                                        android:textColor="#78909C"
+                                        android:textSize="14sp"
+                                        android:layout_marginTop="8dp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Información de la imagen seleccionada -->
                         <TextView
-                            android:id="@+id/tvImagenSeleccionada"
+                            android:id="@+id/tvInfoImagen"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Ninguna imagen seleccionada"
@@ -612,31 +651,60 @@
                                 android:letterSpacing="0.05" />
                         </LinearLayout>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnSeleccionarArchivo"
+                        <!-- Área de carga de archivo -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardArchivo"
                             android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:text="Seleccionar Archivo"
-                            android:textColor="#2196F3"
-                            android:textSize="14sp"
-                            app:icon="@drawable/ic_attachment"
-                            app:iconGravity="textStart"
-                            app:iconPadding="8dp"
-                            app:cornerRadius="24dp"
-                            app:strokeColor="#2196F3"
+                            android:layout_height="120dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="4dp"
+                            app:strokeColor="#BBDEFB"
                             app:strokeWidth="1dp"
-                            android:backgroundTint="@android:color/transparent"
-                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground">
 
-                        <TextView
-                            android:id="@+id/tvArchivoSeleccionado"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Ningún archivo seleccionado"
-                            android:textColor="#78909C"
-                            android:textSize="12sp"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:gravity="center"
+                                android:background="#F5F5F5"
+                                android:padding="16dp">
+
+                                <ImageView
+                                    android:layout_width="48dp"
+                                    android:layout_height="48dp"
+                                    android:src="@drawable/ic_attachment"
+                                    android:tint="#2196F3"
+                                    android:contentDescription="Seleccionar archivo" />
+
+                                <TextView
+                                    android:id="@+id/tvArchivoSeleccionado"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Toca para seleccionar archivo"
+                                    android:textColor="#78909C"
+                                    android:textSize="14sp"
+                                    android:layout_marginTop="8dp"
+                                    android:gravity="center"
+                                    android:maxLines="2"
+                                    android:ellipsize="middle" />
+
+                                <!-- Información detallada del archivo -->
+                                <TextView
+                                    android:id="@+id/tvInfoArchivo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text=""
+                                    android:textColor="#78909C"
+                                    android:textSize="10sp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
                     </LinearLayout>
 
                 </LinearLayout>
