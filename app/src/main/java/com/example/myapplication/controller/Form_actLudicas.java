@@ -20,6 +20,7 @@ import com.example.myapplication.utils.PrefsManager;
 import com.example.myapplication.utils.SesionManager;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -47,6 +48,7 @@ public class Form_actLudicas extends AppCompatActivity {
                     imagenUri = result.getData().getData();
                     if (imagenUri != null) {
                         binding.ivPreview.setVisibility(android.view.View.VISIBLE);
+                        binding.llPlaceholder.setVisibility(android.view.View.GONE);
                         binding.ivPreview.setImageURI(imagenUri);
                         binding.tvImagenSeleccionada.setText("Archivo multimedia seleccionado ✅");
                     }
@@ -54,15 +56,18 @@ public class Form_actLudicas extends AppCompatActivity {
             });
 
     // Selector de archivo adjunto
-   /* private final ActivityResultLauncher<Intent> seleccionarArchivoLauncher =
+    private final ActivityResultLauncher<Intent> seleccionarArchivoLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     archivoUri = result.getData().getData();
                     if (archivoUri != null) {
-                        binding.tvArchivoSeleccionado.setText("Archivo adjunto seleccionado ✅");
+                        String fileName = obtenerNombreArchivo(archivoUri);
+                        binding.tvNombreArchivo.setText(fileName);
+                        binding.tvTipoArchivo.setVisibility(android.view.View.VISIBLE);
+                        binding.tvTipoArchivo.setText(obtenerTipoArchivo(fileName));
                     }
                 }
-            });*/
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +95,9 @@ public class Form_actLudicas extends AppCompatActivity {
 
         // Listeners
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
-        binding.ivAdjuntar.setOnClickListener(v -> seleccionarImagen());
-      //  binding.ivArchivo.setOnClickListener(v -> seleccionarArchivo());
-        binding.btnEnviarEvidencia.setOnClickListener(v -> guardarActividadMultipart());
+        binding.cardImagen.setOnClickListener(v -> seleccionarImagen());
+        binding.cardArchivo.setOnClickListener(v -> seleccionarArchivo());
+        binding.btnEnviarEvidencia.setOnClickListener(v -> guardarActividadConArchivos());
         binding.btnCancelar.setOnClickListener(v -> {
             startActivity(new Intent(Form_actLudicas.this, Lista_actLudicas.class));
             finish();
@@ -124,9 +129,53 @@ public class Form_actLudicas extends AppCompatActivity {
         seleccionarImagenLauncher.launch(Intent.createChooser(intent, "Seleccionar imagen o video"));
     }
 
+    private void seleccionarArchivo() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        String[] mimeTypes = {"application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        seleccionarArchivoLauncher.launch(Intent.createChooser(intent, "Seleccionar Archivo"));
+    }
 
+    private String obtenerNombreArchivo(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            try (android.database.Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME);
+                    if (nameIndex != -1) {
+                        result = cursor.getString(nameIndex);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
 
-    private void guardarActividadMultipart() {
+    private String obtenerTipoArchivo(String fileName) {
+        if (fileName.toLowerCase().endsWith(".pdf")) {
+            return "PDF Document";
+        } else if (fileName.toLowerCase().endsWith(".doc") || fileName.toLowerCase().endsWith(".docx")) {
+            return "Word Document";
+        } else if (fileName.toLowerCase().endsWith(".txt")) {
+            return "Text File";
+        } else {
+            return "Document";
+        }
+    }
+
+    // 🔹 Método para subir actividad con imagen y archivo
+    private void guardarActividadConArchivos() {
         String nombreActividad = binding.etNombreActividad.getText().toString().trim();
         String fecha = binding.etFecha.getText().toString().trim();
         String descripcion = binding.etDescripcion.getText().toString().trim();
@@ -142,35 +191,58 @@ public class Form_actLudicas extends AppCompatActivity {
         }
 
         try {
-            // Convertir campos a RequestBody
-            RequestBody nombreBody = RequestBody.create(MediaType.parse("text/plain"), nombreActividad);
-            RequestBody fechaBody = RequestBody.create(MediaType.parse("text/plain"), fecha);
-            RequestBody descripcionBody = RequestBody.create(MediaType.parse("text/plain"), descripcion);
+            // 🔹 Convertir la imagen/video seleccionado a bytes
+            InputStream imagenInputStream = getContentResolver().openInputStream(imagenUri);
+            byte[] imagenBytes = new byte[imagenInputStream.available()];
+            imagenInputStream.read(imagenBytes);
+            imagenInputStream.close();
 
-            // Imagen/video obligatorio
-            String imagenPath = FileUtils.getPath(this, imagenUri);
-            File imagenFile = new File(imagenPath);
-            RequestBody imagenBody = RequestBody.create(MediaType.parse(getContentResolver().getType(imagenUri)), imagenFile);
-            MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen_video", imagenFile.getName(), imagenBody);
+            // 🔹 Crear el cuerpo del archivo de imagen/video
+            String mimeType = getContentResolver().getType(imagenUri);
+            MediaType mediaType = mimeType != null ? MediaType.parse(mimeType) : MediaType.parse("image/*");
+            RequestBody requestImagen = RequestBody.create(imagenBytes, mediaType);
+            MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen_video", "actividad.jpg", requestImagen);
 
-            // Archivo adjunto opcional
-            MultipartBody.Part archivoPart = null;
-            if (archivoUri != null) {
-                String archivoPath = FileUtils.getPath(this, archivoUri);
-                File archivoFile = new File(archivoPath);
-                RequestBody archivoBody = RequestBody.create(MediaType.parse(getContentResolver().getType(archivoUri)), archivoFile);
-                archivoPart = MultipartBody.Part.createFormData("archivo_adjunto", archivoFile.getName(), archivoBody);
-            }
+            // 🔹 Crear los demás campos
+            RequestBody nombreBody = RequestBody.create(nombreActividad, MultipartBody.FORM);
+            RequestBody fechaBody = RequestBody.create(fecha, MultipartBody.FORM);
+            RequestBody descripcionBody = RequestBody.create(descripcion, MultipartBody.FORM);
 
+            // 🔹 Llamada a la API
+            Call<ApiResponse<Object>> call;
             ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
 
-            Call<ApiResponse<Object>> call = apiService.crearActividadMultipart(
-                    nombreBody,
-                    fechaBody,
-                    descripcionBody,
-                    imagenPart,
-                    archivoPart
-            );
+            if (archivoUri != null) {
+                // 🔹 Si hay archivo, prepararlo también
+                InputStream archivoInputStream = getContentResolver().openInputStream(archivoUri);
+                byte[] archivoBytes = new byte[archivoInputStream.available()];
+                archivoInputStream.read(archivoBytes);
+                archivoInputStream.close();
+
+                String archivoNombre = obtenerNombreArchivo(archivoUri);
+                MediaType archivoMediaType = obtenerMediaTypeArchivo(archivoNombre);
+
+                RequestBody requestArchivo = RequestBody.create(archivoBytes, archivoMediaType);
+                MultipartBody.Part archivoPart = MultipartBody.Part.createFormData("archivo_adjunto", archivoNombre, requestArchivo);
+
+                // 🔹 Llamada con imagen y archivo
+                call = apiService.crearActividadMultipart(
+                        nombreBody,
+                        fechaBody,
+                        descripcionBody,
+                        imagenPart,
+                        archivoPart
+                );
+            } else {
+                // 🔹 Llamada solo con imagen
+                call = apiService.crearActividadMultipart(
+                        nombreBody,
+                        fechaBody,
+                        descripcionBody,
+                        imagenPart,
+                        null  // Pasar null cuando no hay archivo
+                );
+            }
 
             call.enqueue(new Callback<ApiResponse<Object>>() {
                 @Override
@@ -198,7 +270,21 @@ public class Form_actLudicas extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error al procesar archivo: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error procesando archivos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private MediaType obtenerMediaTypeArchivo(String fileName) {
+        if (fileName.toLowerCase().endsWith(".pdf")) {
+            return MediaType.parse("application/pdf");
+        } else if (fileName.toLowerCase().endsWith(".doc")) {
+            return MediaType.parse("application/msword");
+        } else if (fileName.toLowerCase().endsWith(".docx")) {
+            return MediaType.parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        } else if (fileName.toLowerCase().endsWith(".txt")) {
+            return MediaType.parse("text/plain");
+        } else {
+            return MediaType.parse("application/octet-stream");
         }
     }
 }

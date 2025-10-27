@@ -2,6 +2,7 @@ package com.example.myapplication.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -87,25 +88,46 @@ public class Lista_actLudicas extends AppCompatActivity {
                     try {
                         lista.clear();
                         JSONArray datos = response.getJSONArray("data");
+
+                        Log.d("ACTLUDICAS_API", "Respuesta recibida: " + datos.length() + " elementos");
+
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
+
+                            // DEBUG: Ver el JSON completo
+                            Log.d("ACTLUDICAS_API", "Elemento " + i + ": " + obj.toString());
+
                             Item_actLudicas item = new Item_actLudicas(
                                     obj.getInt("id"),
                                     obj.getString("nombreUsuario"),
                                     obj.getString("nombreActividad"),
                                     obj.getString("fechaActividad"),
                                     obj.getString("descripcion"),
-                                    obj.optString("archivoAdjunto"),
-                                    obj.optString("imagenVideo") // <-- Aquí pasamos la imagen de Cloudinary
+                                    obj.optString("archivoAdjunto", ""), // <-- Campo archivo adjunto
+                                    obj.optString("imagenVideo", "") // <-- Imagen de Cloudinary
                             );
                             lista.add(item);
+
+                            // DEBUG: Verificar campos específicos
+                            Log.d("ACTLUDICAS_API", "Archivo adjunto: " + obj.optString("archivoAdjunto", ""));
                         }
                         adapter.notifyDataSetChanged();
+
+                        if (lista.isEmpty()) {
+                            Toast.makeText(this, "No hay actividades disponibles", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Actividades cargadas: " + lista.size(), Toast.LENGTH_SHORT).show();
+                        }
+
                     } catch (Exception e) {
+                        Log.e("ACTLUDICAS_API", "Error parseando datos: " + e.getMessage());
                         Toast.makeText(this, "Error parseando datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 },
-                error -> Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show()
+                error -> {
+                    Log.e("ACTLUDICAS_API", "Error API: " + error.getMessage());
+                    Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                }
         ) {
             @Override
             public Map<String, String> getHeaders() {
