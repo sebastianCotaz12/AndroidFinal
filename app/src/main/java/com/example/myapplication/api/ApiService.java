@@ -103,7 +103,8 @@ public interface ApiService {
             @Part("titulo") RequestBody titulo,
             @Part("fecha_actividad") RequestBody fechaActividad,
             @Part("descripcion") RequestBody descripcion,
-            @Part MultipartBody.Part imagen
+            @Part MultipartBody.Part imagen,
+            @Part MultipartBody.Part archivo
     );
 
     @GET("eventos")

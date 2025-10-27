@@ -3,12 +3,14 @@ package com.example.myapplication.controller;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -24,7 +26,10 @@ public class Detalles_eventos extends AppCompatActivity {
 
     private ImageView imgEventoDetalle;
     private TextView tvTituloEventoDetalle, tvFechaEventoDetalle, tvUsuarioEventoDetalle, tvDescripcionEventoDetalle, tvTipoEvento;
+    private TextView tvNombreArchivo, tvTipoArchivo;
     private Button btnAbrirArchivo, btnVolver;
+    private CardView cardArchivo;
+    private ImageView ivIconoArchivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,12 @@ public class Detalles_eventos extends AppCompatActivity {
         btnAbrirArchivo = findViewById(R.id.btnAbrirArchivo);
         btnVolver = findViewById(R.id.btnVolver);
 
+        // Nuevas vistas para el archivo
+        cardArchivo = findViewById(R.id.cardArchivo);
+        tvNombreArchivo = findViewById(R.id.tvNombreArchivo);
+        tvTipoArchivo = findViewById(R.id.tvTipoArchivo);
+        ivIconoArchivo = findViewById(R.id.ivIconoArchivo);
+
         // Obtener datos del Intent
         Intent intent = getIntent();
         String titulo = intent.getStringExtra("titulo");
@@ -53,7 +64,7 @@ public class Detalles_eventos extends AppCompatActivity {
         // Asignar valores con formato mejorado
         tvTituloEventoDetalle.setText(titulo != null ? titulo : "Sin título");
         tvFechaEventoDetalle.setText(formatearFecha(fecha));
-        tvUsuarioEventoDetalle.setText( (nombreUsuario != null ? nombreUsuario : "Usuario no disponible"));
+        tvUsuarioEventoDetalle.setText((nombreUsuario != null ? nombreUsuario : "Usuario no disponible"));
 
         // Manejar descripción
         if (descripcion != null && !descripcion.isEmpty() && !descripcion.equals("null")) {
@@ -68,8 +79,8 @@ public class Detalles_eventos extends AppCompatActivity {
         // Cargar imagen con Glide mejorado
         cargarImagenEvento(imagen);
 
-        // Configurar botón de archivo
-        configurarBotonArchivo(archivo);
+        // Configurar sección de archivo
+        configurarSeccionArchivo(archivo);
 
         // Botón Volver
         btnVolver.setOnClickListener(v -> {
@@ -78,6 +89,11 @@ public class Detalles_eventos extends AppCompatActivity {
 
         // Botón Archivo
         btnAbrirArchivo.setOnClickListener(v -> {
+            abrirArchivo(archivo);
+        });
+
+        // Card de archivo también clickeable
+        cardArchivo.setOnClickListener(v -> {
             abrirArchivo(archivo);
         });
     }
@@ -133,12 +149,69 @@ public class Detalles_eventos extends AppCompatActivity {
         }
     }
 
-    private void configurarBotonArchivo(String archivo) {
+    private void configurarSeccionArchivo(String archivo) {
         if (archivo != null && !archivo.isEmpty() && !archivo.equals("null")) {
-            btnAbrirArchivo.setVisibility(android.view.View.VISIBLE);
+            // Mostrar tarjeta de archivo
+            cardArchivo.setVisibility(View.VISIBLE);
+
+            // Obtener nombre y tipo del archivo desde la URL
+            String nombreArchivo = obtenerNombreArchivoDesdeUrl(archivo);
+            String tipoArchivo = obtenerTipoArchivo(nombreArchivo);
+
+            // Configurar textos
+            tvNombreArchivo.setText(nombreArchivo);
+            tvTipoArchivo.setText(tipoArchivo);
+
+            // Configurar ícono según el tipo de archivo
+            configurarIconoArchivo(tipoArchivo);
+
         } else {
-            btnAbrirArchivo.setVisibility(android.view.View.GONE);
+            // Ocultar tarjeta de archivo si no hay archivo
+            cardArchivo.setVisibility(View.GONE);
         }
+    }
+
+    private String obtenerNombreArchivoDesdeUrl(String url) {
+        if (url == null || url.isEmpty()) return "Archivo adjunto";
+
+        try {
+            // Extraer nombre del archivo de la URL
+            Uri uri = Uri.parse(url);
+            String path = uri.getPath();
+            if (path != null && path.contains("/")) {
+                return path.substring(path.lastIndexOf("/") + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "Archivo adjunto";
+    }
+
+    private String obtenerTipoArchivo(String nombreArchivo) {
+        if (nombreArchivo == null) return "Documento";
+
+        String nombreLower = nombreArchivo.toLowerCase();
+        if (nombreLower.endsWith(".pdf")) {
+            return "PDF Document";
+        } else if (nombreLower.endsWith(".doc") || nombreLower.endsWith(".docx")) {
+            return "Word Document";
+        } else if (nombreLower.endsWith(".txt")) {
+            return "Text File";
+        } else if (nombreLower.endsWith(".xls") || nombreLower.endsWith(".xlsx")) {
+            return "Excel Spreadsheet";
+        } else if (nombreLower.endsWith(".jpg") || nombreLower.endsWith(".jpeg") || nombreLower.endsWith(".png")) {
+            return "Image File";
+        } else {
+            return "Document";
+        }
+    }
+
+    private void configurarIconoArchivo(String tipoArchivo) {
+        // Aquí puedes cambiar el ícono según el tipo de archivo
+        // Por ahora mantenemos el ícono por defecto
+        // Puedes agregar lógica para cambiar el ícono según el tipo
+        ivIconoArchivo.setImageResource(R.drawable.ic_attach_file);
     }
 
     private void configurarTipoEvento(String titulo) {

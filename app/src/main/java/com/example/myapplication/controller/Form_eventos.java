@@ -37,6 +37,7 @@ public class Form_eventos extends AppCompatActivity {
     private SesionManager sesionManager;
 
     private Uri imagenUri = null;
+    private Uri archivoUri = null;
 
     // Selector de imagen
     private final ActivityResultLauncher<Intent> seleccionarImagenLauncher =
@@ -45,7 +46,23 @@ public class Form_eventos extends AppCompatActivity {
                     imagenUri = result.getData().getData();
                     if (imagenUri != null) {
                         binding.ivPreview.setVisibility(android.view.View.VISIBLE);
+                        binding.llPlaceholder.setVisibility(android.view.View.GONE);
                         binding.ivPreview.setImageURI(imagenUri);
+                        binding.tvImagenSeleccionada.setText("Imagen seleccionada");
+                    }
+                }
+            });
+
+    // Selector de archivo
+    private final ActivityResultLauncher<Intent> seleccionarArchivoLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    archivoUri = result.getData().getData();
+                    if (archivoUri != null) {
+                        String fileName = obtenerNombreArchivo(archivoUri);
+                        binding.tvNombreArchivo.setText(fileName);
+                        binding.tvTipoArchivo.setVisibility(android.view.View.VISIBLE);
+                        binding.tvTipoArchivo.setText(obtenerTipoArchivo(fileName));
                     }
                 }
             });
@@ -69,8 +86,9 @@ public class Form_eventos extends AppCompatActivity {
 
         // --- Listeners ---
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
-        binding.ivAdjuntar.setOnClickListener(v -> seleccionarImagen());
-        binding.btnEnviarEvidencia.setOnClickListener(v -> guardarEventoConImagen());
+        binding.cardImagen.setOnClickListener(v -> seleccionarImagen());
+        binding.cardArchivo.setOnClickListener(v -> seleccionarArchivo());
+        binding.btnEnviarEvidencia.setOnClickListener(v -> guardarEventoConArchivos());
         binding.btnCancelar.setOnClickListener(v -> {
             Intent intent = new Intent(Form_eventos.this, Lista_eventos.class);
             startActivity(intent);
@@ -101,8 +119,53 @@ public class Form_eventos extends AppCompatActivity {
         seleccionarImagenLauncher.launch(Intent.createChooser(intent, "Seleccionar Imagen"));
     }
 
-    // 🔹 Nuevo método para subir imagen correctamente al backend (Cloudinary)
-    private void guardarEventoConImagen() {
+    private void seleccionarArchivo() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        String[] mimeTypes = {"application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        seleccionarArchivoLauncher.launch(Intent.createChooser(intent, "Seleccionar Archivo"));
+    }
+
+    private String obtenerNombreArchivo(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            try (android.database.Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME);
+                    if (nameIndex != -1) {
+                        result = cursor.getString(nameIndex);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    private String obtenerTipoArchivo(String fileName) {
+        if (fileName.toLowerCase().endsWith(".pdf")) {
+            return "PDF Document";
+        } else if (fileName.toLowerCase().endsWith(".doc") || fileName.toLowerCase().endsWith(".docx")) {
+            return "Word Document";
+        } else if (fileName.toLowerCase().endsWith(".txt")) {
+            return "Text File";
+        } else {
+            return "Document";
+        }
+    }
+
+    // 🔹 Método para subir evento con imagen y archivo
+    private void guardarEventoConArchivos() {
         String token = prefsManager.getToken();
 
         String titulo = binding.etTituloEvento.getText().toString().trim();
@@ -121,14 +184,14 @@ public class Form_eventos extends AppCompatActivity {
 
         try {
             // 🔹 Convertir la imagen seleccionada a bytes
-            InputStream inputStream = getContentResolver().openInputStream(imagenUri);
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes);
-            inputStream.close();
+            InputStream imagenInputStream = getContentResolver().openInputStream(imagenUri);
+            byte[] imagenBytes = new byte[imagenInputStream.available()];
+            imagenInputStream.read(imagenBytes);
+            imagenInputStream.close();
 
-            // 🔹 Crear el cuerpo del archivo
-            RequestBody requestFile = RequestBody.create(bytes, MediaType.parse("image/*"));
-            MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen", "evento.jpg", requestFile);
+            // 🔹 Crear el cuerpo del archivo de imagen
+            RequestBody requestImagen = RequestBody.create(imagenBytes, MediaType.parse("image/*"));
+            MultipartBody.Part imagenPart = MultipartBody.Part.createFormData("imagen", "evento.jpg", requestImagen);
 
             // 🔹 Crear los demás campos
             RequestBody tituloBody = RequestBody.create(titulo, MultipartBody.FORM);
@@ -136,13 +199,40 @@ public class Form_eventos extends AppCompatActivity {
             RequestBody descripcionBody = RequestBody.create(descripcion, MultipartBody.FORM);
 
             // 🔹 Llamada a la API
+            Call<ApiResponse<Object>> call;
             ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
-            Call<ApiResponse<Object>> call = apiService.crearEventoMultipart(
-                    tituloBody,
-                    fechaBody,
-                    descripcionBody,
-                    imagenPart
-            );
+
+            if (archivoUri != null) {
+                // 🔹 Si hay archivo, prepararlo también
+                InputStream archivoInputStream = getContentResolver().openInputStream(archivoUri);
+                byte[] archivoBytes = new byte[archivoInputStream.available()];
+                archivoInputStream.read(archivoBytes);
+                archivoInputStream.close();
+
+                String archivoNombre = obtenerNombreArchivo(archivoUri);
+                MediaType archivoMediaType = obtenerMediaTypeArchivo(archivoNombre);
+
+                RequestBody requestArchivo = RequestBody.create(archivoBytes, archivoMediaType);
+                MultipartBody.Part archivoPart = MultipartBody.Part.createFormData("archivo", archivoNombre, requestArchivo);
+
+                // 🔹 Llamada con imagen y archivo
+                call = apiService.crearEventoMultipart(
+                        tituloBody,
+                        fechaBody,
+                        descripcionBody,
+                        imagenPart,
+                        archivoPart
+                );
+            } else {
+                // 🔹 Llamada solo con imagen - pasar null para el archivo
+                call = apiService.crearEventoMultipart(
+                        tituloBody,
+                        fechaBody,
+                        descripcionBody,
+                        imagenPart,
+                        null  // Pasar null cuando no hay archivo
+                );
+            }
 
             call.enqueue(new Callback<ApiResponse<Object>>() {
                 @Override
@@ -170,7 +260,21 @@ public class Form_eventos extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error leyendo la imagen: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error procesando archivos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private MediaType obtenerMediaTypeArchivo(String fileName) {
+        if (fileName.toLowerCase().endsWith(".pdf")) {
+            return MediaType.parse("application/pdf");
+        } else if (fileName.toLowerCase().endsWith(".doc")) {
+            return MediaType.parse("application/msword");
+        } else if (fileName.toLowerCase().endsWith(".docx")) {
+            return MediaType.parse("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        } else if (fileName.toLowerCase().endsWith(".txt")) {
+            return MediaType.parse("text/plain");
+        } else {
+            return MediaType.parse("application/octet-stream");
         }
     }
 }

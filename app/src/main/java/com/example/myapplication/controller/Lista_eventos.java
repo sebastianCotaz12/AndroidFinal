@@ -66,6 +66,7 @@ public class Lista_eventos extends AppCompatActivity {
             Intent intent = new Intent(Lista_eventos.this, Form_eventos.class);
             startActivity(intent);
         });
+
         // 🔹 Botón de regresar al inicio de sesión
         ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
         btnVolverLogin.setOnClickListener(v -> {
@@ -127,7 +128,7 @@ public class Lista_eventos extends AppCompatActivity {
                             }
 
                             // DEBUG: Verificar campos específicos
-                            Log.d("EVENTOS_API", "Usuario: " + nombreUsuario + ", Fecha: " + fechaActividad + ", Título: " + titulo);
+                            Log.d("EVENTOS_API", "Usuario: " + nombreUsuario + ", Fecha: " + fechaActividad + ", Título: " + titulo + ", Archivo: " + archivo);
 
                             // Crear objeto para el RecyclerView
                             Item_eventos item = new Item_eventos(
