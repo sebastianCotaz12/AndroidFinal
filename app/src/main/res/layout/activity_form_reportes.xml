@@ -152,7 +152,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -205,14 +206,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="16dp">
+                        android:gravity="center_vertical">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/ic_id"
+                            android:src="@drawable/ic_badge"
                             android:tint="#2196F3"
                             android:layout_marginEnd="12dp" />
 
@@ -334,7 +333,8 @@
                                     android:hint="Seleccione fecha"
                                     android:textSize="16sp"
                                     android:textColor="#263238"
-                                    android:focusable="false" />
+                                    android:focusable="false"
+                                    android:clickable="true" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -497,7 +497,104 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- TARJETA DE ARCHIVOS ADJUNTOS -->
+            <!-- TARJETA DE ARCHIVO/DOCUMENTO -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#E3F2FD"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_attach_file"
+                            android:tint="#2196F3"
+                            android:layout_marginEnd="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ADJUNTAR ARCHIVO"
+                            android:textColor="#78909C"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.05" />
+                    </LinearLayout>
+
+                    <!-- Área de carga de archivo -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardArchivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:strokeColor="#BBDEFB"
+                        app:strokeWidth="1dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="#F5F5F5">
+
+                            <ImageView
+                                android:id="@+id/ivIconoArchivo"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@drawable/ic_attach_file"
+                                android:tint="#2196F3"
+                                android:contentDescription="Seleccionar archivo" />
+
+                            <TextView
+                                android:id="@+id/tvNombreArchivo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Toca para seleccionar archivo"
+                                android:textColor="#78909C"
+                                android:textSize="14sp"
+                                android:layout_marginTop="8dp"
+                                android:maxWidth="200dp"
+                                android:ellipsize="middle"
+                                android:singleLine="true" />
+
+                            <TextView
+                                android:id="@+id/tvTipoArchivo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PDF, DOC, TXT, etc."
+                                android:textColor="#B0BEC5"
+                                android:textSize="12sp"
+                                android:layout_marginTop="4dp"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- TARJETA DE EVIDENCIA -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -513,199 +610,85 @@
                     android:orientation="vertical"
                     android:padding="24dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="ARCHIVOS ADJUNTOS"
-                        android:textColor="#2196F3"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="0.05"
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- Imagen -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:layout_marginBottom="16dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="8dp">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_image"
+                            android:tint="#2196F3"
+                            android:layout_marginEnd="12dp" />
 
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/ic_image"
-                                android:tint="#2196F3"
-                                android:layout_marginEnd="12dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="IMAGEN"
-                                android:textColor="#78909C"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.05" />
-                        </LinearLayout>
-
-                        <!-- Área de carga de imagen (como en eventos) -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/cardImagen"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="4dp"
-                            app:strokeColor="#BBDEFB"
-                            app:strokeWidth="1dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?android:attr/selectableItemBackground">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                android:gravity="center"
-                                android:background="#F5F5F5">
-
-                                <ImageView
-                                    android:id="@+id/ivPreviewImagen"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"
-                                    android:visibility="gone" />
-
-                                <LinearLayout
-                                    android:id="@+id/llPlaceholderImagen"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:gravity="center"
-                                    android:visibility="visible">
-
-                                    <ImageView
-                                        android:layout_width="48dp"
-                                        android:layout_height="48dp"
-                                        android:src="@drawable/ic_add_photo"
-                                        android:tint="#2196F3"
-                                        android:contentDescription="Seleccionar imagen" />
-
-                                    <TextView
-                                        android:id="@+id/tvImagenSeleccionada"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Toca para seleccionar imagen"
-                                        android:textColor="#78909C"
-                                        android:textSize="14sp"
-                                        android:layout_marginTop="8dp" />
-                                </LinearLayout>
-
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <!-- Información de la imagen seleccionada -->
                         <TextView
-                            android:id="@+id/tvInfoImagen"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ninguna imagen seleccionada"
+                            android:text="ADJUNTAR IMAGEN"
                             android:textColor="#78909C"
                             android:textSize="12sp"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center" />
+                            android:textStyle="bold"
+                            android:letterSpacing="0.05" />
                     </LinearLayout>
 
-                    <!-- Archivos -->
-                    <LinearLayout
+                    <!-- Área de carga de imagen -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardImagen"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="200dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:strokeColor="#BBDEFB"
+                        app:strokeWidth="1dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginBottom="8dp">
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="#F5F5F5">
 
                             <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/ic_files"
-                                android:tint="#2196F3"
-                                android:layout_marginEnd="12dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="ARCHIVOS"
-                                android:textColor="#78909C"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.05" />
-                        </LinearLayout>
-
-                        <!-- Área de carga de archivo -->
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/cardArchivo"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="4dp"
-                            app:strokeColor="#BBDEFB"
-                            app:strokeWidth="1dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?android:attr/selectableItemBackground">
-
-                            <LinearLayout
+                                android:id="@+id/ivPreview"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:visibility="gone" />
+
+                            <LinearLayout
+                                android:id="@+id/llPlaceholder"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity="center"
-                                android:background="#F5F5F5"
-                                android:padding="16dp">
+                                android:visibility="visible">
 
                                 <ImageView
+                                    android:id="@+id/ivAdjuntar"
                                     android:layout_width="48dp"
                                     android:layout_height="48dp"
-                                    android:src="@drawable/ic_attachment"
+                                    android:src="@drawable/ic_add_photo"
                                     android:tint="#2196F3"
-                                    android:contentDescription="Seleccionar archivo" />
+                                    android:contentDescription="Seleccionar imagen" />
 
                                 <TextView
-                                    android:id="@+id/tvArchivoSeleccionado"
-                                    android:layout_width="match_parent"
+                                    android:id="@+id/tvImagenSeleccionada"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Toca para seleccionar archivo"
+                                    android:text="Toca para seleccionar imagen"
                                     android:textColor="#78909C"
                                     android:textSize="14sp"
-                                    android:layout_marginTop="8dp"
-                                    android:gravity="center"
-                                    android:maxLines="2"
-                                    android:ellipsize="middle" />
-
-                                <!-- Información detallada del archivo -->
-                                <TextView
-                                    android:id="@+id/tvInfoArchivo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text=""
-                                    android:textColor="#78909C"
-                                    android:textSize="10sp"
-                                    android:layout_marginTop="4dp"
-                                    android:gravity="center"
-                                    android:visibility="gone" />
+                                    android:layout_marginTop="8dp" />
                             </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>
 
-                    </LinearLayout>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

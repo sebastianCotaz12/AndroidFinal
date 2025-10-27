@@ -50,20 +50,10 @@ public class Form_reportes extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     imagenUri = result.getData().getData();
                     if (imagenUri != null) {
-                        // Mostrar nombre y tipo
-                        String nombreArchivo = getFileName(imagenUri);
-                        String tipoArchivo = getContentResolver().getType(imagenUri);
-                        binding.tvInfoImagen.setText(nombreArchivo + " (" + tipoArchivo + ")");
-
-                        // Mostrar previsualización en ImageView
-                        binding.ivPreviewImagen.setVisibility(View.VISIBLE);
-                        binding.llPlaceholderImagen.setVisibility(View.GONE);
-                        Glide.with(this)
-                                .load(imagenUri)
-                                .centerCrop()
-                                .placeholder(R.drawable.placeholder_image)
-                                .error(R.drawable.placeholder_image)
-                                .into(binding.ivPreviewImagen);
+                        binding.ivPreview.setVisibility(View.VISIBLE);
+                        binding.llPlaceholder.setVisibility(View.GONE);
+                        binding.ivPreview.setImageURI(imagenUri);
+                        binding.tvImagenSeleccionada.setText("Imagen seleccionada");
                     }
                 }
             });
@@ -73,58 +63,48 @@ public class Form_reportes extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     archivoUri = result.getData().getData();
                     if (archivoUri != null) {
-                        // Mostrar nombre y tipo
-                        String nombreArchivo = getFileName(archivoUri);
-                        String tipoArchivo = getContentResolver().getType(archivoUri);
-
-                        // Mostrar información del archivo
-                        binding.tvArchivoSeleccionado.setText(nombreArchivo);
-                        binding.tvInfoArchivo.setText(getFileExtension(nombreArchivo) + " • " + getFileSize(archivoUri));
-                        binding.tvInfoArchivo.setVisibility(View.VISIBLE);
+                        String fileName = obtenerNombreArchivo(archivoUri);
+                        binding.tvNombreArchivo.setText(fileName);
+                        binding.tvTipoArchivo.setVisibility(View.VISIBLE);
+                        binding.tvTipoArchivo.setText(obtenerTipoArchivo(fileName));
                     }
                 }
             });
 
-    // Método auxiliar para obtener nombre real del archivo
-    private String getFileName(Uri uri) {
-        String result = uri.getLastPathSegment();
-        if (result != null) {
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) result = result.substring(cut + 1);
-        }
-        return result != null ? result : "archivo_desconocido";
-    }
-
-    // Método para obtener extensión del archivo
-    private String getFileExtension(String fileName) {
-        if (fileName == null) return "Sin extensión";
-        int lastDot = fileName.lastIndexOf('.');
-        if (lastDot != -1 && lastDot < fileName.length() - 1) {
-            return fileName.substring(lastDot + 1).toUpperCase();
-        }
-        return "Sin extensión";
-    }
-
-    // Método para obtener tamaño del archivo
-    private String getFileSize(Uri uri) {
-        try {
-            InputStream inputStream = getContentResolver().openInputStream(uri);
-            if (inputStream != null) {
-                long size = inputStream.available();
-                inputStream.close();
-
-                if (size < 1024) {
-                    return size + " B";
-                } else if (size < 1024 * 1024) {
-                    return String.format(Locale.getDefault(), "%.1f KB", size / 1024.0);
-                } else {
-                    return String.format(Locale.getDefault(), "%.1f MB", size / (1024.0 * 1024.0));
+    private String obtenerNombreArchivo(Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            try (android.database.Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME);
+                    if (nameIndex != -1) {
+                        result = cursor.getString(nameIndex);
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return "Tamaño desconocido";
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    private String obtenerTipoArchivo(String fileName) {
+        if (fileName.toLowerCase().endsWith(".pdf")) {
+            return "PDF Document";
+        } else if (fileName.toLowerCase().endsWith(".doc") || fileName.toLowerCase().endsWith(".docx")) {
+            return "Word Document";
+        } else if (fileName.toLowerCase().endsWith(".txt")) {
+            return "Text File";
+        } else {
+            return "Document";
+        }
     }
 
     @Override
@@ -158,7 +138,7 @@ public class Form_reportes extends AppCompatActivity {
         binding.cardArchivo.setOnClickListener(v -> seleccionarArchivo());
 
         binding.etFecha.setOnClickListener(v -> abrirDatePicker());
-        binding.btnEnviarReporte.setOnClickListener(v -> guardarReporteMultipart());
+        binding.btnEnviarReporte.setOnClickListener(v -> guardarReporteConArchivos());
         binding.btnCancelar.setOnClickListener(v -> {
             Intent intent = new Intent(Form_reportes.this, Lista_reportes.class);
             startActivity(intent);
@@ -192,15 +172,14 @@ public class Form_reportes extends AppCompatActivity {
     private void seleccionarArchivo() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        String[] mimeTypes = {"application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         seleccionarArchivoLauncher.launch(Intent.createChooser(intent, "Seleccionar Archivo"));
     }
 
     private RequestBody createPartFromString(String value) {
         return RequestBody.create(value != null ? value : "", MediaType.parse("text/plain"));
-    }
-
-    private RequestBody createPartFromInt(int value) {
-        return RequestBody.create(String.valueOf(value), MediaType.parse("text/plain"));
     }
 
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
@@ -237,7 +216,8 @@ public class Form_reportes extends AppCompatActivity {
         }
     }
 
-    private void guardarReporteMultipart() {
+    // 🔹 Método para subir reporte con imagen y archivo
+    private void guardarReporteConArchivos() {
         int idUsuario = prefsManager.getIdUsuario();
         int idEmpresa = prefsManager.getIdEmpresa();
         String token = prefsManager.getToken();
@@ -273,8 +253,14 @@ public class Form_reportes extends AppCompatActivity {
         ApiService apiService = ApiClient.getClient(prefsManager).create(ApiService.class);
         Log.d("TOKEN_DEBUG", "Token usado al crear reporte: " + token);
 
+        // Preparar imagen
         MultipartBody.Part imagenPart = prepareFilePart("imagen", imagenUri);
-        MultipartBody.Part archivoPart = prepareFilePart("archivos", archivoUri);
+
+        // Preparar archivo
+        MultipartBody.Part archivoPart = null;
+        if (archivoUri != null) {
+            archivoPart = prepareFilePart("archivos", archivoUri);
+        }
 
         Call<ApiResponse<Crear_reportes>> call = apiService.crearReporteMultipart(
                 createPartFromString(String.valueOf(idUsuario)),

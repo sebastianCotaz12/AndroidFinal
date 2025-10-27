@@ -404,7 +404,138 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- TARJETA DE ARCHIVOS ADJUNTOS -->
+            <!-- TARJETA DE ARCHIVO ADJUNTO -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardArchivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#E3F2FD"
+                app:strokeWidth="1dp"
+                android:backgroundTint="#FFFFFF"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_attach_file"
+                            android:tint="#2196F3"
+                            android:layout_marginEnd="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ARCHIVO ADJUNTO"
+                            android:textColor="#78909C"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.05" />
+                    </LinearLayout>
+
+                    <!-- Información del archivo -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:strokeColor="#BBDEFB"
+                        app:strokeWidth="1dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical"
+                            android:background="#F8FAFC">
+
+                            <ImageView
+                                android:id="@+id/ivIconoArchivo"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/ic_attach_file"
+                                android:tint="#2196F3"
+                                android:layout_marginEnd="16dp"
+                                android:contentDescription="Icono archivo" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tvNombreArchivo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Nombre del archivo"
+                                    android:textColor="#263238"
+                                    android:textSize="16sp"
+                                    android:textStyle="normal"
+                                    android:maxLines="1"
+                                    android:ellipsize="end" />
+
+                                <TextView
+                                    android:id="@+id/tvTipoArchivo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tipo de archivo"
+                                    android:textColor="#78909C"
+                                    android:textSize="14sp"
+                                    android:layout_marginTop="4dp" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_download"
+                                android:tint="#2196F3"
+                                android:contentDescription="Descargar"
+                                android:layout_marginStart="8dp" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Botón para abrir archivo -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAbrirArchivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="Abrir archivo"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        app:icon="@drawable/ic_open_in_new"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:cornerRadius="26dp"
+                        android:backgroundTint="#2196F3"
+                        app:elevation="4dp"
+                        app:rippleColor="#1976D2"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_marginTop="12dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- TARJETA DE EVIDENCIA -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -430,98 +561,39 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/ic_attachment"
+                            android:src="@drawable/ic_image"
                             android:tint="#2196F3"
                             android:layout_marginEnd="12dp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ARCHIVOS ADJUNTOS"
+                            android:text="EVIDENCIA"
                             android:textColor="#78909C"
                             android:textSize="12sp"
                             android:textStyle="bold"
                             android:letterSpacing="0.05" />
                     </LinearLayout>
 
-                    <!-- Imagen -->
-                    <LinearLayout
+                    <!-- Contenedor de imagen con bordes redondeados -->
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
+                        android:layout_height="280dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp"
+                        app:strokeColor="#BBDEFB"
+                        app:strokeWidth="1dp">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_image"
-                            android:tint="#2196F3"
-                            android:layout_marginEnd="12dp" />
+                            android:id="@+id/imgReporte"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:background="#F5F5F5"
+                            android:contentDescription="Imagen del reporte"
+                            android:adjustViewBounds="true" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="IMAGEN"
-                                android:textColor="#78909C"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.05" />
-
-                            <ImageView
-                                android:id="@+id/imgReporte"
-                                android:layout_width="match_parent"
-                                android:layout_height="200dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/placeholder_image"
-                                android:contentDescription="Imagen del reporte" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Archivos -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_files"
-                            android:tint="#2196F3"
-                            android:layout_marginEnd="12dp" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="ARCHIVOS"
-                                android:textColor="#78909C"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.05" />
-
-                            <TextView
-                                android:id="@+id/tvArchivos"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textSize="14sp"
-                                android:textColor="#455A64"
-                                android:layout_marginTop="4dp" />
-                        </LinearLayout>
-                    </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

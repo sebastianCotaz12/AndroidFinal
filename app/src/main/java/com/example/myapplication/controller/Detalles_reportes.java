@@ -3,11 +3,13 @@ package com.example.myapplication.controller;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
@@ -19,11 +21,16 @@ import java.util.Locale;
 
 public class Detalles_reportes extends AppCompatActivity {
 
+    private CardView cardArchivo;
+    private TextView tvNombreArchivo, tvTipoArchivo;
+    private ImageView ivIconoArchivo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_reportes);
 
+        // Vistas existentes
         TextView tvNombreUsuario = findViewById(R.id.tvNombreUsuario);
         TextView tvCargo = findViewById(R.id.tvCargo);
         TextView tvCedula = findViewById(R.id.tvCedula);
@@ -31,8 +38,13 @@ public class Detalles_reportes extends AppCompatActivity {
         TextView tvLugar = findViewById(R.id.tvLugar);
         TextView tvDescripcion = findViewById(R.id.tvDescripcion);
         ImageView imgReporte = findViewById(R.id.imgReporte);
-        TextView tvArchivos = findViewById(R.id.tvArchivos);
         TextView tvEstado = findViewById(R.id.tvEstado);
+
+        // Nuevas vistas para el archivo
+        cardArchivo = findViewById(R.id.cardArchivo);
+        tvNombreArchivo = findViewById(R.id.tvNombreArchivo);
+        tvTipoArchivo = findViewById(R.id.tvTipoArchivo);
+        ivIconoArchivo = findViewById(R.id.ivIconoArchivo);
 
         findViewById(R.id.btnVolver).setOnClickListener(v -> finish());
 
@@ -47,7 +59,7 @@ public class Detalles_reportes extends AppCompatActivity {
         tvEstado.setText(getExtra(intent, "estado"));
 
         String archivoUrl = getExtra(intent, "archivos");
-        mostrarArchivo(archivoUrl, tvArchivos);
+        configurarArchivo(archivoUrl);
         cargarImagen(getExtra(intent, "imagen"), imgReporte);
     }
 
@@ -92,47 +104,89 @@ public class Detalles_reportes extends AppCompatActivity {
         }
     }
 
-    private void mostrarArchivo(String archivoUrl, TextView tvArchivo) {
+    private void configurarArchivo(String archivoUrl) {
         if (archivoUrl == null || archivoUrl.isEmpty() || archivoUrl.equals("No disponible") || archivoUrl.equals("null")) {
-            tvArchivo.setText("No hay archivo adjunto");
-            tvArchivo.setOnClickListener(null);
+            cardArchivo.setVisibility(View.GONE);
             return;
         }
 
-        // Extraer nombre del archivo de la URL
-        String[] partes = archivoUrl.split("/");
-        String nombreArchivo = partes[partes.length - 1];
+        // Mostrar tarjeta de archivo
+        cardArchivo.setVisibility(View.VISIBLE);
 
-        // Obtener extensión y tipo
-        String tipoArchivo = "Archivo";
-        if (nombreArchivo.contains(".")) {
-            String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf('.') + 1).toLowerCase();
-            switch (extension) {
-                case "pdf": tipoArchivo = "PDF"; break;
-                case "doc": case "docx": tipoArchivo = "Word"; break;
-                case "xls": case "xlsx": tipoArchivo = "Excel"; break;
-                case "ppt": case "pptx": tipoArchivo = "PowerPoint"; break;
-                case "jpg": case "jpeg": case "png": case "gif": tipoArchivo = "Imagen"; break;
-                case "txt": tipoArchivo = "Texto"; break;
-                case "zip": case "rar": tipoArchivo = "Archivo Comprimido"; break;
-                default: tipoArchivo = extension.toUpperCase(); break;
+        // Extraer nombre del archivo de la URL
+        String nombreArchivo = obtenerNombreArchivoDesdeUrl(archivoUrl);
+        String tipoArchivo = obtenerTipoArchivo(nombreArchivo);
+
+        // Configurar textos
+        tvNombreArchivo.setText(nombreArchivo);
+        tvTipoArchivo.setText(tipoArchivo);
+
+        // Configurar ícono según el tipo de archivo
+        configurarIconoArchivo(tipoArchivo);
+
+        // Hacer la tarjeta clickeable
+        cardArchivo.setOnClickListener(v -> abrirArchivo(archivoUrl));
+
+        // Botón también clickeable
+        findViewById(R.id.btnAbrirArchivo).setOnClickListener(v -> abrirArchivo(archivoUrl));
+    }
+
+    private String obtenerNombreArchivoDesdeUrl(String url) {
+        if (url == null || url.isEmpty()) return "Archivo adjunto";
+
+        try {
+            // Extraer nombre del archivo de la URL
+            Uri uri = Uri.parse(url);
+            String path = uri.getPath();
+            if (path != null && path.contains("/")) {
+                return path.substring(path.lastIndexOf("/") + 1);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // Mostrar nombre y tipo
-        tvArchivo.setText(nombreArchivo + " (" + tipoArchivo + ")");
+        return "Archivo adjunto";
+    }
 
-        // Abrir archivo al hacer clic
-        tvArchivo.setOnClickListener(v -> {
+    private String obtenerTipoArchivo(String nombreArchivo) {
+        if (nombreArchivo == null) return "Documento";
+
+        String nombreLower = nombreArchivo.toLowerCase();
+        if (nombreLower.endsWith(".pdf")) {
+            return "PDF Document";
+        } else if (nombreLower.endsWith(".doc") || nombreLower.endsWith(".docx")) {
+            return "Word Document";
+        } else if (nombreLower.endsWith(".txt")) {
+            return "Text File";
+        } else if (nombreLower.endsWith(".xls") || nombreLower.endsWith(".xlsx")) {
+            return "Excel Spreadsheet";
+        } else if (nombreLower.endsWith(".jpg") || nombreLower.endsWith(".jpeg") || nombreLower.endsWith(".png")) {
+            return "Image File";
+        } else if (nombreLower.endsWith(".ppt") || nombreLower.endsWith(".pptx")) {
+            return "PowerPoint Presentation";
+        } else if (nombreLower.endsWith(".zip") || nombreLower.endsWith(".rar")) {
+            return "Compressed File";
+        } else {
+            return "Document";
+        }
+    }
+
+    private void configurarIconoArchivo(String tipoArchivo) {
+        // Por ahora mantenemos el ícono por defecto
+        // Puedes agregar lógica para cambiar el ícono según el tipo
+        ivIconoArchivo.setImageResource(R.drawable.ic_attach_file);
+    }
+
+    private void abrirArchivo(String archivoUrl) {
+        if (archivoUrl != null && !archivoUrl.isEmpty() && !archivoUrl.equals("No disponible") && !archivoUrl.equals("null")) {
             try {
-                Intent abrirArchivo = new Intent(Intent.ACTION_VIEW);
-                abrirArchivo.setData(Uri.parse(archivoUrl));
-                abrirArchivo.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(abrirArchivo);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(archivoUrl));
+                startActivity(browserIntent);
             } catch (Exception e) {
                 Toast.makeText(this, "No se puede abrir el archivo", Toast.LENGTH_SHORT).show();
             }
-        });
+        } else {
+            Toast.makeText(this, "No hay archivo disponible", Toast.LENGTH_SHORT).show();
+        }
     }
-
 }
