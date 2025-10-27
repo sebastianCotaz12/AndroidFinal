@@ -86,27 +86,27 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:letterSpacing="0.05"
                         android:text="INFORMACIÓN DEL EMPLEADO"
                         android:textColor="#2196F3"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:letterSpacing="0.05"
-                        android:layout_marginBottom="16dp" />
+                        android:textStyle="bold" />
 
                     <!-- ID Usuario -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:layout_marginEnd="12dp"
                             android:src="@drawable/ic_person"
-                            android:tint="#2196F3"
-                            android:layout_marginEnd="12dp" />
+                            android:tint="#2196F3" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -117,32 +117,32 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:letterSpacing="0.05"
                                 android:text="NOMBRE USUARIO"
                                 android:textColor="#78909C"
                                 android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.05" />
+                                android:textStyle="bold" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:boxBackgroundMode="outline"
+                                android:layout_marginTop="4dp"
                                 app:boxBackgroundColor="@android:color/transparent"
+                                app:boxBackgroundMode="outline"
                                 app:boxCornerRadiusBottomEnd="12dp"
                                 app:boxCornerRadiusBottomStart="12dp"
                                 app:boxCornerRadiusTopEnd="12dp"
                                 app:boxCornerRadiusTopStart="12dp"
-                                app:boxStrokeColor="#E3F2FD"
-                                android:layout_marginTop="4dp">
+                                app:boxStrokeColor="#E3F2FD">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etnombreUsuario"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:enabled="false"
                                     android:hint="Se completa automáticamente"
-                                    android:textSize="16sp"
                                     android:textColor="#263238"
-                                    android:enabled="false" />
+                                    android:textSize="16sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -151,16 +151,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:layout_marginEnd="12dp"
                             android:src="@drawable/ic_menu_department"
-                            android:tint="#2196F3"
-                            android:layout_marginEnd="12dp" />
+                            android:tint="#2196F3" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -171,32 +171,32 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:letterSpacing="0.05"
                                 android:text="ÁREA"
                                 android:textColor="#78909C"
                                 android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.05" />
+                                android:textStyle="bold" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:boxBackgroundMode="outline"
+                                android:layout_marginTop="4dp"
                                 app:boxBackgroundColor="@android:color/transparent"
+                                app:boxBackgroundMode="outline"
                                 app:boxCornerRadiusBottomEnd="12dp"
                                 app:boxCornerRadiusBottomStart="12dp"
                                 app:boxCornerRadiusTopEnd="12dp"
                                 app:boxCornerRadiusTopStart="12dp"
-                                app:boxStrokeColor="#E3F2FD"
-                                android:layout_marginTop="4dp">
+                                app:boxStrokeColor="#E3F2FD">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etArea"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:enabled="false"
                                     android:hint="Se completa automáticamente"
-                                    android:textSize="16sp"
                                     android:textColor="#263238"
-                                    android:enabled="false" />
+                                    android:textSize="16sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -205,16 +205,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="16dp">
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:layout_marginEnd="12dp"
                             android:src="@drawable/ic_id"
-                            android:tint="#2196F3"
-                            android:layout_marginEnd="12dp" />
+                            android:tint="#2196F3" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -225,32 +225,32 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:letterSpacing="0.05"
                                 android:text="CÉDULA"
                                 android:textColor="#78909C"
                                 android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.05" />
+                                android:textStyle="bold" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:boxBackgroundMode="outline"
+                                android:layout_marginTop="4dp"
                                 app:boxBackgroundColor="@android:color/transparent"
+                                app:boxBackgroundMode="outline"
                                 app:boxCornerRadiusBottomEnd="12dp"
                                 app:boxCornerRadiusBottomStart="12dp"
                                 app:boxCornerRadiusTopEnd="12dp"
                                 app:boxCornerRadiusTopStart="12dp"
-                                app:boxStrokeColor="#E3F2FD"
-                                android:layout_marginTop="4dp">
+                                app:boxStrokeColor="#E3F2FD">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etCedula"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Cédula del empleado"
-                                    android:textSize="16sp"
+                                    android:inputType="number"
                                     android:textColor="#263238"
-                                    android:inputType="number" />
+                                    android:textSize="16sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -259,15 +259,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:layout_marginEnd="12dp"
                             android:src="@drawable/ic_work"
-                            android:tint="#2196F3"
-                            android:layout_marginEnd="12dp" />
+                            android:tint="#2196F3" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -278,31 +278,31 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:letterSpacing="0.05"
                                 android:text="CARGO"
                                 android:textColor="#78909C"
                                 android:textSize="12sp"
-                                android:textStyle="bold"
-                                android:letterSpacing="0.05" />
+                                android:textStyle="bold" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:boxBackgroundMode="outline"
+                                android:layout_marginTop="4dp"
                                 app:boxBackgroundColor="@android:color/transparent"
+                                app:boxBackgroundMode="outline"
                                 app:boxCornerRadiusBottomEnd="12dp"
                                 app:boxCornerRadiusBottomStart="12dp"
                                 app:boxCornerRadiusTopEnd="12dp"
                                 app:boxCornerRadiusTopStart="12dp"
-                                app:boxStrokeColor="#E3F2FD"
-                                android:layout_marginTop="4dp">
+                                app:boxStrokeColor="#E3F2FD">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/etCargo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="Cargo del empleado"
-                                    android:textSize="16sp"
-                                    android:textColor="#263238" />
+                                    android:textColor="#263238"
+                                    android:textSize="16sp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -421,26 +421,21 @@
                                 android:textStyle="bold"
                                 android:letterSpacing="0.05" />
 
-                            <com.google.android.material.textfield.TextInputLayout
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:boxBackgroundMode="outline"
-                                app:boxBackgroundColor="@android:color/transparent"
-                                app:boxCornerRadiusBottomEnd="12dp"
-                                app:boxCornerRadiusBottomStart="12dp"
-                                app:boxCornerRadiusTopEnd="12dp"
-                                app:boxCornerRadiusTopStart="12dp"
-                                app:boxStrokeColor="#E3F2FD"
+                                app:cardCornerRadius="12dp"
+                                app:strokeColor="#E3F2FD"
+                                app:strokeWidth="1dp"
                                 android:layout_marginTop="4dp">
 
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/etProductos"
+                                <Spinner
+                                    android:id="@+id/spinnerProductos"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Ejemplo: Guantes, Casco"
-                                    android:textSize="16sp"
-                                    android:textColor="#263238" />
-                            </com.google.android.material.textfield.TextInputLayout>
+                                    android:padding="12dp"
+                                    android:background="@android:color/transparent" />
+                            </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
                     </LinearLayout>
 

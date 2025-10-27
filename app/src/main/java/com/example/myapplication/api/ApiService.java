@@ -9,6 +9,7 @@ import com.example.myapplication.controller.Crear_registro;
 import com.example.myapplication.controller.Crear_reportes;
 import com.example.myapplication.controller.Empresa;
 import com.example.myapplication.controller.Item_eventos;
+import com.example.myapplication.controller.Producto;
 
 import java.util.List;
 
@@ -16,12 +17,11 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface ApiService {
 
@@ -106,15 +106,13 @@ public interface ApiService {
             @Part MultipartBody.Part imagen
     );
 
-
-
-
     @GET("eventos")
     Call<List<Item_eventos>> getEventos();
-
-
 
     // Listar eventos por empresa
     @GET("eventos/empresa/{id_empresa}")
     Call<List<Crear_eventos>> getEventosPorEmpresa();
+
+    @GET("productos/listar")
+    Call<Producto[]> listarTodosLosProductos();
 }
