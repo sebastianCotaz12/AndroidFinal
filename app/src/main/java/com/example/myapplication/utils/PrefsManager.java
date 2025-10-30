@@ -34,6 +34,9 @@ public class PrefsManager {
     public void setIdEmpresa(int idEmpresa) {
         prefs.edit().putInt("id_empresa", idEmpresa).apply();
     }
+    public String getTenantTopic() {
+        return "prod_tenant_" + getIdEmpresa();
+    }
 
     public int getIdEmpresa() {
         return prefs.getInt("id_empresa", -1);
@@ -49,14 +52,45 @@ public class PrefsManager {
     }
 
     // ======== DATOS DE USUARIO ========
-    public void setNombreUsuario(String nombre) {
-        prefs.edit().putString("nombre_usuario", nombre).apply();
+
+    // Nombre real del usuario
+    public void setNombre(String nombre) {
+        prefs.edit().putString("nombre", nombre).apply();
+    }
+
+    public String getNombre() {
+        return prefs.getString("nombre", null);
+    }
+
+    // === APELLIDO ===
+    public void setApellidoUsuario(String apellido) {
+        prefs.edit().putString("apellido_usuario", apellido).apply();
+    }
+
+    public String getApellidoUsuario() {
+        return prefs.getString("apellido_usuario", null);
+    }
+
+    // ======== CORREO ELECTRÓNICO ========
+    public void setCorreoElectronico(String correoElectronico) {
+        prefs.edit().putString("correoElectronico", correoElectronico).apply();
+    }
+
+    public String getCorreoElectronico() {
+        return prefs.getString("correoElectronico", null);
+    }
+
+
+
+
+    // Nombre de usuario (login o username)
+    public void setNombreUsuario(String nombreUsuario) {
+        prefs.edit().putString("nombre_usuario", nombreUsuario).apply();
     }
 
     public String getNombreUsuario() {
         return prefs.getString("nombre_usuario", null);
     }
-
     public void setNombreEmpresa(String empresa) {
         prefs.edit().putString("nombre_empresa", empresa).apply();
     }

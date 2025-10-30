@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    tools:context=".controller.EditarPerfil">
+
+    <!-- Encabezado -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:background="@drawable/header_gradient"
+        android:gravity="center"
+        android:paddingTop="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perfil"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.05" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Consulta o actualiza tus datos personales"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            android:alpha="0.9" />
+    </LinearLayout>
+
+    <!-- Contenedor principal -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="160dp"
+        android:fillViewport="true"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeColor="#1976D2"
+                app:strokeWidth="1.5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="32dp">
+
+                    <!-- Campos no editables (traídos desde el inicio de sesión) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_person"
+                        app:startIconTint="#1976D2"
+                        app:hintTextColor="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etNombre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nombre"
+                            android:enabled="false"
+                            android:textColorHint="#888"
+                            android:textColor="#333" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_person"
+                        app:startIconTint="#1976D2"
+                        app:hintTextColor="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etApellido"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Apellido"
+                            android:enabled="false"
+                            android:textColorHint="#888"
+                            android:textColor="#333" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_work"
+                        app:startIconTint="#1976D2"
+                        app:hintTextColor="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etEmpresa"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Empresa"
+                            android:enabled="false"
+                            android:textColorHint="#888"
+                            android:textColor="#333" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_location"
+                        app:startIconTint="#1976D2"
+                        app:hintTextColor="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Área"
+                            android:enabled="false"
+                            android:textColorHint="#888"
+                            android:textColor="#333" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_badge"
+                        app:startIconTint="#1976D2"
+                        app:hintTextColor="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCargo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Cargo"
+                            android:enabled="false"
+                            android:textColorHint="#888"
+                            android:textColor="#333" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Campos editables -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+
+                        app:startIconTint="#1976D2"
+                        app:hintTextColor="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etNombreUsuario"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nombre de usuario"
+                            android:inputType="textPersonName"
+                            android:textColor="#333" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_email"
+                        app:startIconTint="#1976D2"
+                        app:hintTextColor="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCorreo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Correo electrónico"
+                            android:inputType="textEmailAddress"
+                            android:textColor="#333" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        app:startIconDrawable="@drawable/ic_lock"
+                        app:startIconTint="#1976D2"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="#1976D2"
+                        app:hintTextColor="#1976D2">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etContrasena"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nueva contraseña"
+                            android:inputType="textPassword"
+                            android:textColor="#333" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Botones -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGuardarCambios"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Guardar cambios"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:backgroundTint="#0D47A1"
+                        app:cornerRadius="20dp"
+                        app:icon="@drawable/ic_save"
+                        app:iconTint="@color/white"
+                        app:iconPadding="8dp"
+                        app:elevation="8dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnVolver"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Volver"
+                        android:textColor="#0D47A1"
+                        app:backgroundTint="@android:color/transparent"
+                        app:cornerRadius="20dp"
+                        app:strokeColor="#0D47A1"
+                        app:strokeWidth="2dp"
+                        app:icon="@drawable/ic_arrow_back"
+                        app:iconTint="#0D47A1"
+                        app:iconPadding="8dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

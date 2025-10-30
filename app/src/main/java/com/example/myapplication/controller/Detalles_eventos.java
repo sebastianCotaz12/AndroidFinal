@@ -55,6 +55,7 @@ public class Detalles_eventos extends AppCompatActivity {
         // Obtener datos del Intent
         Intent intent = getIntent();
         String titulo = intent.getStringExtra("titulo");
+
         String fecha = intent.getStringExtra("fecha");
         String descripcion = intent.getStringExtra("descripcion");
         String imagen = intent.getStringExtra("imagen");

@@ -13,6 +13,7 @@ import com.example.myapplication.api.LoginRequest;
 import com.example.myapplication.api.LoginResponse;
 import com.example.myapplication.databinding.ActivityInicioSesionBinding;
 import com.example.myapplication.utils.PrefsManager;
+import com.example.myapplication.utils.FcmHelper;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,7 +65,6 @@ public class InicioSesion extends AppCompatActivity {
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        // Llamada al backend
         ApiService apiService = ApiClient.getApiService();
         LoginRequest request = new LoginRequest(correo, contrasena);
 
@@ -76,22 +76,32 @@ public class InicioSesion extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     LoginResponse loginResponse = response.body();
-
                     Usuario user = loginResponse.getUser();
 
-                    // Guardar datos del usuario
-                    prefsManager.setToken(loginResponse.getToken());
-                    prefsManager.setIdUsuario(user.getId());
-                    prefsManager.setNombreUsuario(user.getNombreUsuario());
-                    prefsManager.setIdEmpresa(user.getIdEmpresa());
-                    prefsManager.setIdArea(user.getIdArea());
-                    prefsManager.setNombreEmpresa(user.getNombreEmpresa());
-                    prefsManager.setNombreArea(user.getNombreArea());
-                    prefsManager.setCargo(user.getCargo());
+                    if (user != null) {
+                        // Guardar datos del usuario
+                        prefsManager.setToken(loginResponse.getToken());
+                        prefsManager.setIdUsuario(user.getId());
+                        prefsManager.setNombreUsuario(user.getNombreUsuario());
+                        prefsManager.setNombre(user.getNombre());
+                        prefsManager.setApellidoUsuario(user.getApellido());
+                        prefsManager.setIdEmpresa(user.getIdEmpresa());
+                        prefsManager.setIdArea(user.getIdArea());
+                        prefsManager.setNombreEmpresa(user.getNombreEmpresa());
+                        prefsManager.setNombreArea(user.getNombreArea());
+                        prefsManager.setCargo(user.getCargo());
+                        prefsManager.setCorreoElectronico(user.getCorreoElectronico());
+                    } else {
+                        Toast.makeText(InicioSesion.this, "Error: usuario no encontrado en la respuesta", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
+                    // Suscribirse al topic del tenant
+                    FcmHelper.subscribeToTenantTopic(InicioSesion.this);
+
+                    // Ir al menú
                     irAlMenu();
-                }
-                else {
+                } else {
                     Toast.makeText(InicioSesion.this, "Credenciales incorrectas o error del servidor", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -109,4 +119,6 @@ public class InicioSesion extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
 }

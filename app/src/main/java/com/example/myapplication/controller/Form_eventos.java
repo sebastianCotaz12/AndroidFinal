@@ -277,4 +277,31 @@ public class Form_eventos extends AppCompatActivity {
             return MediaType.parse("application/octet-stream");
         }
     }
+    private void enviarNotificacionPrueba() {
+        ApiService api = ApiClient.getClient(prefsManager).create(ApiService.class);
+
+        RequestBody titulo = RequestBody.create("Ping desde Android", MultipartBody.FORM);
+        RequestBody descripcion = RequestBody.create("Desde backend", MultipartBody.FORM);
+        RequestBody fecha = RequestBody.create("2025-10-27", MultipartBody.FORM);
+        MultipartBody.Part imagenVacia = MultipartBody.Part.createFormData("imagen", "");
+        MultipartBody.Part archivoVacio = MultipartBody.Part.createFormData("archivo", "");
+
+        Call<ApiResponse<Object>> call = api.crearNoti(titulo, descripcion, fecha, imagenVacia, archivoVacio);
+        call.enqueue(new Callback<ApiResponse<Object>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Object>> call, Response<ApiResponse<Object>> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(Form_eventos.this, "Notificación enviada", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(Form_eventos.this, "Error al enviar notificación", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Object>> call, Throwable t) {
+                Toast.makeText(Form_eventos.this, "⚠️ Error de conexión", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

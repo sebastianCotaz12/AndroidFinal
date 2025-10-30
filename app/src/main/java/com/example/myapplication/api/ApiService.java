@@ -20,6 +20,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
@@ -28,6 +29,9 @@ public interface ApiService {
     // Login
     @POST("login")
     Call<LoginResponse> login(@Body LoginRequest request);
+
+
+
 
     // Lista Chequeo
     @POST("crearListaChequeo")
@@ -87,6 +91,18 @@ public interface ApiService {
             @Part MultipartBody.Part archivo_adjunto        // Puede ser pdf, doc, xlsx, etc. (opcional)
     );
 
+    // ======== NOTIFICACIONES ========
+    @Multipart
+    @POST("crear")
+    Call<ApiResponse<Object>> crearNoti(
+            @Part("titulo") RequestBody titulo,
+            @Part("descripcion") RequestBody descripcion,
+            @Part("fecha_actividad") RequestBody fechaActividad,
+            @Part MultipartBody.Part imagen,
+            @Part MultipartBody.Part archivo
+    );
+
+
 
 
     @GET("listarActividadesLudicas")
@@ -116,4 +132,5 @@ public interface ApiService {
 
     @GET("productos/listar")
     Call<Producto[]> listarTodosLosProductos();
+
 }
