@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/header_gradient_dark" />
 
-    <!-- Logo flotante con animación -->
+    <!-- Logo flotante -->
     <ImageView
         android:id="@+id/imgUser"
         android:layout_width="100dp"
@@ -32,7 +32,7 @@
         android:background="@drawable/logo_background"
         android:padding="8dp" />
 
-    <!-- Tarjeta de login -->
+    <!-- Tarjeta -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,8 +40,7 @@
         android:layout_margin="32dp"
         app:cardCornerRadius="28dp"
         app:cardElevation="20dp"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardPreventCornerOverlap="true">
+        app:cardBackgroundColor="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +67,7 @@
                 android:textSize="16sp"
                 android:layout_marginBottom="40dp" />
 
-            <!-- Campo Email -->
+            <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,10 +92,10 @@
                     android:textColor="#2C3E50"
                     android:textSize="16sp"
                     android:padding="16dp" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Campo Contraseña -->
+
+            <!-- Contraseña -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -123,10 +122,10 @@
                     android:textColor="#2C3E50"
                     android:textSize="16sp"
                     android:padding="16dp" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Recordar contraseña -->
+
+            <!-- Recordar / Olvidar -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,8 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Recordar sesión"
-                    android:textColor="#7F8C8D"
-                    android:layout_alignParentStart="true" />
+                    android:textColor="#7F8C8D" />
 
                 <TextView
                     android:id="@+id/txtForgot"
@@ -149,10 +147,9 @@
                     android:textColor="#3498DB"
                     android:textStyle="bold"
                     android:textSize="14sp" />
-
             </RelativeLayout>
 
-            <!-- Botón de login -->
+            <!-- Botón principal -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignIn"
                 android:layout_width="match_parent"
@@ -166,8 +163,24 @@
                 app:iconGravity="textStart"
                 app:iconPadding="8dp"
                 android:backgroundTint="#3498DB"
-                app:elevation="8dp"
                 android:layout_marginBottom="24dp" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFaceId"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Reconocimiento facial"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_faceid"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                android:backgroundTint="#2ECC71"
+                android:layout_marginBottom="16dp" />
+
 
             <!-- Registro -->
             <LinearLayout
@@ -193,14 +206,11 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:layout_marginStart="8dp" />
-
             </LinearLayout>
-
         </LinearLayout>
-
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- ProgressBar personalizado -->
+    <!-- Loader -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/progressBar"
         android:layout_width="120dp"
@@ -211,7 +221,7 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/loading_animation" />
 
-    <!-- Versión de la app -->
+    <!-- Versión -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

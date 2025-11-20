@@ -15,8 +15,6 @@ import com.example.myapplication.api.ApiClient;
 import com.example.myapplication.api.ApiResponse;
 import com.example.myapplication.api.ApiService;
 import com.example.myapplication.databinding.ActivityFormGestionEppBinding;
-import com.example.myapplication.controller.Crear_gestionEpp;
-import com.example.myapplication.controller.Producto;
 import com.example.myapplication.utils.PrefsManager;
 import com.example.myapplication.utils.SesionManager;
 
@@ -51,7 +49,7 @@ public class Form_gestionEpp extends AppCompatActivity {
 
         // === Validar sesión ===
         if (!sesionManager.haySesionActiva()) {
-            Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "⚠ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
             finish();
             return;
@@ -71,10 +69,6 @@ public class Form_gestionEpp extends AppCompatActivity {
         }
         binding.etArea.setEnabled(false);
 
-        // === Configurar campos ===
-        binding.etCargo.setEnabled(true);
-        binding.etCedula.setEnabled(true);
-
         // === Spinner importancia ===
         String[] importancia = {"Alta", "Media", "Baja"};
         ArrayAdapter<String> adapterImp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, importancia);
@@ -85,19 +79,21 @@ public class Form_gestionEpp extends AppCompatActivity {
         ArrayAdapter<String> adapterEst = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, estados);
         binding.spEstado.setAdapter(adapterEst);
 
-        // === Spinner productos - inicialmente vacío ===
-        ArrayAdapter<String> adapterProductosInicial = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, new String[]{"Seleccione un producto"});
+        // === Spinner productos ===
+        ArrayAdapter<String> adapterProductosInicial = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                new String[]{"Seleccione un producto (opcional)"});
         binding.spinnerProductos.setAdapter(adapterProductosInicial);
-        binding.spinnerProductos.setEnabled(false); // Deshabilitar hasta que se carguen productos
+        binding.spinnerProductos.setEnabled(false);
 
-        // === Listener para selección de producto ===
+        // === Listener para selección ===
         binding.spinnerProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0 && listaProductos != null && listaProductos.length >= position) {
-                    productoSeleccionado = listaProductos[position - 1]; // -1 porque la posición 0 es el hint
+                    productoSeleccionado = listaProductos[position - 1]; // -1 por el hint
                 } else {
-                    productoSeleccionado = null;
+                    productoSeleccionado = null; // No seleccionó nada
                 }
             }
 
@@ -110,7 +106,7 @@ public class Form_gestionEpp extends AppCompatActivity {
         // === Fecha ===
         binding.etFechaEntrega.setOnClickListener(v -> abrirDatePicker());
 
-        // === Cargar todos los productos al inicio ===
+        // === Cargar productos ===
         listarTodosLosProductos();
 
         // === Botones ===
@@ -136,7 +132,6 @@ public class Form_gestionEpp extends AppCompatActivity {
         picker.show();
     }
 
-    // === Consumir la ruta /productos/listar ===
     private void listarTodosLosProductos() {
         ApiService api = ApiClient.getClient(prefsManager).create(ApiService.class);
         Call<Producto[]> call = api.listarTodosLosProductos();
@@ -145,40 +140,30 @@ public class Form_gestionEpp extends AppCompatActivity {
             @Override
             public void onResponse(Call<Producto[]> call, Response<Producto[]> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    listaProductos = response.body(); // ✅ ya no usamos getDatos()
+                    listaProductos = response.body();
 
-                    if (listaProductos.length > 0) {
-                        String[] nombresProductos = new String[listaProductos.length + 1];
-                        nombresProductos[0] = "Seleccione un producto";
-
-                        for (int i = 0; i < listaProductos.length; i++) {
-                            nombresProductos[i + 1] = listaProductos[i].getNombre();
-                        }
-
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(Form_gestionEpp.this,
-                                android.R.layout.simple_spinner_dropdown_item, nombresProductos);
-                        binding.spinnerProductos.setAdapter(adapter);
-                        binding.spinnerProductos.setEnabled(true);
-                        productoSeleccionado = null;
-                    } else {
-                        Toast.makeText(Form_gestionEpp.this, "⚠️ No hay productos disponibles.", Toast.LENGTH_SHORT).show();
-                        binding.spinnerProductos.setEnabled(false);
+                    String[] nombresProductos = new String[listaProductos.length + 1];
+                    nombresProductos[0] = "Seleccione un producto (opcional)";
+                    for (int i = 0; i < listaProductos.length; i++) {
+                        nombresProductos[i + 1] = listaProductos[i].getNombre();
                     }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(Form_gestionEpp.this,
+                            android.R.layout.simple_spinner_dropdown_item, nombresProductos);
+                    binding.spinnerProductos.setAdapter(adapter);
+                    binding.spinnerProductos.setEnabled(true);
                 } else {
-                    Toast.makeText(Form_gestionEpp.this, "⚠️ Error al cargar productos. Código: " + response.code(), Toast.LENGTH_SHORT).show();
-                    binding.spinnerProductos.setEnabled(false);
+                    Toast.makeText(Form_gestionEpp.this, "⚠ No se pudieron cargar los productos.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Producto[]> call, Throwable t) {
-                Log.e("PRODUCTOS_FAIL", "Error conexión: " + t.getMessage());
-                Toast.makeText(Form_gestionEpp.this, "❌ Error de conexión al cargar productos.", Toast.LENGTH_SHORT).show();
-                binding.spinnerProductos.setEnabled(false);
+                Log.e("PRODUCTOS_FAIL", "Error: " + t.getMessage());
+                Toast.makeText(Form_gestionEpp.this, "❌ Error al conectar con el servidor.", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 
     private RequestBody createPart(String value) {
         return RequestBody.create(value != null ? value : "", MediaType.parse("text/plain"));
@@ -186,35 +171,29 @@ public class Form_gestionEpp extends AppCompatActivity {
 
     private void guardarGestion() {
         String cedula = binding.etCedula.getText().toString().trim();
-        String cargo = binding.etCargo.getText().toString().trim(); // 👈 NO SE TOCA
+        String cargo = binding.etCargo.getText().toString().trim();
         String importancia = binding.spImportancia.getSelectedItem().toString();
         String estado = binding.spEstado.getSelectedItem().toString();
         String cantidadStr = binding.etCantidad.getText().toString().trim();
 
-        // Validar que se haya seleccionado un producto
-        if (productoSeleccionado == null) {
-            Toast.makeText(this, "⚠️ Selecciona un producto válido.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        // Validaciones
         if (cedula.isEmpty() || cargo.isEmpty() || cantidadStr.isEmpty()) {
-            Toast.makeText(this, "⚠️ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "⚠ Completa todos los campos obligatorios.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Conversión de datos
         int cantidad;
         try {
             cantidad = Integer.parseInt(cantidadStr);
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "⚠️ Cantidad inválida.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "⚠ Cantidad inválida.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int[] productos = {productoSeleccionado.getIdProducto()};
+        // 👇 Si no seleccionó producto, se envía arreglo vacío
+        int[] productos = (productoSeleccionado != null)
+                ? new int[]{productoSeleccionado.getIdProducto()}
+                : new int[]{}; // arreglo vacío
 
-        // Crear objeto para enviar
         Crear_gestionEpp gestion = new Crear_gestionEpp(
                 cedula,
                 Integer.parseInt(cargo),
@@ -225,7 +204,6 @@ public class Form_gestionEpp extends AppCompatActivity {
                 productos
         );
 
-        // Llamada API
         ApiService api = ApiClient.getClient(prefsManager).create(ApiService.class);
         Call<ApiResponse<Crear_gestionEpp>> call = api.crearGestionEpp(gestion);
 
@@ -236,7 +214,7 @@ public class Form_gestionEpp extends AppCompatActivity {
                     Toast.makeText(Form_gestionEpp.this, "✅ Gestión creada correctamente.", Toast.LENGTH_LONG).show();
                     finish();
                 } else {
-                    Toast.makeText(Form_gestionEpp.this, "⚠️ Error en la API (" + response.code() + ")", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Form_gestionEpp.this, "⚠ Error en la API (" + response.code() + ")", Toast.LENGTH_LONG).show();
                 }
             }
 

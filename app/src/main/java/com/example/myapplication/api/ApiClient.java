@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     // 🌐 URL base del backend
-    private static final String BASE_URL = "https://backsst.onrender.com/";
+    private static final String BASE_URL = "https://unreproaching-rancorously-evelina.ngrok-free.dev ";
 
     // Instancia única (Singleton)
     private static Retrofit retrofit = null;

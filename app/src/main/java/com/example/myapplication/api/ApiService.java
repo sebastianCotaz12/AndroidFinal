@@ -51,13 +51,12 @@ public interface ApiService {
 
 
 
-    // Reportes (con archivos: imagen/documento)
     @Multipart
     @POST("crearReporte")
     Call<ApiResponse<Crear_reportes>> crearReporteMultipart(
-            @Part("id_usuario") RequestBody idUsuario,
-            @Part("id_empresa") RequestBody idEmpresa,
-            @Part("nombre_usuario") RequestBody nombreUsuario,
+            @Part("idUsuario") RequestBody idUsuario,
+            @Part("idEmpresa") RequestBody idEmpresa,
+            @Part("nombreUsuario") RequestBody nombreUsuario,
             @Part("cargo") RequestBody cargo,
             @Part("cedula") RequestBody cedula,
             @Part("fecha") RequestBody fecha,
