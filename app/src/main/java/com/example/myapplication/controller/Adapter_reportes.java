@@ -23,6 +23,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,11 +31,13 @@ import java.util.Locale;
 public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.ViewHolder> {
 
     private final Context context;
-    private final List<ItemReporte> lista;
+    private List<ItemReporte> lista;           // LISTA QUE SE MUESTRA
+    private final List<ItemReporte> listaFull; // LISTA ORIGINAL (NO SE MODIFICA)
 
-    public Adapter_reportes(Context context, List<ItemReporte> lista) {
+    public Adapter_reportes(Context context, List<ItemReporte> listaInicial) {
         this.context = context;
-        this.lista = lista;
+        this.lista = new ArrayList<>(listaInicial);
+        this.listaFull = new ArrayList<>(listaInicial);
     }
 
     @NonNull
@@ -50,20 +53,22 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
         ItemReporte item = lista.get(position);
 
         // Nombre y lugar
-        String nombreTexto = item.getNombreUsuario() != null ? item.getNombreUsuario() : "Sin nombre";
-        String lugarTexto = item.getLugar() != null ? item.getLugar() : "Sin lugar";
-        holder.txtNombre.setText(nombreTexto + " - " + lugarTexto);
+        holder.txtNombre.setText(
+                (item.getNombreUsuario() != null ? item.getNombreUsuario() : "Sin nombre")
+                        + " - " +
+                        (item.getLugar() != null ? item.getLugar() : "Sin lugar")
+        );
 
-        // Fecha formateada
+        // Fecha
         holder.txtFecha.setText(formatearFecha(item.getFecha()));
 
         // Estado
         configurarEstado(holder, item.getEstado());
 
-        // ✅ Cargar imagen con Glide
+        // Imagen
         cargarImagen(holder, item.getImagen());
 
-        // Botón Detalles
+        // Detalles
         holder.btnDetalles.setOnClickListener(v -> {
             Intent intent = new Intent(context, Detalles_reportes.class);
             intent.putExtra("nombre_usuario", item.getNombreUsuario());
@@ -79,7 +84,7 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
             context.startActivity(intent);
         });
 
-        // Botón Descargar/Abrir archivo
+        // Descargar archivo
         holder.btnDownload.setOnClickListener(v -> {
             String archivo = item.getArchivos();
             if (archivo != null && !archivo.isEmpty() && !archivo.equals("null")) {
@@ -95,6 +100,34 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
         });
     }
 
+    // ---------------------------------------------------------
+    //                   FILTRO TEXTO + FECHA
+    // ---------------------------------------------------------
+    public void filtrar(String texto, String fecha) {
+        lista = new ArrayList<>();
+
+        for (ItemReporte item : listaFull) {
+
+            boolean coincideTexto =
+                    texto == null || texto.isEmpty() ||
+                            item.getNombreUsuario().toLowerCase().contains(texto.toLowerCase()) ||
+                            item.getLugar().toLowerCase().contains(texto.toLowerCase());
+
+            boolean coincideFecha =
+                    fecha == null || fecha.isEmpty() ||
+                            (item.getFecha() != null && item.getFecha().startsWith(fecha));
+
+            if (coincideTexto && coincideFecha) {
+                lista.add(item);
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
+    // ---------------------------------------------------------
+    //           MÉTODOS DE IMAGEN, ESTADO Y FECHA
+    // ---------------------------------------------------------
     private void cargarImagen(ViewHolder holder, String imagenUrl) {
         if (imagenUrl != null && !imagenUrl.isEmpty() && !imagenUrl.equals("null")) {
             Glide.with(context)
@@ -121,9 +154,11 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
             } else {
                 formatoEntrada = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             }
+
             Date fecha = formatoEntrada.parse(fechaOriginal);
             SimpleDateFormat formatoSalida = new SimpleDateFormat("dd MMM yyyy, hh:mm a", new Locale("es", "ES"));
             return formatoSalida.format(fecha);
+
         } catch (ParseException e) {
             return fechaOriginal;
         }
@@ -138,6 +173,7 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
 
         holder.txtEstado.setText("Estado: " + estado);
         int color;
+
         switch (estado.toLowerCase()) {
             case "realizado":
                 color = ContextCompat.getColor(context, R.color.estado_realizado);
@@ -151,14 +187,21 @@ public class Adapter_reportes extends RecyclerView.Adapter<Adapter_reportes.View
             default:
                 color = ContextCompat.getColor(context, android.R.color.darker_gray);
         }
+
         holder.indicadorEstado.setBackgroundColor(color);
     }
 
     @Override
     public int getItemCount() {
-        return lista.size();
+        return 0;
     }
 
+    public void filtrar(List<ItemReporte> filtrada) {
+    }
+
+    // ---------------------------------------------------------
+    //                  VIEW HOLDER
+    // ---------------------------------------------------------
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgReporte;
         TextView txtNombre, txtFecha, txtEstado;

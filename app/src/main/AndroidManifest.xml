@@ -17,16 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".Perfil"
-            android:exported="false" />
-        <activity
-            android:name=".controller.EditarPerfil"
+            android:name=".controller.Perfil"
             android:exported="false" />
         <activity
             android:name=".controller.MainActivity_event_detail"
-            android:exported="false" />
-        <activity
-            android:name=".controller.lista_eventos"
             android:exported="false" />
         <activity
             android:name=".controller.Lista_eventos"

@@ -1,11 +1,17 @@
 package com.example.myapplication.controller;
 
-import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,31 +21,47 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.PrefsManager;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Lista_eventos extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Adapter_eventos adapter;
-    private final List<Item_eventos> lista = new ArrayList<>();
+    private List<Item_eventos> listaOriginal = new ArrayList<>();
+    private List<Item_eventos> listaFiltrada = new ArrayList<>();
+
     private PrefsManager prefsManager;
 
-    // URL del backend (ajústala si es necesario)
-    private static final String URL_API = "https://backsst.onrender.com/eventos";
+    // FILTROS
+    private TextInputEditText etFiltrarFecha;
+    private ImageButton btnLimpiarFiltro;
+    private EditText etBuscar;
+    private TextView tvTotalEventos;
 
-    @SuppressLint("MissingInflatedId")
+    // FECHA
+    private Calendar calendar;
+    private DatePickerDialog datePickerDialog;
+    private SimpleDateFormat dateFormatter;
+
+    private final String URL_API = "https://unreproaching-rancorously-evelina.ngrok-free.app/eventos";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,128 +69,183 @@ public class Lista_eventos extends AppCompatActivity {
 
         prefsManager = new PrefsManager(this);
 
+        inicializarVistas();
+        configurarCalendario();
+        configurarEventosFiltro();
+
         recyclerView = findViewById(R.id.recyclerViewEventos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new Adapter_eventos(this, lista);
+        adapter = new Adapter_eventos(this, listaFiltrada);
         recyclerView.setAdapter(adapter);
 
-        // Ajuste de márgenes del sistema
         ViewCompat.setOnApplyWindowInsetsListener(recyclerView, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            Insets sb = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(sb.left, sb.top, sb.right, sb.bottom);
             return insets;
         });
 
-        // Botón para crear un nuevo evento
-        ImageButton btnCrear = findViewById(R.id.imgButton_crearlista);
+        ImageButton btnCrear = findViewById(R.id.imgButtonCrearEvento);
         btnCrear.setOnClickListener(v -> {
-            Intent intent = new Intent(Lista_eventos.this, Form_eventos.class);
-            startActivity(intent);
+            startActivity(new Intent(Lista_eventos.this, Form_eventos.class));
         });
 
-        // 🔹 Botón de regresar al inicio de sesión
-        ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
-        btnVolverLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(Lista_eventos.this, Menu.class);
-            startActivity(intent);
+        ImageView btnVolver = findViewById(R.id.imgButton_VolverInicio);
+        btnVolver.setOnClickListener(v -> {
+            startActivity(new Intent(Lista_eventos.this, Menu.class));
             finish();
         });
 
-        // Cargar lista de eventos
         obtenerEventos();
+    }
+
+    private void inicializarVistas() {
+        etFiltrarFecha = findViewById(R.id.etFiltrarFechaEvento);
+        btnLimpiarFiltro = findViewById(R.id.btnLimpiarFiltroEvento);
+        etBuscar = findViewById(R.id.etBuscarEvento);
+        tvTotalEventos = findViewById(R.id.tvTotalEventos);
+    }
+
+    private void configurarCalendario() {
+        calendar = Calendar.getInstance();
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        datePickerDialog = new DatePickerDialog(
+                this,
+                (view, year, month, dayOfMonth) -> {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                    String fecha = dateFormatter.format(calendar.getTime());
+
+                    etFiltrarFecha.setText(fecha);
+                    filtrarPorFecha(fecha);
+
+                    btnLimpiarFiltro.setVisibility(View.VISIBLE);
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+    }
+
+    private void configurarEventosFiltro() {
+        etFiltrarFecha.setOnClickListener(v -> datePickerDialog.show());
+
+        btnLimpiarFiltro.setOnClickListener(v -> limpiarFiltroFecha());
+
+        etBuscar.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filtrarEventos(s.toString());
+            }
+        });
+    }
+
+    private void filtrarPorFecha(String fecha) {
+        listaFiltrada.clear();
+
+        for (Item_eventos ev : listaOriginal) {
+            if (ev.getFechaActividad() != null && ev.getFechaActividad().contains(fecha)) {
+                listaFiltrada.add(ev);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+        actualizarContador();
+    }
+
+    private void filtrarEventos(String texto) {
+        listaFiltrada.clear();
+        texto = texto.toLowerCase();
+
+        String fechaFiltro = etFiltrarFecha.getText().toString();
+
+        for (Item_eventos ev : listaOriginal) {
+            boolean coincideTexto =
+                    ev.getTitulo().toLowerCase().contains(texto) ||
+                            ev.getDescripcion().toLowerCase().contains(texto) ||
+                            ev.getNombreUsuario().toLowerCase().contains(texto);
+
+            boolean coincideFecha =
+                    fechaFiltro.isEmpty() ||
+                            (ev.getFechaActividad() != null && ev.getFechaActividad().contains(fechaFiltro));
+
+            if (coincideTexto && coincideFecha) {
+                listaFiltrada.add(ev);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+        actualizarContador();
+    }
+
+    private void limpiarFiltroFecha() {
+        etFiltrarFecha.setText("");
+        btnLimpiarFiltro.setVisibility(View.GONE);
+
+        filtrarEventos(etBuscar.getText().toString());
+    }
+
+    private void actualizarContador() {
+        tvTotalEventos.setText("Total de eventos: " + listaFiltrada.size());
     }
 
     private void obtenerEventos() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String token = prefsManager.getToken();
 
-        if (token == null || token.isEmpty()) {
-            Toast.makeText(this, "⚠️ Debes iniciar sesión primero", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        JsonArrayRequest request = new JsonArrayRequest(
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
                 URL_API,
+                null,
                 response -> {
                     try {
-                        lista.clear();
-                        Log.d("EVENTOS_API", "Respuesta recibida: " + response.length() + " elementos");
+                        listaOriginal.clear();
 
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject obj = response.getJSONObject(i);
+                        JSONArray datos = response.getJSONArray("data");
 
-                            // DEBUG: Ver el JSON completo
-                            Log.d("EVENTOS_API", "Elemento " + i + ": " + obj.toString());
+                        for (int i = 0; i < datos.length(); i++) {
+                            JSONObject obj = datos.getJSONObject(i);
 
-                            // Obtener campos principales
-                            int id = obj.getInt("id");
-                            int idUsuario = obj.optInt("idUsuario");
-                            String titulo = obj.optString("titulo", "Sin título");
-                            String fechaActividad = obj.optString("fechaActividad", "");
-                            String descripcion = obj.optString("descripcion", "");
-                            String imagen = obj.optString("imagen", "");
-                            String archivo = obj.optString("archivo", "");
-                            int idEmpresa = obj.optInt("idEmpresa");
-
-                            // Obtener nombre de usuario desde el objeto "usuario"
-                            String nombreUsuario = "Usuario no disponible";
-                            if (obj.has("usuario") && !obj.isNull("usuario")) {
-                                JSONObject usuarioObj = obj.getJSONObject("usuario");
-                                String nombre = usuarioObj.optString("nombre", "");
-                                String apellido = usuarioObj.optString("apellido", "");
-
-                                if (!nombre.isEmpty() && !apellido.isEmpty()) {
-                                    nombreUsuario = nombre + " " + apellido;
-                                } else if (!nombre.isEmpty()) {
-                                    nombreUsuario = nombre;
-                                } else {
-                                    nombreUsuario = usuarioObj.optString("nombreUsuario", "Usuario no disponible");
-                                }
-                            }
-
-                            // DEBUG: Verificar campos específicos
-                            Log.d("EVENTOS_API", "Usuario: " + nombreUsuario + ", Fecha: " + fechaActividad + ", Título: " + titulo + ", Archivo: " + archivo);
-
-                            // Crear objeto para el RecyclerView
                             Item_eventos item = new Item_eventos(
-                                    id,
-                                    idUsuario,
-                                    nombreUsuario,
-                                    titulo,
-                                    fechaActividad,
-                                    descripcion,
-                                    imagen,
-                                    archivo,
-                                    idEmpresa
+                                    obj.getInt("id"),
+                                    obj.optInt("idUsuario", 0),
+                                    obj.optString("nombreUsuario", "Usuario"),
+                                    obj.optString("titulo", ""),
+                                    obj.optString("fechaActividad", ""),
+                                    obj.optString("descripcion", ""),
+                                    obj.optString("imagen", ""),
+                                    obj.optString("archivo", ""),
+                                    obj.optInt("idEmpresa", 0)
                             );
 
-                            lista.add(item);
+                            listaOriginal.add(item);
                         }
-                        adapter.notifyDataSetChanged();
 
-                        if (lista.isEmpty()) {
-                            Toast.makeText(this, "No hay eventos disponibles", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(this, "Eventos cargados: " + lista.size(), Toast.LENGTH_SHORT).show();
-                        }
+                        listaFiltrada.clear();
+                        listaFiltrada.addAll(listaOriginal);
+
+                        adapter.notifyDataSetChanged();
+                        actualizarContador();
 
                     } catch (Exception e) {
-                        Log.e("EVENTOS_API", "Error al procesar datos: " + e.getMessage());
-                        Toast.makeText(this, "Error al procesar datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Error procesando datos", Toast.LENGTH_SHORT).show();
                     }
                 },
                 error -> {
-                    Log.e("EVENTOS_API", "Error en la petición: " + error.getMessage());
-                    Toast.makeText(this, "Error al obtener eventos: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Error en la API: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 }
         ) {
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + token);
-                headers.put("Content-Type", "application/json");
-                return headers;
+                Map<String, String> h = new HashMap<>();
+                h.put("Authorization", "Bearer " + token);
+                return h;
             }
         };
 

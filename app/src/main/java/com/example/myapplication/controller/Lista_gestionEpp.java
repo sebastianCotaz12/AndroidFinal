@@ -1,8 +1,14 @@
 package com.example.myapplication.controller;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -28,6 +34,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,12 +45,19 @@ public class Lista_gestionEpp extends AppCompatActivity {
 
     private ActivityListaGestionEppBinding binding;
     private Adapter_gestionEpp adapter;
-    private List<Item_gestionEpp> listaGestionEpp = new ArrayList<>();
+    private List<Item_gestionEpp> listaOriginal = new ArrayList<>();
+    private List<Item_gestionEpp> listaFiltrada = new ArrayList<>();
 
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
 
-    private static final String URL_API = "https://backsst.onrender.com/listarGestiones"; // 🔹 Ajusta la ruta exacta según tu backend
+    // FILTROS
+    private Calendar calendar;
+    private DatePickerDialog datePickerDialog;
+    private SimpleDateFormat dateFormatter;
+
+    private static final String URL_API =
+            "https://unreproaching-rancorously-evelina.ngrok-free.dev/listarGestiones";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +69,6 @@ public class Lista_gestionEpp extends AppCompatActivity {
         prefsManager = new PrefsManager(this);
         sesionManager = new SesionManager(this);
 
-        // ✅ Verificar sesión activa
         if (!sesionManager.haySesionActiva()) {
             Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
@@ -69,25 +82,23 @@ public class Lista_gestionEpp extends AppCompatActivity {
             return insets;
         });
 
-        // ✅ Configurar RecyclerView
-        RecyclerView recyclerView = binding.recyclerViewGestionEpp;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter_gestionEpp(this, listaGestionEpp);
-        recyclerView.setAdapter(adapter);
+        configurarCalendario();
+        configurarEventosFiltro();
 
-        // ✅ Cargar datos desde la API
+        // Recycler
+        binding.recyclerViewListaEPP.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new Adapter_gestionEpp(this, listaFiltrada);
+        binding.recyclerViewListaEPP.setAdapter(adapter);
+
         obtenerGestionesEpp();
 
-        // ✅ Botón para crear nueva gestión EPP
         binding.imgButtonCrearlista.setOnClickListener(v -> {
             startActivity(new Intent(Lista_gestionEpp.this, Form_gestionEpp.class));
         });
 
-        // ✅ Botón volver al menú principal
         ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
         btnVolverLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(Lista_gestionEpp.this, Menu.class);
-            startActivity(intent);
+            startActivity(new Intent(Lista_gestionEpp.this, Menu.class));
             finish();
         });
     }
@@ -95,16 +106,110 @@ public class Lista_gestionEpp extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refrescar la lista al volver del formulario
         obtenerGestionesEpp();
+    }
+
+    private void configurarCalendario() {
+        calendar = Calendar.getInstance();
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            String fecha = dateFormatter.format(calendar.getTime());
+            binding.etFiltrarFecha.setText(fecha);
+
+            filtrarPorFecha(fecha);
+            binding.btnLimpiarFiltro.setVisibility(View.VISIBLE);
+        };
+
+        datePickerDialog = new DatePickerDialog(
+                this,
+                dateSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+    }
+
+    private void configurarEventosFiltro() {
+        binding.etFiltrarFecha.setOnClickListener(v -> datePickerDialog.show());
+
+        binding.btnLimpiarFiltro.setOnClickListener(v -> limpiarFiltroFecha());
+
+        binding.etBuscar.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s,int start,int count,int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filtrarTexto(s.toString());
+            }
+        });
+    }
+
+    private void filtrarPorFecha(String fecha) {
+        listaFiltrada.clear();
+
+        for (Item_gestionEpp item : listaOriginal) {
+            if (item.getFecha_creacion() != null &&
+                    item.getFecha_creacion().contains("T")) {
+
+                String soloFecha = item.getFecha_creacion().split("T")[0];
+                if (soloFecha.equals(fecha)) {
+                    listaFiltrada.add(item);
+                }
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+        actualizarContador();
+    }
+
+    private void filtrarTexto(String texto) {
+        listaFiltrada.clear();
+
+        String fechaFiltro = binding.etFiltrarFecha.getText().toString();
+
+        for (Item_gestionEpp item : listaOriginal) {
+
+            boolean coincideTexto =
+                    item.getCedula().toLowerCase().contains(texto.toLowerCase()) ||
+                            item.getArea().toLowerCase().contains(texto.toLowerCase()) ||
+                            item.getCargo().toLowerCase().contains(texto.toLowerCase());
+
+            boolean coincideFecha = fechaFiltro.isEmpty() ||
+                    (item.getFecha_creacion() != null &&
+                            item.getFecha_creacion().contains(fechaFiltro));
+
+            if (coincideTexto && coincideFecha) {
+                listaFiltrada.add(item);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+        actualizarContador();
+    }
+
+    private void limpiarFiltroFecha() {
+        binding.etFiltrarFecha.setText("");
+        binding.btnLimpiarFiltro.setVisibility(View.GONE);
+
+        filtrarTexto(binding.etBuscar.getText().toString());
+        actualizarContador();
+    }
+
+    private void actualizarContador() {
+        binding.tvTotalGestiones.setText("Total de gestiones: " + listaFiltrada.size());
     }
 
     private void obtenerGestionesEpp() {
         String token = prefsManager.getToken();
 
-        if (token == null || token.trim().isEmpty()) {
-            Toast.makeText(this, "🚫 Token inválido. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
-            sesionManager.cerrarSesion();
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(this, "Token inválido", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -116,87 +221,37 @@ public class Lista_gestionEpp extends AppCompatActivity {
                 null,
                 response -> {
                     try {
-                        JSONArray datos = response.getJSONArray("datos"); // Ajusta si el backend usa "data"
-                        listaGestionEpp.clear();
+                        JSONArray datos = response.getJSONArray("datos");
+                        listaOriginal.clear();
 
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
 
-                            // ✅ Fecha formateada
-                            String fechaCreacion = obj.optString("fechaCreacion", null);
-                            if (fechaCreacion == null || fechaCreacion.equals("null") || fechaCreacion.isEmpty()) {
-                                fechaCreacion = obj.optString("createdAt", "Sin fecha");
-                            }
-                            String fechaFormateada = formatearFecha(fechaCreacion);
-
-                            // ✅ Estado traducido
-                            String estadoTexto = "Pendiente"; // valor por defecto
-                            if (obj.has("estado") && !obj.isNull("estado")) {
-                                String estado = obj.getString("estado");
-                                if (estado.equalsIgnoreCase("true") || estado.equalsIgnoreCase("activo")) {
-                                    estadoTexto = "Activo";
-                                } else if (estado.equalsIgnoreCase("false") || estado.equalsIgnoreCase("inactivo")) {
-                                    estadoTexto = "Inactivo";
-                                }
-                            }
-
-                            // ✅ Área
-                            String areaNombre = "Sin área";
-                            if (obj.has("area") && !obj.isNull("area")) {
-                                JSONObject areaObj = obj.getJSONObject("area");
-                                areaNombre = areaObj.optString("nombre", "Sin área");
-                            }
-
-                            // ✅ Cargo
-                            String cargoNombre = "Sin cargo";
-                            if (obj.has("cargo") && !obj.isNull("cargo")) {
-                                JSONObject cargoObj = obj.getJSONObject("cargo");
-                                cargoNombre = cargoObj.optString("nombre", "Sin cargo");
-                            }
-
-                            // ✅ Productos
-                            String productosTexto = "Sin productos";
-                            if (obj.has("productos")) {
-                                JSONArray productosArr = obj.getJSONArray("productos");
-                                if (productosArr.length() > 0) {
-                                    List<String> nombresProductos = new ArrayList<>();
-                                    for (int j = 0; j < productosArr.length(); j++) {
-                                        JSONObject prod = productosArr.getJSONObject(j);
-                                        nombresProductos.add(prod.optString("nombre", "Desconocido"));
-                                    }
-                                    productosTexto = String.join(", ", nombresProductos);
-                                }
-                            }
-
-                            // ✅ Crear el objeto
                             Item_gestionEpp item = new Item_gestionEpp(
                                     obj.optInt("id", 0),
-                                    obj.optString("cedula", "N/A"),
-                                    obj.optString("importancia", "N/A"),
-                                    estadoTexto,
-                                    fechaFormateada,
-                                    productosTexto,
-                                    cargoNombre,
-                                    areaNombre,
+                                    obj.optString("cedula", ""),
+                                    obj.optString("importancia", ""),
+                                    obj.optString("estado", ""),
+                                    obj.optString("fechaCreacion", ""),
+                                    obj.optString("productos", ""),
+                                    obj.optString("cargo", ""),
+                                    obj.optString("area", ""),
                                     obj.optInt("cantidad", 0)
                             );
 
-                            listaGestionEpp.add(item);
+                            listaOriginal.add(item);
                         }
 
+                        listaFiltrada.clear();
+                        listaFiltrada.addAll(listaOriginal);
                         adapter.notifyDataSetChanged();
-
-                        if (listaGestionEpp.isEmpty()) {
-                            Toast.makeText(this, "No hay gestiones EPP disponibles.", Toast.LENGTH_SHORT).show();
-                        }
+                        actualizarContador();
 
                     } catch (Exception e) {
-                        Log.e("GESTION_ERR", "Error parseando datos", e);
-                        Toast.makeText(this, "Error procesando datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Error procesando datos", Toast.LENGTH_LONG).show();
                     }
                 },
                 error -> {
-                    Log.e("GESTION_API_ERR", "Error API: " + error.getMessage());
                     Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 }
         ) {
@@ -204,39 +259,10 @@ public class Lista_gestionEpp extends AppCompatActivity {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + token);
-                headers.put("Content-Type", "application/json");
                 return headers;
             }
         };
 
         queue.add(request);
     }
-
-    // 🔹 Nuevo método para formatear la fecha ISO a dd/MM/yyyy
-    private String formatearFecha(String fechaOriginal) {
-        if (fechaOriginal == null || fechaOriginal.isEmpty() || fechaOriginal.equals("Sin fecha")) {
-            return "Fecha no disponible";
-        }
-
-        try {
-            SimpleDateFormat formatoEntrada;
-            Date fecha;
-
-            if (fechaOriginal.contains("T")) {
-                formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-            } else {
-                // Si ya está formateada, devolverla tal cual
-                return fechaOriginal;
-            }
-
-            fecha = formatoEntrada.parse(fechaOriginal);
-            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd MMM yyyy, hh:mm a", new Locale("es", "ES"));
-            return formatoSalida.format(fecha);
-
-        } catch (ParseException e) {
-            return fechaOriginal;
-        }
-    }
-
-
 }

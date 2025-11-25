@@ -1,9 +1,12 @@
 package com.example.myapplication.controller;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.widget.ImageView;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,21 +28,33 @@ import com.example.myapplication.utils.SesionManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Lista_listaChequeo extends AppCompatActivity {
 
     private ActivityListaListaChequeoBinding binding;
-    private Adapter_listaChequeo adapter;
-    private List<Item_listaChequeo> listaChequeos = new ArrayList<>();
 
+    private Adapter_listaChequeo adapter;
+
+    // Listas
+    private final List<Item_listaChequeo> listaOriginal = new ArrayList<>();
+    private final List<Item_listaChequeo> listaFiltrada = new ArrayList<>();
+
+    // Sesión
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
 
-    private static final String URL_API = "https://backsst.onrender.com/listarListasChequeo";
+    // Filtros
+    private Calendar calendar;
+    private SimpleDateFormat dateFormatter;
+
+    private static final String URL_API = "https://backsst.onrender.com/listarlistasU";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +63,9 @@ public class Lista_listaChequeo extends AppCompatActivity {
         binding = ActivityListaListaChequeoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Inicializar manejo de sesión
         prefsManager = new PrefsManager(this);
         sesionManager = new SesionManager(this);
 
-        // Verificar sesión activa
         if (!sesionManager.haySesionActiva()) {
             Toast.makeText(this, "⚠️ Sesión expirada. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
@@ -61,29 +74,24 @@ public class Lista_listaChequeo extends AppCompatActivity {
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return insets;
         });
 
-        // Configurar RecyclerView
-        RecyclerView recyclerView = binding.recyclerViewListaChequeo;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter_listaChequeo(this, listaChequeos);
-        recyclerView.setAdapter(adapter);
+        configurarRecycler();
+        configurarFiltros();
 
-        // Cargar datos desde API
         obtenerListasChequeo();
 
-        // Botón para crear nueva lista de chequeo
-        binding.imgButtonCrearlista.setOnClickListener(v -> {
-            startActivity(new Intent(Lista_listaChequeo.this, Form_listaChequeo.class));
-        });
-        // 🔹 Botón de regresar al inicio de sesión
-        ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
-        btnVolverLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(Lista_listaChequeo.this, Menu.class);
-            startActivity(intent);
+        // Crear nueva lista
+        binding.imgButtonCrearlista.setOnClickListener(v ->
+                startActivity(new Intent(this, Form_listaChequeo.class))
+        );
+
+        // Volver al menú
+        binding.imgButtonVolverInicio.setOnClickListener(v -> {
+            startActivity(new Intent(this, Menu.class));
             finish();
         });
     }
@@ -91,14 +99,91 @@ public class Lista_listaChequeo extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refrescar lista al volver del formulario
         obtenerListasChequeo();
+    }
+
+    private void configurarRecycler() {
+        RecyclerView rv = binding.recyclerViewListaChequeo;
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new Adapter_listaChequeo(this, listaFiltrada);
+        rv.setAdapter(adapter);
+    }
+
+    private void configurarFiltros() {
+        // Fecha
+        calendar = Calendar.getInstance();
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        // Abrir calendario
+        binding.etFiltrarFecha.setOnClickListener(v -> {
+            int y = calendar.get(Calendar.YEAR);
+            int m = calendar.get(Calendar.MONTH);
+            int d = calendar.get(Calendar.DAY_OF_MONTH);
+
+            new DatePickerDialog(
+                    this,
+                    (view, year, month, dayOfMonth) -> {
+                        calendar.set(year, month, dayOfMonth);
+                        String fecha = dateFormatter.format(calendar.getTime());
+
+                        binding.etFiltrarFecha.setText(fecha);
+                        binding.btnLimpiarFiltro.setVisibility(View.VISIBLE);
+
+                        filtrar();
+                    },
+                    y, m, d
+            ).show();
+        });
+
+        // Limpiar filtro
+        binding.btnLimpiarFiltro.setOnClickListener(v -> {
+            binding.etFiltrarFecha.setText("");
+            binding.btnLimpiarFiltro.setVisibility(View.GONE);
+            filtrar();
+        });
+
+        // Buscar texto
+        binding.etBuscarLista.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int c, int a) {}
+            @Override public void afterTextChanged(Editable s) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filtrar();
+            }
+        });
+    }
+
+    private void filtrar() {
+        String texto = binding.etBuscarLista.getText().toString().toLowerCase();
+        String fechaFiltro = binding.etFiltrarFecha.getText().toString();
+
+        listaFiltrada.clear();
+
+        for (Item_listaChequeo item : listaOriginal) {
+
+            boolean coincideTexto =
+                    item.getNombre().toLowerCase().contains(texto) ||
+                            item.getMarca().toLowerCase().contains(texto) ||
+                            item.getModelo().toLowerCase().contains(texto) ||
+                            item.getPlaca().toLowerCase().contains(texto);
+
+            boolean coincideFecha =
+                    fechaFiltro.isEmpty() ||
+                            item.getFecha().split("T")[0].equals(fechaFiltro);
+
+            if (coincideTexto && coincideFecha) {
+                listaFiltrada.add(item);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+        binding.tvTotalListas.setText("Total: " + listaFiltrada.size());
     }
 
     private void obtenerListasChequeo() {
         String token = prefsManager.getToken();
 
-        if (token == null || token.trim().isEmpty()) {
+        if (token == null || token.isEmpty()) {
             Toast.makeText(this, "🚫 Token inválido. Inicia sesión nuevamente.", Toast.LENGTH_LONG).show();
             sesionManager.cerrarSesion();
             return;
@@ -108,38 +193,38 @@ public class Lista_listaChequeo extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                "https://backsst.onrender.com/listarlistasU", // nuevo endpoint filtrado por usuario
+                URL_API,
                 null,
                 response -> {
                     try {
-                        JSONArray datos = response.getJSONArray("data"); //  accede a "data", no "datos"
+                        JSONArray datos = response.getJSONArray("data");
 
-                        listaChequeos.clear();
+                        listaOriginal.clear();
+
                         for (int i = 0; i < datos.length(); i++) {
                             JSONObject obj = datos.getJSONObject(i);
 
-                            // 🔹 Crear el objeto con los nuevos campos
-                            Item_listaChequeo item = new Item_listaChequeo(
-                                    obj.optString("usuarioNombre", "N/A"),
-                                    obj.optString("fecha", "Sin fecha"),
-                                    obj.optString("hora", "Sin hora"),
-                                    obj.optString("modelo", "Sin modelo"),
-                                    obj.optString("marca", "Sin marca"),
-                                    obj.optString("soat", "N/A"),
-                                    obj.optString("tecnico", "N/A"),
-                                    obj.optString("kilometraje", "0"),
-                                    obj.optString("placa", "Sin placa"),
-                                    obj.optString("observaciones", "Sin observaciones")
+                            listaOriginal.add(
+                                    new Item_listaChequeo(
+                                            obj.optString("usuarioNombre", "N/A"),
+                                            obj.optString("fecha", "Sin fecha"),
+                                            obj.optString("hora", "Sin hora"),
+                                            obj.optString("modelo", "Sin modelo"),
+                                            obj.optString("marca", "Sin marca"),
+                                            obj.optString("soat", "N/A"),
+                                            obj.optString("tecnico", "N/A"),
+                                            obj.optString("kilometraje", "0"),
+                                            obj.optString("placa", "Sin placa"),
+                                            obj.optString("observaciones", "Sin observaciones")
+                                    )
                             );
-
-                            listaChequeos.add(item);
                         }
+
+                        listaFiltrada.clear();
+                        listaFiltrada.addAll(listaOriginal);
 
                         adapter.notifyDataSetChanged();
-
-                        if (listaChequeos.isEmpty()) {
-                            Toast.makeText(this, "No hay listas de chequeo disponibles.", Toast.LENGTH_SHORT).show();
-                        }
+                        binding.tvTotalListas.setText("Total: " + listaFiltrada.size());
 
                     } catch (Exception e) {
                         Log.e("LISTA_ERR", "Error parseando datos", e);
@@ -147,7 +232,7 @@ public class Lista_listaChequeo extends AppCompatActivity {
                     }
                 },
                 error -> {
-                    Log.e("LISTA_API_ERR", "Error API: " + error.getMessage());
+                    Log.e("LISTA_API_ERR", "Error API", error);
                     Toast.makeText(this, "Error API: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 }
         ) {
@@ -155,7 +240,6 @@ public class Lista_listaChequeo extends AppCompatActivity {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + token);
-                headers.put("Content-Type", "application/json");
                 return headers;
             }
         };

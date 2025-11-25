@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,15 +12,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.myapplication.controller.Menu;
+import com.example.myapplication.R;
 import com.example.myapplication.utils.PrefsManager;
-import com.google.android.material.snackbar.Snackbar;
 
 public class Perfil extends AppCompatActivity {
 
-    EditText etNombre, etCargo, etCorreo, etArea, etEmpresa, etConfirmarPassword;
+    EditText etNombre, etCargo, etCorreo, etArea, etEmpresa;
     Button btnCerrarSesion;
-    ImageView ivPerfil;
+    ImageView ivPerfil, imgButton_VolverInicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +27,16 @@ public class Perfil extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_perfil);
 
+        PrefsManager prefsManager = new PrefsManager(this);
+
+        // Ajuste de márgenes para pantallas edge-to-edge
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // Inicializar preferencias
         PrefsManager prefs = new PrefsManager(this);
 
         // Referencias UI
@@ -43,8 +46,8 @@ public class Perfil extends AppCompatActivity {
         etCorreo = findViewById(R.id.etCorreo);
         etArea = findViewById(R.id.etArea);
         etEmpresa = findViewById(R.id.etEmpresa);
-        etConfirmarPassword = findViewById(R.id.etConfirmarPassword);
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
+        imgButton_VolverInicio = findViewById(R.id.imgButton_VolverInicio);
 
         // Mostrar datos guardados del usuario
         etNombre.setText(prefs.getNombreUsuario());
@@ -53,16 +56,22 @@ public class Perfil extends AppCompatActivity {
         etCorreo.setText(prefs.getCorreoElectronico());
         etCargo.setText(prefs.getCargo());
 
-        // Bloquear edición
+        // Bloquear edición de campos
         setEditable(false);
 
         // Acción del botón "Cerrar Sesión"
         btnCerrarSesion.setOnClickListener(v -> {
+            prefsManager.clearPrefs();
+            Intent intent = new Intent(Perfil.this, InicioSesion.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
 
-            Snackbar.make(v, "Sesión cerrada correctamente 🚪", Snackbar.LENGTH_SHORT).show();
-
-            // Redirigir al menú principal o login
+        // 🔙 Acción de la flecha para volver al menú
+        imgButton_VolverInicio.setOnClickListener(v -> {
             Intent intent = new Intent(Perfil.this, Menu.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
         });
@@ -75,6 +84,5 @@ public class Perfil extends AppCompatActivity {
         etCorreo.setEnabled(enabled);
         etArea.setEnabled(enabled);
         etEmpresa.setEnabled(enabled);
-        etConfirmarPassword.setEnabled(enabled);
     }
 }

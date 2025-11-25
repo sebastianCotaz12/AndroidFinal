@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.Perfil;
 import com.example.myapplication.R;
 import com.example.myapplication.utils.PermissionHelper;
 import com.example.myapplication.utils.PrefsManager;

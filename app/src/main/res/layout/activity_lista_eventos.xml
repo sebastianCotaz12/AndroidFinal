@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F8FAFC"
-    tools:context=".controller.Lista_actLudicas">
+    tools:context=".controller.Lista_eventos">
 
-    <!-- Encabezado mejorado -->
+    <!-- ENCABEZADO IGUAL AL FUNCIONAL -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -34,14 +34,14 @@
                 android:tint="#FFFFFF" />
 
             <TextView
+                android:id="@+id/titulo_eventos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Eventos"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:letterSpacing="0.02" />
+                android:textColor="#FFFFFF" />
 
             <ImageView
                 android:layout_width="40dp"
@@ -51,16 +51,14 @@
                 android:src="@mipmap/logo"
                 android:background="@drawable/circle_background"
                 android:padding="4dp" />
-
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Contenido principal -->
+    <!-- CONTENIDO -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:overScrollMode="never">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +66,7 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Título mejorado -->
+            <!-- TÍTULOS -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,8 +75,7 @@
                 android:textColor="#1A237E"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="8dp"
-                android:letterSpacing="0.03" />
+                android:layout_marginBottom="8dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -89,7 +86,7 @@
                 android:textSize="14sp"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Barra de búsqueda mejorada -->
+            <!-- BUSCADOR + FILTRO -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,47 +98,104 @@
                 android:layout_marginBottom="24dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="16dp"
-                    android:gravity="center_vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_search"
-                        android:tint="#64748B"
-                        android:layout_marginEnd="12dp" />
-
-                    <EditText
-                        android:layout_width="0dp"
+                    <!-- FILA 1 -->
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:hint="Buscar evento por nombre, fecha o estado..."
-                        android:padding="8dp"
-                        android:textColor="#1A237E"
-                        android:textColorHint="#94A3B8"
-                        android:textSize="15sp" />
+                        android:layout_marginBottom="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_search"
+                            android:tint="#64748B"
+                            android:layout_marginEnd="12dp" />
+
+                        <EditText
+                            android:id="@+id/etBuscarEvento"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Buscar evento por nombre, fecha o estado..."
+                            android:padding="8dp"
+                            android:background="@android:color/transparent"
+                            android:textColor="#1A237E"
+                            android:textColorHint="#94A3B8"
+                            android:textSize="15sp" />
+                    </LinearLayout>
 
                     <View
-                        android:layout_width="1dp"
-                        android:layout_height="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
                         android:background="#E2E8F0"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="12dp" />
+                        android:layout_marginBottom="12dp" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_filter"
-                        android:tint="#1976D2" />
+                    <!-- FILA 2: FECHA -->
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_date"
+                            android:tint="#64748B"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:text="Filtrar por fecha"
+                                android:textColor="#78909C"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:boxBackgroundMode="outline"
+                                app:boxStrokeColor="#E3F2FD">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etFiltrarFechaEvento"
+                                    android:hint="Seleccione fecha del evento"
+                                    android:textColor="#263238"
+                                    android:textSize="14sp"
+                                    android:focusable="false"
+                                    android:clickable="true"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/btnLimpiarFiltroEvento"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_clear"
+                            android:tint="#94A3B8"
+                            android:visibility="gone"
+                            android:background="?android:attr/selectableItemBackgroundBorderless" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Botón crear nuevo evento mejorado -->
+            <!-- BOTÓN CREAR -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_evento"
                 android:layout_width="match_parent"
@@ -157,12 +211,12 @@
                 android:foreground="?android:attr/selectableItemBackground">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:paddingVertical="20dp"
-                    android:paddingHorizontal="24dp">
+                    android:paddingHorizontal="24dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -171,45 +225,41 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="Crear Nuevo Evento"
                             android:textColor="#1A237E"
                             android:textSize="18sp"
                             android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Organiza eventos y actividades especiales"
+                            android:text="Organiza y registra eventos"
                             android:textColor="#455A64"
-                            android:textSize="13sp" />
-
+                            android:textSize="13sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         app:cardCornerRadius="24dp"
-                        app:cardBackgroundColor="#1976D2"
-                        app:cardElevation="4dp">
+                        app:cardBackgroundColor="#1976D2">
 
                         <ImageButton
-                            android:id="@+id/imgButton_crearlista"
+                            android:id="@+id/imgButtonCrearEvento"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:background="@android:color/transparent"
                             android:src="@drawable/ic_add"
+                            android:background="@android:color/transparent"
                             android:tint="#FFFFFF" />
-
                     </com.google.android.material.card.MaterialCardView>
-
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Contenedor de eventos con recuadro -->
+            <!-- ***AQUÍ ESTABA EL ERROR: FALTABA EL RECYCLERVIEW*** -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -221,18 +271,18 @@
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <!-- Header de la sección dentro del recuadro -->
+                    <!-- HEADER DENTRO DEL CUADRO -->
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="20dp"
                         android:gravity="center_vertical"
-                        android:background="@drawable/section_header_bordered">
+                        android:background="@drawable/section_header_bordered"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:layout_width="24dp"
@@ -248,8 +298,7 @@
                             android:text="Eventos Recientes"
                             android:textColor="#1A237E"
                             android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.01" />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -257,10 +306,8 @@
                             android:text="Ver todos"
                             android:textColor="#1976D2"
                             android:textSize="14sp" />
-
                     </LinearLayout>
 
-                    <!-- Línea separadora -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -268,64 +315,48 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp" />
 
-                    <!-- Lista de eventos ENCERRADA en el recuadro -->
+                    <!-- **RECYCLERVIEW QUE FALTABA** -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewEventos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbars="vertical"
                         android:padding="16dp"
                         android:clipToPadding="false"
-                        android:minHeight="200dp"
-                        android:background="@drawable/recycler_background" />
+                        android:minHeight="200dp" />
 
-                    <!-- Footer del recuadro -->
+                    <!-- FOOTER -->
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="16dp"
                         android:gravity="center"
-                        android:background="#FAFBFC">
+                        android:padding="16dp"
+                        android:background="#FAFBFC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Total de eventos: 8"
+                            android:id="@+id/tvTotalEventos"
+                            android:text="Total de eventos: 0"
                             android:textColor="#64748B"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
                         <View
                             android:layout_width="1dp"
                             android:layout_height="12dp"
                             android:background="#E2E8F0"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginEnd="12dp" />
+                            android:layout_marginHorizontal="12dp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:text="Actualizado hoy"
                             android:textColor="#64748B"
-                            android:textSize="12sp" />
-
+                            android:textSize="12sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
-
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Elemento decorativo inferior -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Sistema Integral de Seguridad Laboral"
-                android:textAlignment="center"
-                android:textColor="#94A3B8"
-                android:textSize="12sp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp" />
-
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>
