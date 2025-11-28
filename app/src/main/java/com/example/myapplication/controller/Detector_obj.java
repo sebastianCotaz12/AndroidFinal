@@ -216,7 +216,7 @@ public class Detector_obj extends AppCompatActivity {
 
                     PpeResponse body = response.body();
                     if (body.ok) {
-                        // ✅ MENSAJE MEJORADO - Cambiado de "null" a mensaje positivo
+                        // MENSAJE MEJORADO - Cambiado de "null" a mensaje positivo
                         resultText.setText("✅ ¡Tienes todos los elementos de protección necesarios!");
                         resultText.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
                         llMissingItems.setVisibility(View.GONE);
@@ -230,7 +230,7 @@ public class Detector_obj extends AppCompatActivity {
                         if (body.missing != null && !body.missing.isEmpty()) {
                             StringBuilder missingText = new StringBuilder();
                             for (String item : body.missing) {
-                                // ❌ QUITADA LA TRADUCCIÓN - Mostrar texto original
+                                // Mostrar texto original (sin traducción)
                                 missingText.append("• ").append(item).append("\n");
                             }
                             tvMissingItems.setText(missingText.toString());

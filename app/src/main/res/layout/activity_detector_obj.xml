@@ -144,20 +144,6 @@
                                     android:textColor="#78909C"
                                     android:textSize="14sp" />
 
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/btnTakePhoto"
-                                    style="@style/Widget.Material3.Button.OutlinedButton"
-                                    android:layout_width="0dp"
-                                    android:layout_height="48dp"
-                                    android:layout_marginStart="8dp"
-                                    android:layout_weight="1"
-                                    android:backgroundTint="@android:color/transparent"
-                                    android:text="📷 Cámara"
-                                    android:textColor="#2196F3"
-                                    android:textSize="14sp"
-                                    app:cornerRadius="24dp"
-                                    app:strokeColor="#2196F3"
-                                    app:strokeWidth="1dp" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -201,6 +187,21 @@
                         android:layout_marginBottom="16dp">
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnTakePhoto"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@android:color/transparent"
+                            android:text="📷 Cámara"
+                            android:textColor="#2196F3"
+                            android:textSize="14sp"
+                            app:cornerRadius="24dp"
+                            app:strokeColor="#2196F3"
+                            app:strokeWidth="1dp"
+                            android:layout_marginEnd="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnSelectImage"
                             android:layout_width="0dp"
                             android:layout_height="48dp"
@@ -213,15 +214,26 @@
                             app:strokeWidth="1dp"
                             android:backgroundTint="@android:color/transparent"
                             style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_marginEnd="8dp" />
+                            android:layout_marginStart="8dp" />
 
                     </LinearLayout>
+
+                    <!-- Información sobre elementos detectados -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Elementos detectados: bata y estetoscopio"
+                        android:textColor="#78909C"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:layout_marginTop="8dp" />
 
                     <!-- Botón de detección -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnDetect"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:layout_marginTop="16dp"
                         android:text="🔍 Detectar EPP"
                         android:textColor="#FFFFFF"
                         android:textSize="14sp"
