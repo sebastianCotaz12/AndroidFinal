@@ -3,6 +3,7 @@ package com.example.myapplication.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class Lista_gestionEpp extends AppCompatActivity {
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
 
-    private static final String URL_API = "https://backsst.onrender.com/listarGestiones"; // 🔹 Ajusta la ruta exacta según tu backend
+    private static final String URL_API = "https://backsst.onrender.com/listarGestiones";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,17 @@ public class Lista_gestionEpp extends AppCompatActivity {
             startActivity(new Intent(Lista_gestionEpp.this, Form_gestionEpp.class));
         });
 
+        // ✅ Botón para abrir el detector de EPP
+        ImageButton btnDetectorEpp = findViewById(R.id.imgButton_detector_epp);
+        btnDetectorEpp.setOnClickListener(v -> {
+            abrirDetectorEpp();
+        });
+
+        // ✅ También hacer clickeable toda la tarjeta del detector
+        findViewById(R.id.card_detector_epp).setOnClickListener(v -> {
+            abrirDetectorEpp();
+        });
+
         // ✅ Botón volver al menú principal
         ImageView btnVolverLogin = findViewById(R.id.imgButton_VolverInicio);
         btnVolverLogin.setOnClickListener(v -> {
@@ -92,10 +104,23 @@ public class Lista_gestionEpp extends AppCompatActivity {
         });
     }
 
+    /**
+     * Método para abrir el detector de EPP
+     */
+    private void abrirDetectorEpp() {
+        try {
+            Intent intent = new Intent(Lista_gestionEpp.this, Detector_obj.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e("DETECTOR_ERR", "Error al abrir detector: " + e.getMessage());
+            Toast.makeText(this, "Error al abrir detector de EPP", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        // Refrescar la lista al volver del formulario
+        // Refrescar la lista al volver del formulario o detector
         obtenerGestionesEpp();
     }
 
@@ -116,7 +141,7 @@ public class Lista_gestionEpp extends AppCompatActivity {
                 null,
                 response -> {
                     try {
-                        JSONArray datos = response.getJSONArray("datos"); // Ajusta si el backend usa "data"
+                        JSONArray datos = response.getJSONArray("datos");
                         listaGestionEpp.clear();
 
                         for (int i = 0; i < datos.length(); i++) {
@@ -130,7 +155,7 @@ public class Lista_gestionEpp extends AppCompatActivity {
                             String fechaFormateada = formatearFecha(fechaCreacion);
 
                             // ✅ Estado traducido
-                            String estadoTexto = "Pendiente"; // valor por defecto
+                            String estadoTexto = "Pendiente";
                             if (obj.has("estado") && !obj.isNull("estado")) {
                                 String estado = obj.getString("estado");
                                 if (estado.equalsIgnoreCase("true") || estado.equalsIgnoreCase("activo")) {
@@ -212,7 +237,6 @@ public class Lista_gestionEpp extends AppCompatActivity {
         queue.add(request);
     }
 
-    // 🔹 Nuevo método para formatear la fecha ISO a dd/MM/yyyy
     private String formatearFecha(String fechaOriginal) {
         if (fechaOriginal == null || fechaOriginal.isEmpty() || fechaOriginal.equals("Sin fecha")) {
             return "Fecha no disponible";
@@ -225,7 +249,6 @@ public class Lista_gestionEpp extends AppCompatActivity {
             if (fechaOriginal.contains("T")) {
                 formatoEntrada = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
             } else {
-                // Si ya está formateada, devolverla tal cual
                 return fechaOriginal;
             }
 
@@ -237,6 +260,4 @@ public class Lista_gestionEpp extends AppCompatActivity {
             return fechaOriginal;
         }
     }
-
-
 }

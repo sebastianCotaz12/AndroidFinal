@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     // 🌐 URL base del backend
-    private static final String BASE_URL = "https://unreproaching-rancorously-evelina.ngrok-free.dev ";
+    private static final String BASE_URL = "https://unreproaching-rancorously-evelina.ngrok-free.dev";
 
     // Instancia única (Singleton)
     private static Retrofit retrofit = null;
@@ -47,13 +47,13 @@ public class ApiClient {
                     Request.Builder requestBuilder = original.newBuilder()
                             .header("Authorization", "Bearer " + token)
                             .method(original.method(), original.body());
-                    Log.d("ApiClient", "✅ Token agregado al header Authorization");
+                    Log.d("ApiClient", " Token agregado al header Authorization");
                     return chain.proceed(requestBuilder.build());
                 });
             } else {
                 // Si no hay token, logueamos advertencia
                 httpClient.addInterceptor(chain -> {
-                    Log.w("ApiClient", "⚠️ Petición sin token (usuario no autenticado)");
+                    Log.w("ApiClient", " Petición sin token (usuario no autenticado)");
                     return chain.proceed(chain.request());
                 });
             }

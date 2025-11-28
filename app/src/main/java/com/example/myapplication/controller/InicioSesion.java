@@ -27,17 +27,12 @@ import retrofit2.Response;
 
 public class InicioSesion extends AppCompatActivity {
 
-    // ====================================
-    // VARIABLES Y CONSTANTES
-    // ====================================
     private ActivityInicioSesionBinding binding;
     private PrefsManager prefsManager;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+    private boolean tieneReconocimientoFacial = false;
 
-    // ====================================
-    // CICLO DE VIDA
-    // ====================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +47,6 @@ public class InicioSesion extends AppCompatActivity {
         configurarListeners();
     }
 
-    // ====================================
-    // INICIALIZACIÓN
-    // ====================================
     private void inicializarComponentes() {
         diagnosticarBiometria();
     }
@@ -67,17 +59,12 @@ public class InicioSesion extends AppCompatActivity {
     }
 
     private void configurarListeners() {
-        // Login normal
         binding.btnSignIn.setOnClickListener(view -> iniciarSesion());
-
-        // Navegación
         binding.txtRegister.setOnClickListener(v ->
                 startActivity(new Intent(InicioSesion.this, Registro.class)));
-
         binding.txtForgot.setOnClickListener(v ->
                 startActivity(new Intent(InicioSesion.this, Olvidaste_contrasenia.class)));
 
-        // Biometría manual
         binding.btnFaceId.setOnClickListener(v -> {
             if (prefsManager.isLoggedIn()) {
                 mostrarBiometria();
@@ -89,58 +76,36 @@ public class InicioSesion extends AppCompatActivity {
         });
     }
 
-    // ====================================
-    // DIAGNÓSTICO DE BIOMETRÍA
-    // ====================================
     private void diagnosticarBiometria() {
         BiometricManager biometricManager = BiometricManager.from(this);
 
         int strong = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
         int weak = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK);
-        int deviceCredential = biometricManager.canAuthenticate(BiometricManager.Authenticators.DEVICE_CREDENTIAL);
-        int combined = biometricManager.canAuthenticate(
-                BiometricManager.Authenticators.BIOMETRIC_STRONG |
-                        BiometricManager.Authenticators.BIOMETRIC_WEAK
-        );
 
-        Log.d("BIOMETRIA_DIAG", "=== DIAGNÓSTICO BIOMETRÍA INICIO SESIÓN ===");
-        Log.d("BIOMETRIA_DIAG", "BIOMETRIC_STRONG: " + getAuthStatus(strong) + " (Reconocimiento facial 3D/Iris)");
-        Log.d("BIOMETRIA_DIAG", "BIOMETRIC_WEAK: " + getAuthStatus(weak) + " (Reconocimiento facial 2D/Huellas básicas)");
-        Log.d("BIOMETRIA_DIAG", "DEVICE_CREDENTIAL: " + getAuthStatus(deviceCredential) + " (PIN/Patrón/Contraseña)");
-        Log.d("BIOMETRIA_DIAG", "COMBINED: " + getAuthStatus(combined));
+        Log.d("BIOMETRIA_DIAG", "=== DIAGNÓSTICO BIOMETRÍA ===");
+        Log.d("BIOMETRIA_DIAG", "BIOMETRIC_STRONG: " + getAuthStatus(strong));
+        Log.d("BIOMETRIA_DIAG", "BIOMETRIC_WEAK: " + getAuthStatus(weak));
 
-        // Mostrar resultado en Toast para debugging
-        String mensaje = "Diagnóstico Biometría:\n" +
+        tieneReconocimientoFacial = (strong == BiometricManager.BIOMETRIC_SUCCESS);
+
+        String mensaje = "Diagnóstico:\n" +
                 "Facial 3D: " + getAuthStatus(strong) + "\n" +
-                "Facial 2D/Huella: " + getAuthStatus(weak) + "\n" +
-                "PIN/Patrón: " + getAuthStatus(deviceCredential);
+                "Huella: " + getAuthStatus(weak) + "\n" +
+                "Método: " + (tieneReconocimientoFacial ? "FACIAL" : "HUELLA");
+
         Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
     }
 
     private String getAuthStatus(int status) {
         switch (status) {
-            case BiometricManager.BIOMETRIC_SUCCESS:
-                return "✅ DISPONIBLE";
-            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                return "❌ NO HAY HARDWARE";
-            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                return "⚠️ HARDWARE NO DISPONIBLE";
-            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                return "📝 NO CONFIGURADO";
-            case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
-                return "🔒 ACTUALIZACIÓN REQUERIDA";
-            case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
-                return "🚫 NO SOPORTADO";
-            case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
-                return "❓ DESCONOCIDO";
-            default:
-                return "� CÓDIGO: " + status;
+            case BiometricManager.BIOMETRIC_SUCCESS: return "✅ DISPONIBLE";
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE: return "❌ NO HAY HARDWARE";
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE: return "⚠️ NO DISPONIBLE";
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED: return "📝 NO CONFIGURADO";
+            default: return "� CÓDIGO: " + status;
         }
     }
 
-    // ====================================
-    // CONFIGURACIÓN DE BIOMETRÍA
-    // ====================================
     private void configurarBiometria() {
         Executor executor = ContextCompat.getMainExecutor(this);
 
@@ -170,34 +135,22 @@ public class InicioSesion extends AppCompatActivity {
     }
 
     private void manejarErrorBiometrico(int errorCode, CharSequence errString) {
-        // No mostrar toast para cancelación manual
         if (errorCode != BiometricPrompt.ERROR_USER_CANCELED &&
                 errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
 
-            Log.e("BIOMETRIA", "Error código: " + errorCode + " - " + errString);
-
-            String errorMsg = "Error de autenticación";
-            if (errorCode == BiometricPrompt.ERROR_LOCKOUT) {
-                errorMsg = "Demasiados intentos. Espera 30 segundos";
-            } else if (errorCode == BiometricPrompt.ERROR_LOCKOUT_PERMANENT) {
-                errorMsg = "Bloqueo permanente. Usa PIN/patrón";
-            }
-
+            Log.e("BIOMETRIA", "Error: " + errorCode + " - " + errString);
+            String errorMsg = "Error: " + errString;
             Toast.makeText(InicioSesion.this, errorMsg, Toast.LENGTH_LONG).show();
-        } else {
-            Log.d("BIOMETRIA", "Usuario canceló autenticación");
         }
     }
 
     private void manejarAutenticacionExitosa() {
         if (prefsManager.isLoggedIn()) {
-            Log.d("BIOMETRIA", "✅ Autenticación biométrica exitosa");
-            Log.d("BIOMETRIA", "Usuario: " + prefsManager.getNombreCompleto());
-            Log.d("BIOMETRIA", "Empresa: " + prefsManager.getNombreEmpresa());
+            Log.d("BIOMETRIA", "✅ Autenticación exitosa");
             irAlMenu();
         } else {
             Toast.makeText(InicioSesion.this,
-                    "Sesión expirada, ingresa nuevamente", Toast.LENGTH_LONG).show();
+                    "Sesión expirada", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -205,99 +158,132 @@ public class InicioSesion extends AppCompatActivity {
         try {
             BiometricManager biometricManager = BiometricManager.from(this);
             int strongAuth = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
+            int weakAuth = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK);
+
+            Log.d("BIOMETRIA_CONFIG", "STRONG: " + strongAuth + ", WEAK: " + weakAuth);
 
             if (strongAuth == BiometricManager.BIOMETRIC_SUCCESS) {
-                // Dispositivo soporta reconocimiento facial 3D
+                // FORZAR RECONOCIMIENTO FACIAL - Solo permitir BIOMETRIC_STRONG
                 promptInfo = new BiometricPrompt.PromptInfo.Builder()
                         .setTitle("Inicio de sesión biométrico")
-                        .setSubtitle("Usa reconocimiento facial o huella")
-                        .setDescription("Mira la cámara frontal o coloca tu dedo en el sensor")
+                        .setSubtitle("Reconocimiento facial")
+                        .setDescription("Mira directamente a la cámara frontal")
                         .setNegativeButtonText("Cancelar")
-                        .setConfirmationRequired(true)
-                        .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+                        .setConfirmationRequired(false)
+                        .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG) // SOLO FACIAL
                         .build();
-            } else {
-                // Usar solo huellas
+
+                Log.d("BIOMETRIA", "✅ CONFIGURADO EXCLUSIVAMENTE PARA RECONOCIMIENTO FACIAL");
+                Toast.makeText(this, "✅ Configurado para reconocimiento facial", Toast.LENGTH_SHORT).show();
+
+            } else if (weakAuth == BiometricManager.BIOMETRIC_SUCCESS) {
+                // Solo huella digital
                 promptInfo = new BiometricPrompt.PromptInfo.Builder()
                         .setTitle("Inicio de sesión biométrico")
-                        .setSubtitle("Usa tu huella digital")
-                        .setDescription("Coloca tu dedo en el sensor")
+                        .setSubtitle("Huella digital")
+                        .setDescription("Toca el sensor de huella")
                         .setNegativeButtonText("Cancelar")
-                        .setConfirmationRequired(true)
+                        .setConfirmationRequired(false)
                         .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK)
                         .build();
+
+                Log.d("BIOMETRIA", "⚠️ Configurado para huella digital");
+            } else {
+                Log.w("BIOMETRIA", "❌ Sin métodos biométricos");
+                promptInfo = null;
             }
+
         } catch (Exception e) {
-            Log.e("BIOMETRIA", "Error configurando biometría: " + e.getMessage());
-            // Configuración por defecto si hay error
-            promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("Verificación de identidad")
-                    .setSubtitle("Confirma tu identidad")
-                    .setNegativeButtonText("Cancelar")
-                    .build();
+            Log.e("BIOMETRIA", "Error: " + e.getMessage());
+            promptInfo = null;
         }
     }
 
-    // ====================================
-    // MÉTODOS DE BIOMETRÍA
-    // ====================================
     private void mostrarBiometriaAutomatica() {
-        if (!prefsManager.isLoggedIn()) {
+        if (!prefsManager.isLoggedIn()) return;
+        if (promptInfo == null) {
+            irAlMenu();
             return;
         }
 
-        int estadoBiometria = verificarDisponibilidadBiometrica();
-
-        if (estadoBiometria == BiometricManager.BIOMETRIC_SUCCESS) {
+        int estado = verificarDisponibilidadBiometrica();
+        if (estado == BiometricManager.BIOMETRIC_SUCCESS) {
             ejecutarBiometriaAutomatica();
         } else {
-            manejarBiometriaNoDisponible(estadoBiometria);
+            manejarBiometriaNoDisponible(estado);
         }
     }
 
     private int verificarDisponibilidadBiometrica() {
         BiometricManager biometricManager = BiometricManager.from(this);
 
-        // Probar múltiples métodos
-        int canAuth = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK);
-
-        // Si WEAK no funciona, probar STRONG
-        if (canAuth != BiometricManager.BIOMETRIC_SUCCESS) {
-            canAuth = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
+        // Si tenemos reconocimiento facial configurado, verificar solo eso
+        if (tieneReconocimientoFacial) {
+            int facial = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG);
+            Log.d("BIOMETRIA_CHECK", "Verificando solo facial: " + facial);
+            return facial;
+        } else {
+            int huella = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK);
+            Log.d("BIOMETRIA_CHECK", "Verificando solo huella: " + huella);
+            return huella;
         }
-
-        return canAuth;
     }
 
     private void ejecutarBiometriaAutomatica() {
+        if (promptInfo == null) {
+            irAlMenu();
+            return;
+        }
+
         Toast.makeText(this, "Verificando identidad...", Toast.LENGTH_SHORT).show();
 
         binding.getRoot().postDelayed(() -> {
             try {
                 biometricPrompt.authenticate(promptInfo);
+                Log.d("BIOMETRIA", "✅ Diálogo biométrico lanzado");
             } catch (Exception e) {
-                Log.e("BIOMETRIA", "Error al mostrar biometría: " + e.getMessage());
-                irAlMenu(); // Fallback
+                Log.e("BIOMETRIA", "❌ Error: " + e.getMessage());
+
+                // Si falla el facial, intentar con método alternativo
+                if (tieneReconocimientoFacial) {
+                    Toast.makeText(this, "Error con facial, intentando método alternativo", Toast.LENGTH_SHORT).show();
+                    configurarMetodoAlternativo();
+                } else {
+                    irAlMenu();
+                }
             }
         }, 1000);
     }
 
-    private void manejarBiometriaNoDisponible(int estado) {
-        String mensaje = obtenerMensajeErrorBiometrico(estado);
-        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
-        Log.d("BIOMETRIA", "Biometría no disponible: " + mensaje);
-        irAlMenu();
+    private void configurarMetodoAlternativo() {
+        try {
+            // Configurar para permitir cualquier método biométrico
+            promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Verificación de identidad")
+                    .setSubtitle("Usa tu método biométrico")
+                    .setDescription("Autentica con facial o huella")
+                    .setNegativeButtonText("Cancelar")
+                    .setConfirmationRequired(false)
+                    .setAllowedAuthenticators(
+                            BiometricManager.Authenticators.BIOMETRIC_STRONG |
+                                    BiometricManager.Authenticators.BIOMETRIC_WEAK
+                    )
+                    .build();
+
+            biometricPrompt.authenticate(promptInfo);
+            Log.d("BIOMETRIA", "🔀 Método alternativo configurado");
+
+        } catch (Exception e) {
+            Log.e("BIOMETRIA", "❌ Error método alternativo: " + e.getMessage());
+            irAlMenu();
+        }
     }
 
-    private String obtenerMensajeErrorBiometrico(int estado) {
-        switch (estado) {
-            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                return "Configura huella/rostro en ajustes del dispositivo";
-            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                return "Dispositivo sin sensor biométrico";
-            default:
-                return "Método biométrico no disponible";
-        }
+    private void manejarBiometriaNoDisponible(int estado) {
+        String mensaje = "Biometría no disponible: " + estado;
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
+        Log.d("BIOMETRIA", mensaje);
+        irAlMenu();
     }
 
     private void mostrarBiometria() {
@@ -306,28 +292,16 @@ public class InicioSesion extends AppCompatActivity {
             return;
         }
 
-        BiometricManager biometricManager = BiometricManager.from(this);
-        int canAuth = biometricManager.canAuthenticate(
-                BiometricManager.Authenticators.BIOMETRIC_STRONG |
-                        BiometricManager.Authenticators.BIOMETRIC_WEAK
-        );
+        if (promptInfo == null) {
+            Toast.makeText(this, "Biometría no disponible", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-        switch (canAuth) {
-            case BiometricManager.BIOMETRIC_SUCCESS:
-                biometricPrompt.authenticate(promptInfo);
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                Toast.makeText(this, "Este dispositivo no tiene sensor biométrico", Toast.LENGTH_LONG).show();
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                Toast.makeText(this, "Sensor biométrico no disponible", Toast.LENGTH_LONG).show();
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                Toast.makeText(this, "No hay huellas/rostros registrados en el dispositivo", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                Toast.makeText(this, "Biometría no disponible", Toast.LENGTH_LONG).show();
-                break;
+        try {
+            biometricPrompt.authenticate(promptInfo);
+        } catch (Exception e) {
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("BIOMETRIA", "Error mostrarBiometria: " + e.getMessage());
         }
     }
 
@@ -407,20 +381,13 @@ public class InicioSesion extends AppCompatActivity {
         prefsManager.setCargo(user.getCargo() != null ? user.getCargo() : "");
         prefsManager.setCorreoElectronico(user.getCorreoElectronico() != null ? user.getCorreoElectronico() : "");
 
-        // DEBUG
-        Log.d("LOGIN", "✅ Login exitoso - Usuario: " + prefsManager.getNombreUsuario());
-        Log.d("LOGIN", "✅ Empresa: " + prefsManager.getNombreEmpresa());
-        Log.d("LOGIN", "✅ Área: " + prefsManager.getNombreArea());
+        Log.d("LOGIN", "");
     }
 
-    // ====================================
-    // NAVEGACIÓN
-    // ====================================
     private void irAlMenu() {
-        Log.d("NAVEGACION", "🔀 Redirigiendo al Menu...");
+        Log.d("NAVEGACION", "");
         Intent intent = new Intent(InicioSesion.this, Menu.class);
         startActivity(intent);
         finish();
     }
 }
-
