@@ -37,7 +37,7 @@ public class Lista_reportes extends AppCompatActivity {
     private List<ItemReporte> listaReportes = new ArrayList<>();
     private PrefsManager prefsManager;
 
-    private final String URL_API = "https://backsst.onrender.com/listarUsu";
+    private final String URL_API = "https://unreproaching-rancorously-evelina.ngrok-free.dev/listarUsu";
 
     private final ActivityResultLauncher<Intent> formLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {

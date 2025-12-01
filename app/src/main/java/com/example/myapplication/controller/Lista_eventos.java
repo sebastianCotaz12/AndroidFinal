@@ -37,7 +37,7 @@ public class Lista_eventos extends AppCompatActivity {
     private PrefsManager prefsManager;
 
     // URL del backend (ajústala si es necesario)
-    private static final String URL_API = "https://backsst.onrender.com/eventos";
+    private static final String URL_API = "https://unreproaching-rancorously-evelina.ngrok-free.dev/eventos";
 
     @SuppressLint("MissingInflatedId")
     @Override

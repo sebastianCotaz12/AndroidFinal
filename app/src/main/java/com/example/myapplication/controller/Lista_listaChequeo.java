@@ -39,7 +39,7 @@ public class Lista_listaChequeo extends AppCompatActivity {
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
 
-    private static final String URL_API = "https://backsst.onrender.com/listarListasChequeo";
+    private static final String URL_API = "https://unreproaching-rancorously-evelina.ngrok-free.dev/listarlistasU";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

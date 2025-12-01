@@ -31,7 +31,8 @@
                 android:layout_height="38dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_back"
-                android:tint="#FFFFFF" />
+                android:tint="#FFFFFF"
+                tools:ignore="UseAppTint" />
 
 
             <TextView
