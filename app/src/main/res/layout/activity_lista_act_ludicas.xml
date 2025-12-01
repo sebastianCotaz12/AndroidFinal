@@ -9,7 +9,7 @@
     android:background="#F8FAFC"
     tools:context=".controller.Lista_actLudicas">
 
-    <!-- Encabezado mejorado -->
+    <!-- Encabezado -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -31,7 +31,8 @@
                 android:layout_height="38dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_arrow_back"
-                android:tint="#FFFFFF" />
+                android:tint="#FFFFFF"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -68,7 +69,7 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- Título mejorado -->
+            <!-- Título -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +90,7 @@
                 android:textSize="14sp"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Barra de búsqueda mejorada -->
+            <!-- Card búsqueda -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,45 +104,117 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_search"
-                        android:tint="#64748B"
-                        android:layout_marginEnd="12dp" />
-
-                    <EditText
-                        android:layout_width="0dp"
+                    <!-- Fila búsqueda -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:hint="Buscar actividad por nombre, fecha o estado..."
-                        android:padding="8dp"
-                        android:textColor="#1A237E"
-                        android:textColorHint="#94A3B8"
-                        android:textSize="15sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
 
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_search"
+                            android:tint="#64748B"
+                            android:layout_marginEnd="12dp"
+                            tools:ignore="UseAppTint" />
+
+                        <EditText
+                            android:id="@+id/etBuscar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:hint="Buscar actividad por nombre, descripción o usuario..."
+                            android:padding="8dp"
+                            android:textColor="#1A237E"
+                            android:textColorHint="#94A3B8"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <!-- Separador -->
                     <View
-                        android:layout_width="1dp"
-                        android:layout_height="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
                         android:background="#E2E8F0"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="12dp" />
+                        android:layout_marginBottom="12dp" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_filter"
-                        android:tint="#1976D2" />
+                    <!-- Filtro fecha -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_date"
+                            android:tint="#64748B"
+                            android:layout_marginEnd="12dp"
+                            tools:ignore="UseAppTint" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Búsqueda por fecha"
+                                android:textColor="#78909C"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.05" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:boxBackgroundMode="outline"
+                                app:boxBackgroundColor="@android:color/transparent"
+                                app:boxCornerRadiusBottomEnd="12dp"
+                                app:boxCornerRadiusBottomStart="12dp"
+                                app:boxCornerRadiusTopEnd="12dp"
+                                app:boxCornerRadiusTopStart="12dp"
+                                app:boxStrokeColor="#E3F2FD"
+                                android:layout_marginTop="4dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etFiltrarFecha"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Seleccione fecha de la evidencia"
+                                    android:textSize="14sp"
+                                    android:textColor="#263238"
+                                    android:focusable="false"
+                                    android:clickable="true" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <!-- Botón limpiar filtro (corregido) -->
+                        <ImageButton
+                            android:id="@+id/btnLimpiarFiltro"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:tint="#94A3B8"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:visibility="gone"
+                            android:layout_marginStart="8dp"
+                            tools:ignore="UseAppTint" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Botón crear nueva actividad lúdica mejorado -->
+            <!-- Botón crear actividad -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_actividad_ludica"
                 android:layout_width="match_parent"
@@ -202,14 +275,15 @@
                             android:layout_gravity="center"
                             android:background="@android:color/transparent"
                             android:src="@drawable/ic_add"
-                            android:tint="#FFFFFF" />
+                            android:tint="#FFFFFF"
+                            tools:ignore="UseAppTint" />
 
                     </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Contenedor de actividades lúdicas con recuadro -->
+            <!-- Contenedor actividades -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -225,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Header de la sección dentro del recuadro -->
+                    <!-- Header -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -239,7 +313,8 @@
                             android:layout_height="24dp"
                             android:src="@drawable/ic_celebration"
                             android:tint="#1A237E"
-                            android:layout_marginEnd="12dp" />
+                            android:layout_marginEnd="12dp"
+                            tools:ignore="UseAppTint" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -260,7 +335,6 @@
 
                     </LinearLayout>
 
-                    <!-- Línea separadora -->
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -268,7 +342,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp" />
 
-                    <!-- Lista de actividades ENCERRADA en el recuadro -->
+                    <!-- RecyclerView -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewListaChequeo"
                         android:layout_width="match_parent"
@@ -279,7 +353,7 @@
                         android:minHeight="200dp"
                         android:background="@drawable/recycler_background" />
 
-                    <!-- Footer del recuadro -->
+                    <!-- Footer -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -289,9 +363,10 @@
                         android:background="#FAFBFC">
 
                         <TextView
+                            android:id="@+id/tvTotalActividades"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total de actividades: 12"
+                            android:text="Total de actividades: 0"
                             android:textColor="#64748B"
                             android:textSize="12sp" />
 
@@ -314,7 +389,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Elemento decorativo inferior -->
+            <!-- Footer -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

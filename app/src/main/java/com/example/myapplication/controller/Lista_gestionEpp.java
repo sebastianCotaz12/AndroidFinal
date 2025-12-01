@@ -44,7 +44,7 @@ public class Lista_gestionEpp extends AppCompatActivity {
     private PrefsManager prefsManager;
     private SesionManager sesionManager;
 
-    private static final String URL_API = "https://backsst.onrender.com/listarGestiones";
+    private static final String URL_API = "https://unreproaching-rancorously-evelina.ngrok-free.dev/listarGestions";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
