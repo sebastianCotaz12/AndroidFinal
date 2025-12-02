@@ -61,7 +61,7 @@ public class Menu extends AppCompatActivity {
 
         // --- Mostrar nombre del usuario logueado ---
         String nombreUsuario = prefsManager.getNombreUsuario();
-        tvBienvenida.setText("👋 Bienvenido, " + (nombreUsuario != null ? nombreUsuario : "Usuario"));
+        tvBienvenida.setText(" Bienvenido, " + (nombreUsuario != null ? nombreUsuario : "Usuario"));
 
         // --- Suscripción a topic FCM ---
         int idEmpresa = prefsManager.getIdEmpresa();

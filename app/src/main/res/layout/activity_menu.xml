@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:text="👋 Bienvenido, Usuario"
+                android:text="Bienvenido, Usuario"
                 android:textColor="#0D47A1"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -49,270 +49,284 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Título de módulos -->
-    <TextView
+    <!-- ScrollView para módulos y tarjetas -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="36dp"
-        android:text="Módulos del Sistema"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-condensed" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <!-- Grid de tarjetas -->
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="1"
-        android:paddingHorizontal="16dp"
-        android:layout_marginTop="40dp">
-
-        <!-- Tarjeta: Gestión EPP -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_gestion_epp"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="#F2F2F2"
-            app:strokeColor="#1976D2"
-            app:strokeWidth="1dp">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <!-- Título de módulos -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="36dp"
+                android:text="Módulos del Sistema"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-condensed" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="51dp"
-                        android:contentDescription="Icono"
-                        android:src="@drawable/epp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gestión EPP"
-                        android:textColor="#0D47A1"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Control de equipos de protección personal"
-                    android:textColor="#1565C0"
-                    android:textSize="14sp"
-                    android:layout_marginTop="4dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Tarjeta: Reportes -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_reportes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="#F2F2F2"
-            app:strokeColor="#1976D2"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
+            <!-- Grid de tarjetas -->
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:columnCount="1"
+                android:paddingHorizontal="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="24dp">
 
-                <LinearLayout
+                <!-- Tarjeta: Gestión EPP -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_gestion_epp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#F2F2F2"
+                    app:strokeColor="#1976D2"
+                    app:strokeWidth="1dp">
 
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="51dp"
-                        android:contentDescription="Icono"
-                        android:src="@drawable/reportes" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Reportes"
-                        android:textColor="#0D47A1"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Generar informes y análisis"
-                    android:textColor="#1565C0"
-                    android:textSize="14sp"
-                    android:layout_marginTop="4dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
-        <!-- Tarjeta: Actividades -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_actividades"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="#F2F2F2"
-            app:strokeColor="#1976D2"
-            app:strokeWidth="1dp">
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="51dp"
+                                android:contentDescription="Icono"
+                                android:src="@drawable/epp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Gestión EPP"
+                                android:textColor="#0D47A1"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
-                <LinearLayout
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Control de equipos de protección personal"
+                            android:textColor="#1565C0"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Tarjeta: Reportes -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_reportes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#F2F2F2"
+                    app:strokeColor="#1976D2"
+                    app:strokeWidth="1dp">
 
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="51dp"
-                        android:contentDescription="Icono"
-                        android:src="@drawable/ludicas" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Actividades"
-                        android:textColor="#0D47A1"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Training interactivo y capacitaciones"
-                    android:textColor="#1565C0"
-                    android:textSize="14sp"
-                    android:layout_marginTop="4dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
-        <!-- Tarjeta: Eventos -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_blog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="#F2F2F2"
-            app:strokeColor="#1976D2"
-            app:strokeWidth="1dp">
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="51dp"
+                                android:contentDescription="Icono"
+                                android:src="@drawable/reportes" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Reportes"
+                                android:textColor="#0D47A1"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
-                <LinearLayout
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Generar informes y análisis"
+                            android:textColor="#1565C0"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Tarjeta: Actividades -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_actividades"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#F2F2F2"
+                    app:strokeColor="#1976D2"
+                    app:strokeWidth="1dp">
 
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="51dp"
-                        android:contentDescription="Icono"
-                        android:src="@drawable/blog" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Eventos"
-                        android:textColor="#0D47A1"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Calendario y programación de eventos"
-                    android:textColor="#1565C0"
-                    android:textSize="14sp"
-                    android:layout_marginTop="4dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
-        <!-- Tarjeta: Lista de Chequeo -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_lista_chequeo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="#F2F2F2"
-            app:strokeColor="#1976D2"
-            app:strokeWidth="1dp">
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="51dp"
+                                android:contentDescription="Icono"
+                                android:src="@drawable/ludicas" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Actividades"
+                                android:textColor="#0D47A1"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
 
-                <LinearLayout
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Training interactivo y capacitaciones"
+                            android:textColor="#1565C0"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Tarjeta: Eventos -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_blog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#F2F2F2"
+                    app:strokeColor="#1976D2"
+                    app:strokeWidth="1dp">
 
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="51dp"
-                        android:contentDescription="Icono"
-                        android:src="@drawable/chequeo" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Lista de Chequeo"
-                        android:textColor="#0D47A1"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="51dp"
+                                android:contentDescription="Icono"
+                                android:src="@drawable/blog" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Eventos"
+                                android:textColor="#0D47A1"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Calendario y programación de eventos"
+                            android:textColor="#1565C0"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Tarjeta: Lista de Chequeo -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_lista_chequeo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Verificación de procesos y cumplimiento"
-                    android:textColor="#1565C0"
-                    android:textSize="14sp"
-                    android:layout_marginTop="4dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#F2F2F2"
+                    app:strokeColor="#1976D2"
+                    app:strokeWidth="1dp">
 
-    </GridLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="51dp"
+                                android:contentDescription="Icono"
+                                android:src="@drawable/chequeo" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Lista de Chequeo"
+                                android:textColor="#0D47A1"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Verificación de procesos y cumplimiento"
+                            android:textColor="#1565C0"
+                            android:textSize="14sp"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </GridLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
