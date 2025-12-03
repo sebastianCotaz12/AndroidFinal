@@ -50,4 +50,12 @@
     <color name="estado_proceso">#FF9800</color>
     <color name="estado_pendiente">#2196F3</color>
 
+
+    <color name="success_green">#4CAF50</color>
+    <color name="error_red">#F44336</color>
+    <color name="warning_orange">#FF9800</color>
+    <color name="primary_blue">#2196F3</color>
+    <color name="light_blue">#E3F2FD</color>
+    <color name="card_background">#FFFFFF</color>
+
 </resources>

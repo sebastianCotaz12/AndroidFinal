@@ -7,8 +7,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,16 +34,21 @@ import com.example.myapplication.utils.PpeApi;
 import com.example.myapplication.api.RetrofitClient;
 import com.example.myapplication.utils.ImageUtils;
 import com.example.myapplication.utils.PpeResponse;
+import com.example.myapplication.utils.LocalAnnotationManager;
+import com.example.myapplication.utils.VisualAnnotationEngine;
+import com.example.myapplication.utils.AnnotatedItem;
+import com.example.myapplication.utils.PrefsManager;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import okhttp3.RequestBody;
 
 public class Detector_obj extends AppCompatActivity {
 
@@ -48,23 +56,42 @@ public class Detector_obj extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 2;
     private static final int CAMERA_PERMISSION_CODE = 100;
 
+    // Views del XML
     private ImageView imagePreview;
     private View llPlaceholder;
     private TextView resultText;
     private TextView tvMissingItems;
-    private LinearLayout llMissingItems;
+    private LinearLayout llMissingItems; // Contenedor de la lista
+    private MaterialCardView cardResults; // Card de resultados
     private MaterialButton btnSelectImage, btnTakePhoto, btnDetect, btnCancelar, btnLimpiar;
+    private AutoCompleteTextView contextDropdown;
+    private TextInputLayout contextLayout;
+
+    // Variables
     private Bitmap selectedBitmap;
+    private Bitmap originalBitmap;
     private PpeApi ppeApi;
+    private String selectedContext = "welder";
+    private PrefsManager prefsManager;
+
+    // Managers
+    private LocalAnnotationManager annotationManager;
+    private VisualAnnotationEngine visualEngine;
+
+    // Contextos disponibles
+    private final String[] availableContexts = {
+            "welder",           // Soldador
+            "medical",          // Médico
+            "security_guard",   // Guardia de seguridad
+            "construction"      // Construcción
+    };
 
     // ActivityResultLauncher para permisos de cámara
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    // Permiso concedido, abrir cámara
                     abrirCamara();
                 } else {
-                    // Permiso denegado
                     Toast.makeText(this, "Se necesita permiso de cámara para tomar fotos", Toast.LENGTH_LONG).show();
                 }
             });
@@ -82,34 +109,117 @@ public class Detector_obj extends AppCompatActivity {
             return insets;
         });
 
+        // Inicializar PrefsManager
+        prefsManager = new PrefsManager(this);
+
         // Inicializar vistas
         initViews();
 
-        // Inicializar Retrofit
+        // Configurar dropdown de contextos
+        setupContextDropdown();
+
+        // Inicializar Retrofit con la URL de ngrok
         try {
             ppeApi = RetrofitClient.getClient().create(PpeApi.class);
         } catch (Exception e) {
             Log.e("RETROFIT", "Error inicializando Retrofit: " + e.getMessage());
+            Toast.makeText(this, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
         }
 
+        // Inicializar managers
+        annotationManager = LocalAnnotationManager.getInstance();
+        visualEngine = new VisualAnnotationEngine();
+
         setupClickListeners();
+
+        // Verificar autenticación
+        checkAuthentication();
+    }
+
+    private void checkAuthentication() {
+        String token = prefsManager.getToken();
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(this, "Debes iniciar sesión para usar esta función", Toast.LENGTH_LONG).show();
+            finish();
+        } else {
+            Log.d("AUTH", "Token encontrado, longitud: " + token.length());
+            Log.d("AUTH", "Cargo del usuario: " + prefsManager.getCargo());
+
+            // Configurar contexto automático basado en el cargo
+            autoSetContextFromCargo();
+        }
+    }
+
+    private void autoSetContextFromCargo() {
+        String cargo = prefsManager.getCargo();
+        if (cargo != null && !cargo.isEmpty()) {
+            cargo = cargo.toLowerCase().trim();
+
+            if (cargo.contains("soldador")) {
+                selectedContext = "welder";
+                contextDropdown.setText("welder", false);
+            } else if (cargo.contains("médico") || cargo.contains("medico") ||
+                    cargo.contains("doctor") || cargo.contains("enfermero") ||
+                    cargo.contains("enfermera")) {
+                selectedContext = "medical";
+                contextDropdown.setText("medical", false);
+            } else if (cargo.contains("seguridad") || cargo.contains("guardia")) {
+                selectedContext = "security_guard";
+                contextDropdown.setText("security_guard", false);
+            } else if (cargo.contains("ingeniero") || cargo.contains("operario") ||
+                    cargo.contains("construcción") || cargo.contains("construccion") ||
+                    cargo.contains("obra") || cargo.contains("administracion") ||
+                    cargo.contains("usuario")) {
+                selectedContext = "construction";
+                contextDropdown.setText("construction", false);
+            }
+
+            Log.d("CONTEXTO", "Contexto automático desde cargo '" + cargo + "': " + selectedContext);
+            Toast.makeText(this, "Contexto automático: " + getContextDisplayName(selectedContext),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initViews() {
+        // Buscar todas las vistas usando los IDs del XML
         imagePreview = findViewById(R.id.imagePreview);
         llPlaceholder = findViewById(R.id.llPlaceholder);
         resultText = findViewById(R.id.resultText);
         tvMissingItems = findViewById(R.id.tvMissingItems);
         llMissingItems = findViewById(R.id.llMissingItems);
+        cardResults = findViewById(R.id.cardResults); // La card de resultados del XML
         btnSelectImage = findViewById(R.id.btnSelectImage);
         btnTakePhoto = findViewById(R.id.btnTakePhoto);
         btnDetect = findViewById(R.id.btnDetect);
         btnCancelar = findViewById(R.id.btnCancelar);
         btnLimpiar = findViewById(R.id.btnLimpiar);
+        contextDropdown = findViewById(R.id.contextDropdown);
+        contextLayout = findViewById(R.id.contextLayout);
 
-        // Estado inicial
+        // Estado inicial - ocultar la imagen y mostrar placeholder
         imagePreview.setVisibility(View.GONE);
         llPlaceholder.setVisibility(View.VISIBLE);
+        llMissingItems.setVisibility(View.GONE); // Ocultar lista de faltantes inicialmente
+    }
+
+    private void setupContextDropdown() {
+        // Crear adapter para el dropdown
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                availableContexts
+        );
+
+        contextDropdown.setAdapter(adapter);
+        contextDropdown.setText(adapter.getItem(0), false); // Establecer "welder" por defecto
+
+        // Listener para cuando se selecciona un contexto
+        contextDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            selectedContext = adapter.getItem(position);
+            Log.d("CONTEXTO", "Contexto seleccionado manualmente: " + selectedContext);
+            Toast.makeText(this, "Contexto: " + getContextDisplayName(selectedContext),
+                    Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void setupClickListeners() {
@@ -123,6 +233,7 @@ public class Detector_obj extends AppCompatActivity {
     private void selectImageFromGallery() {
         try {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
             startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
         } catch (Exception e) {
             Log.e("GALERIA", "Error: " + e.getMessage());
@@ -131,11 +242,9 @@ public class Detector_obj extends AppCompatActivity {
     }
 
     private void verificarPermisoCamara() {
-        // Verificar si ya tenemos permiso
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             abrirCamara();
         } else {
-            // Solicitar permiso
             requestPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
@@ -143,7 +252,6 @@ public class Detector_obj extends AppCompatActivity {
     private void abrirCamara() {
         try {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Verificar que hay una app de cámara disponible
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST);
             } else {
@@ -156,112 +264,251 @@ public class Detector_obj extends AppCompatActivity {
     }
 
     private void detectObjects() {
+        // Verificar que hay imagen seleccionada
         if (selectedBitmap == null) {
             Toast.makeText(this, "Primero selecciona o toma una foto", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Verificar conexión API
         if (ppeApi == null) {
             Toast.makeText(this, "Error: Conexión no disponible", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        enviarPpe(selectedBitmap);
+        // Verificar token de autenticación
+        String token = prefsManager.getToken();
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(this, "Sesión expirada. Vuelve a iniciar sesión", Toast.LENGTH_LONG).show();
+            // Si tienes LoginActivity, redirige aquí
+            // startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
+
+        // Enviar imagen para detección
+        enviarPpe(selectedBitmap, token);
     }
 
     private void limpiarDatos() {
         selectedBitmap = null;
+        originalBitmap = null;
+        selectedContext = "welder";
+        contextDropdown.setText(availableContexts[0], false);
         imagePreview.setVisibility(View.GONE);
         llPlaceholder.setVisibility(View.VISIBLE);
         imagePreview.setImageBitmap(null);
         resultText.setText("Selecciona o toma una foto para detectar EPP");
-        llMissingItems.setVisibility(View.GONE);
         resultText.setTextColor(getResources().getColor(android.R.color.darker_gray));
-
+        llMissingItems.setVisibility(View.GONE);
         Toast.makeText(this, "Datos limpiados", Toast.LENGTH_SHORT).show();
     }
 
-    public void enviarPpe(Bitmap bitmap) {
-        // Mostrar loading
+    private void enviarPpe(Bitmap bitmap, String token) {
+        // Guardar copia original para mostrar después
+        originalBitmap = bitmap.copy(bitmap.getConfig(), true);
+
+        // Mostrar estado de carga
         btnDetect.setEnabled(false);
         btnDetect.setText("Analizando...");
 
         try {
+            // Convertir bitmap a MultipartBody.Part
             MultipartBody.Part imagePart = ImageUtils.bitmapToMultipart(bitmap, "image");
 
-            // CREAR EL CONTEXTO "medical" como RequestBody
-            RequestBody context = RequestBody.create(
-                    MultipartBody.FORM,
-                    "medical"
-            );
+            // Crear el header Authorization con el formato "Bearer <token>"
+            String authHeader = "Bearer " + token;
 
-            // Pasar ambos parámetros a la API
-            Call<PpeResponse> call = ppeApi.checkPpe(imagePart, context);
+            // Llamada a la API con token - usando el endpoint correcto
+            Call<PpeResponse> call = ppeApi.checkPpe(
+                    authHeader,        // Header Authorization: Bearer <token>
+                    "local",           // Parámetro model
+                    selectedContext,   // Parámetro context
+                    imagePart          // Archivo de imagen
+            );
 
             call.enqueue(new Callback<PpeResponse>() {
                 @Override
                 public void onResponse(Call<PpeResponse> call, Response<PpeResponse> response) {
                     btnDetect.setEnabled(true);
-                    btnDetect.setText("🔍 Detectar EPP");
+                    btnDetect.setText("Detectar EPP");
 
-                    if (!response.isSuccessful() || response.body() == null) {
-                        resultText.setText("Error en la respuesta del servidor: " + response.code());
-                        resultText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-                        llMissingItems.setVisibility(View.GONE);
-                        Toast.makeText(Detector_obj.this,
-                                "Error en la respuesta del servidor",
-                                Toast.LENGTH_SHORT).show();
+                    // Manejar error 401 (token inválido/vencido)
+                    if (response.code() == 401) {
+                        handleTokenExpired();
                         return;
                     }
 
-                    PpeResponse body = response.body();
-                    if (body.ok) {
-                        // MENSAJE MEJORADO - Cambiado de "null" a mensaje positivo
-                        resultText.setText("✅ ¡Tienes todos los elementos de protección necesarios!");
-                        resultText.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
-                        llMissingItems.setVisibility(View.GONE);
-                        Toast.makeText(Detector_obj.this,
-                                "EPP completos y correctos",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        resultText.setText("❌ Se detectaron problemas con el EPP");
-                        resultText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-
-                        if (body.missing != null && !body.missing.isEmpty()) {
-                            StringBuilder missingText = new StringBuilder();
-                            for (String item : body.missing) {
-                                // Mostrar texto original (sin traducción)
-                                missingText.append("• ").append(item).append("\n");
-                            }
-                            tvMissingItems.setText(missingText.toString());
-                            llMissingItems.setVisibility(View.VISIBLE);
-                        } else {
-                            llMissingItems.setVisibility(View.GONE);
-                        }
-
-                        Toast.makeText(Detector_obj.this,
-                                "Faltan uno o más EPP",
-                                Toast.LENGTH_SHORT).show();
+                    // Manejar otros errores HTTP
+                    if (!response.isSuccessful()) {
+                        handleError("Error del servidor: " + response.code());
+                        return;
                     }
+
+                    // Manejar respuesta vacía
+                    if (response.body() == null) {
+                        handleError("Respuesta vacía del servidor");
+                        return;
+                    }
+
+                    // Procesar respuesta exitosa
+                    PpeResponse body = response.body();
+                    procesarRespuesta(body);
                 }
 
                 @Override
                 public void onFailure(Call<PpeResponse> call, Throwable t) {
                     btnDetect.setEnabled(true);
-                    btnDetect.setText("🔍 Detectar EPP");
-
-                    resultText.setText("Error de conexión: " + t.getMessage());
-                    resultText.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-                    llMissingItems.setVisibility(View.GONE);
-                    Toast.makeText(Detector_obj.this,
-                            "Error de red: " + t.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    btnDetect.setText("Detectar EPP");
+                    handleError("Error de conexión: " + t.getMessage());
+                    Log.e("API_ERROR", "Error en la llamada API: ", t);
                 }
             });
         } catch (Exception e) {
             btnDetect.setEnabled(true);
-            btnDetect.setText("🔍 Detectar EPP");
+            btnDetect.setText("Detectar EPP");
             Toast.makeText(this, "Error al procesar imagen", Toast.LENGTH_SHORT).show();
+            Log.e("ENVIAR_PPE", "Error: " + e.getMessage(), e);
+        }
+    }
+
+    private void handleTokenExpired() {
+        Toast.makeText(this, "Sesión expirada. Vuelve a iniciar sesión", Toast.LENGTH_LONG).show();
+        prefsManager.clearAll();
+        // Si tienes LoginActivity, redirige aquí
+        // startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    private void procesarRespuesta(PpeResponse response) {
+        if (response.ok) {
+            // ✅ TODO CORRECTO - EPP completo
+            String contextName = getContextDisplayName(selectedContext);
+            resultText.setText(Html.fromHtml("✅ <b>¡Tienes todos los elementos de protección necesarios!</b><br/><small>Contexto: " + contextName + "</small>"));
+            resultText.setTextColor(getResources().getColor(R.color.success_green));
+
+            // Mostrar imagen original
+            imagePreview.setImageBitmap(originalBitmap);
+
+            // Ocultar lista de faltantes
+            llMissingItems.setVisibility(View.GONE);
+
+            Toast.makeText(Detector_obj.this,
+                    "EPP completos para " + contextName,
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            // ❌ ELEMENTOS FALTANTES
+            if (response.missing != null && !response.missing.isEmpty()) {
+                // 1. Mostrar mensaje de resultados
+                String contextName = getContextDisplayName(selectedContext);
+                String missingCount = String.valueOf(response.missing.size());
+                resultText.setText(Html.fromHtml("❌ <b>Se detectaron " + missingCount + " elementos faltantes</b><br/><small>Contexto: " + contextName + "</small>"));
+                resultText.setTextColor(getResources().getColor(R.color.error_red));
+
+                // 2. Anotar la imagen si es posible
+                List<AnnotatedItem> missingAnnotations =
+                        annotationManager.getAnnotationsForMissingItems(response.missing, selectedContext);
+
+                Bitmap imagenAnotada = visualEngine.annotateImage(
+                        originalBitmap,
+                        missingAnnotations,
+                        selectedContext
+                );
+
+                // Mostrar la imagen (anotada si existe, sino la original)
+                if (imagenAnotada != null) {
+                    imagePreview.setImageBitmap(imagenAnotada);
+                } else {
+                    imagePreview.setImageBitmap(originalBitmap);
+                }
+
+                // 3. Mostrar la lista de elementos faltantes en español
+                mostrarListaFaltantes(response.missing);
+
+                // 4. Toast informativo
+                Toast.makeText(Detector_obj.this,
+                        "Se detectaron " + missingCount + " elementos faltantes. Ver lista abajo.",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                handleError("No se especificaron elementos faltantes");
+            }
+        }
+    }
+
+    private void mostrarListaFaltantes(List<String> missingItems) {
+        if (missingItems != null && !missingItems.isEmpty()) {
+            // Limpiar lista anterior
+            llMissingItems.removeAllViews();
+
+            // Crear título
+            TextView title = new TextView(this);
+            title.setText("Elementos faltantes:");
+            title.setTextColor(getResources().getColor(R.color.error_red));
+            title.setTextSize(14);
+            title.setTypeface(null, android.graphics.Typeface.BOLD);
+            title.setPadding(0, 0, 0, 8);
+            llMissingItems.addView(title);
+
+            // Agregar cada elemento faltante
+            for (String item : missingItems) {
+                TextView tvItem = new TextView(this);
+                tvItem.setText("• " + traducirElemento(item));
+                tvItem.setTextSize(14);
+                tvItem.setTextColor(getResources().getColor(android.R.color.black));
+                tvItem.setPadding(0, 4, 0, 4);
+                llMissingItems.addView(tvItem);
+            }
+
+            // Mostrar la lista
+            llMissingItems.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private String traducirElemento(String elemento) {
+        // Traducciones de elementos comunes de EPP
+        elemento = elemento.toLowerCase();
+
+        if (elemento.contains("helmet")) return "Casco de seguridad";
+        if (elemento.contains("goggles") || elemento.contains("glasses")) return "Gafas de protección";
+        if (elemento.contains("gloves")) return "Guantes";
+        if (elemento.contains("vest")) return "Chaleco reflectante";
+        if (elemento.contains("boots") || elemento.contains("shoes")) return "Botas de seguridad";
+        if (elemento.contains("mask")) return "Mascarilla";
+        if (elemento.contains("ear") || elemento.contains("protection")) return "Protectores auditivos";
+        if (elemento.contains("harness")) return "Arnés de seguridad";
+        if (elemento.contains("apron")) return "Delantal";
+        if (elemento.contains("gown")) return "Bata";
+        if (elemento.contains("face") && elemento.contains("shield")) return "Protector facial";
+        if (elemento.contains("respirator")) return "Respirador";
+        if (elemento.contains("safety") && elemento.contains("glasses")) return "Lentes de seguridad";
+        if (elemento.contains("hard") && elemento.contains("hat")) return "Casco de obra";
+        if (elemento.contains("protective") && elemento.contains("clothing")) return "Ropa de protección";
+
+        // Si no se reconoce, devolver el original formateado
+        return elemento.substring(0, 1).toUpperCase() + elemento.substring(1).replace("_", " ");
+    }
+
+    private void handleError(String errorMessage) {
+        resultText.setText(Html.fromHtml("⚠️ <b>" + errorMessage + "</b>"));
+        resultText.setTextColor(getResources().getColor(R.color.warning_orange));
+        llMissingItems.setVisibility(View.GONE);
+
+        if (originalBitmap != null) {
+            imagePreview.setImageBitmap(originalBitmap);
+        }
+
+        Toast.makeText(Detector_obj.this,
+                "Error: " + errorMessage,
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private String getContextDisplayName(String context) {
+        switch (context) {
+            case "welder": return "Soldador";
+            case "medical": return "Médico/Enfermera";
+            case "security_guard": return "Guardia de Seguridad";
+            case "construction": return "Construcción/Obra";
+            default: return "General";
         }
     }
 
@@ -278,9 +525,7 @@ public class Detector_obj extends AppCompatActivity {
                     try {
                         selectedBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                         mostrarImagenSeleccionada();
-                        resultText.setText("Imagen seleccionada. Presiona 'Detectar EPP' para analizar");
-                        resultText.setTextColor(getResources().getColor(android.R.color.darker_gray));
-                        llMissingItems.setVisibility(View.GONE);
+                        resetResultText();
                         Toast.makeText(this, "Imagen cargada correctamente", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         Log.e("IMAGE_LOAD", "Error: " + e.getMessage());
@@ -292,10 +537,16 @@ public class Detector_obj extends AppCompatActivity {
                 if (extras != null) {
                     selectedBitmap = (Bitmap) extras.get("data");
                     if (selectedBitmap != null) {
+                        // Mejorar la calidad de la foto de la cámara
+                        selectedBitmap = Bitmap.createScaledBitmap(
+                                selectedBitmap,
+                                selectedBitmap.getWidth() * 2,
+                                selectedBitmap.getHeight() * 2,
+                                true
+                        );
+
                         mostrarImagenSeleccionada();
-                        resultText.setText("Foto tomada. Presiona 'Detectar EPP' para analizar");
-                        resultText.setTextColor(getResources().getColor(android.R.color.darker_gray));
-                        llMissingItems.setVisibility(View.GONE);
+                        resetResultText();
                         Toast.makeText(this, "Foto tomada correctamente", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "Error: Foto no disponible", Toast.LENGTH_SHORT).show();
@@ -315,7 +566,12 @@ public class Detector_obj extends AppCompatActivity {
         }
     }
 
-    // Manejar respuesta de permisos (para compatibilidad)
+    private void resetResultText() {
+        resultText.setText("Imagen seleccionada. Presiona 'Detectar EPP' para analizar");
+        resultText.setTextColor(getResources().getColor(android.R.color.darker_gray));
+        llMissingItems.setVisibility(View.GONE);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
