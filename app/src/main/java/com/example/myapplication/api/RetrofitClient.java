@@ -7,27 +7,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient {
-
     private static Retrofit retrofit = null;
 
-    // URL de ngrok que proporcionaste
+    // USAR LA MISMA URL QUE FUNCIONA EN CURL
     private static final String BASE_URL = "https://unreproaching-rancorously-evelina.ngrok-free.dev/";
 
     public static Retrofit getClient() {
         if (retrofit == null) {
-            // Configurar interceptor para logging (opcional, útil para debug)
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-            // Configurar OkHttpClient
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(logging)
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .retryOnConnectionFailure(true)
                     .build();
 
-            // Crear instancia de Retrofit
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttpClient)

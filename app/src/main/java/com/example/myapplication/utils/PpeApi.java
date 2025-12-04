@@ -10,11 +10,12 @@ import retrofit2.http.Query;
 
 public interface PpeApi {
     @Multipart
-    @POST("ppeCheck")
+    @POST("/ppeCheck")
     Call<PpeResponse> checkPpe(
-            @Header("Authorization") String authorization,
-            @Query("model") String model,
-            @Query("context") String context,
+            @Header("Authorization") String token,
+            @Part("model") String model,
+            @Part("context") String context,
             @Part MultipartBody.Part image
     );
+
 }
