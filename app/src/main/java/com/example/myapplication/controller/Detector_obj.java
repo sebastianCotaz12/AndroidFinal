@@ -11,9 +11,8 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,14 +42,15 @@ import com.example.myapplication.utils.PrefsManager;
 import com.example.myapplication.utils.WebSocketClient;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -73,32 +73,24 @@ public class Detector_obj extends AppCompatActivity {
     private ImageView imagePreview;
     private View llPlaceholder;
     private TextView resultText;
-    private TextView tvMissingItems;
-    private LinearLayout llMissingItems; // Contenedor de la lista
-    private MaterialCardView cardResults; // Card de resultados
+    private LinearLayout llMissingItems;
+    private MaterialCardView cardResults;
     private MaterialButton btnSelectImage, btnTakePhoto, btnDetect, btnCancelar, btnLimpiar;
-    private AutoCompleteTextView contextDropdown;
-    private TextInputLayout contextLayout;
 
     // Variables
     private Bitmap selectedBitmap;
     private Bitmap originalBitmap;
     private PpeApi ppeApi;
-    private String selectedContext = "welder";
+    private String selectedContext = "welder"; // Contexto por defecto
     private PrefsManager prefsManager;
     private WebSocketClient webSocketClient;
+
+    // Para almacenar datos de detección
+    private JSONArray lastDetectionData;
 
     // Managers
     private LocalAnnotationManager annotationManager;
     private VisualAnnotationEngine visualEngine;
-
-    // Contextos disponibles
-    private final String[] availableContexts = {
-            "welder",           // Soldador
-            "medical",          // Médico
-            "security_guard",   // Guardia de seguridad
-            "construction"      // Construcción
-    };
 
     // ActivityResultLauncher para permisos de cámara
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -126,24 +118,13 @@ public class Detector_obj extends AppCompatActivity {
         // Inicializar PrefsManager
         prefsManager = new PrefsManager(this);
 
-        // DEBUG: Verificar token
-        String token = prefsManager.getToken();
-        Log.d("DEBUG_INIT", "Token disponible: " + (token != null && !token.isEmpty()));
-        if (token != null) {
-            Log.d("DEBUG_INIT", "Token longitud: " + token.length());
-            Log.d("DEBUG_INIT", "Token primeros 20 chars: " + token.substring(0, Math.min(20, token.length())));
-        }
-
         // Inicializar WebSocketClient
         webSocketClient = WebSocketClient.getInstance(this);
 
         // Inicializar vistas
         initViews();
 
-        // Configurar dropdown de contextos
-        setupContextDropdown();
-
-        // Inicializar Retrofit con la URL de ngrok
+        // Inicializar Retrofit
         try {
             ppeApi = RetrofitClient.getClient().create(PpeApi.class);
             Log.d("DEBUG_INIT", "Retrofit inicializado correctamente");
@@ -171,13 +152,6 @@ public class Detector_obj extends AppCompatActivity {
                 Log.d(TAG, "🔍 Probando conexión WebSocket al iniciar...");
                 String status = webSocketClient.getConnectionStatus();
                 Log.d(TAG, "📡 Estado WebSocket: " + status);
-
-                // Enviar mensaje de prueba después de 3 segundos
-                new Handler().postDelayed(() -> {
-                    if (webSocketClient.isConnected()) {
-                        webSocketClient.enviarNotificacionSimple("App iniciada - " + new Date());
-                    }
-                }, 3000);
             }
         }, 1000);
     }
@@ -189,10 +163,9 @@ public class Detector_obj extends AppCompatActivity {
             finish();
         } else {
             Log.d("AUTH", "Token encontrado, longitud: " + token.length());
-            Log.d("AUTH", "Token (primeros 30): " + token.substring(0, Math.min(30, token.length())) + "...");
             Log.d("AUTH", "Cargo del usuario: " + prefsManager.getCargo());
 
-            // Configurar contexto automático basado en el cargo
+            // Configurar contexto automático basado en el cargo (SIN mostrar interfaz)
             autoSetContextFromCargo();
         }
     }
@@ -204,26 +177,21 @@ public class Detector_obj extends AppCompatActivity {
 
             if (cargo.contains("soldador")) {
                 selectedContext = "welder";
-                contextDropdown.setText("welder", false);
             } else if (cargo.contains("médico") || cargo.contains("medico") ||
                     cargo.contains("doctor") || cargo.contains("enfermero") ||
                     cargo.contains("enfermera")) {
                 selectedContext = "medical";
-                contextDropdown.setText("medical", false);
             } else if (cargo.contains("seguridad") || cargo.contains("guardia")) {
                 selectedContext = "security_guard";
-                contextDropdown.setText("security_guard", false);
             } else if (cargo.contains("ingeniero") || cargo.contains("operario") ||
                     cargo.contains("construcción") || cargo.contains("construccion") ||
                     cargo.contains("obra") || cargo.contains("administracion") ||
                     cargo.contains("usuario")) {
                 selectedContext = "construction";
-                contextDropdown.setText("construction", false);
             }
 
             Log.d("CONTEXTO", "Contexto automático desde cargo '" + cargo + "': " + selectedContext);
-            Toast.makeText(this, "Contexto automático: " + getContextDisplayName(selectedContext),
-                    Toast.LENGTH_SHORT).show();
+            // NO mostramos Toast para no molestar al usuario
         }
     }
 
@@ -232,41 +200,23 @@ public class Detector_obj extends AppCompatActivity {
         imagePreview = findViewById(R.id.imagePreview);
         llPlaceholder = findViewById(R.id.llPlaceholder);
         resultText = findViewById(R.id.resultText);
-        tvMissingItems = findViewById(R.id.tvMissingItems);
         llMissingItems = findViewById(R.id.llMissingItems);
-        cardResults = findViewById(R.id.cardResults); // La card de resultados del XML
+        cardResults = findViewById(R.id.cardResults);
         btnSelectImage = findViewById(R.id.btnSelectImage);
         btnTakePhoto = findViewById(R.id.btnTakePhoto);
         btnDetect = findViewById(R.id.btnDetect);
         btnCancelar = findViewById(R.id.btnCancelar);
         btnLimpiar = findViewById(R.id.btnLimpiar);
-        contextDropdown = findViewById(R.id.contextDropdown);
-        contextLayout = findViewById(R.id.contextLayout);
 
-        // Estado inicial - ocultar la imagen y mostrar placeholder
+        // Estado inicial
         imagePreview.setVisibility(View.GONE);
         llPlaceholder.setVisibility(View.VISIBLE);
-        llMissingItems.setVisibility(View.GONE); // Ocultar lista de faltantes inicialmente
-    }
+        llMissingItems.setVisibility(View.GONE);
 
-    private void setupContextDropdown() {
-        // Crear adapter para el dropdown
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_dropdown_item_1line,
-                availableContexts
-        );
-
-        contextDropdown.setAdapter(adapter);
-        contextDropdown.setText(adapter.getItem(0), false); // Establecer "welder" por defecto
-
-        // Listener para cuando se selecciona un contexto
-        contextDropdown.setOnItemClickListener((parent, view, position, id) -> {
-            selectedContext = adapter.getItem(position);
-            Log.d("CONTEXTO", "Contexto seleccionado manualmente: " + selectedContext);
-            Toast.makeText(this, "Contexto: " + getContextDisplayName(selectedContext),
-                    Toast.LENGTH_SHORT).show();
-        });
+        // Asegurarse de que la imagen sea clickeable
+        imagePreview.setClickable(true);
+        imagePreview.setFocusable(true);
+        imagePreview.setFocusableInTouchMode(true);
     }
 
     private void setupClickListeners() {
@@ -276,11 +226,74 @@ public class Detector_obj extends AppCompatActivity {
         btnCancelar.setOnClickListener(v -> finish());
         btnLimpiar.setOnClickListener(v -> limpiarDatos());
 
-        // Agregar listener largo al botón Detectar para probar WebSocket
-        btnDetect.setOnLongClickListener(v -> {
-            testWebSocketConnection();
-            return true;
+        // Agregar listener para abrir imagen en pantalla completa
+        imagePreview.setOnClickListener(v -> {
+            Log.d(TAG, "Clic en imagen detectado");
+            openImageFullScreen();
         });
+
+        // Efecto visual al tocar la imagen
+        imagePreview.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        imagePreview.setAlpha(0.7f);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        imagePreview.setAlpha(1.0f);
+                        break;
+                }
+                return false; // Dejar que el onClickListener maneje el clic
+            }
+        });
+    }
+
+    private void openImageFullScreen() {
+        Log.d(TAG, "openImageFullScreen llamado");
+
+        if (selectedBitmap == null && originalBitmap == null) {
+            Toast.makeText(this, "No hay imagen para mostrar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Bitmap bitmapToShow = (originalBitmap != null) ? originalBitmap : selectedBitmap;
+
+        if (bitmapToShow == null) {
+            Toast.makeText(this, "Error: Imagen no disponible", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            // Guardar imagen temporalmente
+            File cacheDir = getCacheDir();
+            String fileName = "detection_" + System.currentTimeMillis() + ".jpg";
+            File imageFile = new File(cacheDir, fileName);
+
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmapToShow.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+            fos.flush();
+            fos.close();
+
+            Log.d(TAG, "Imagen guardada en: " + imageFile.getAbsolutePath());
+
+            // Crear intent para ResultadoActivity
+            Intent intent = new Intent(Detector_obj.this, ResultadoActivity.class);
+            intent.putExtra("imagePath", imageFile.getAbsolutePath());
+
+            // Pasar datos de detección si existen
+            if (lastDetectionData != null) {
+                intent.putExtra("missing", lastDetectionData.toString());
+                Log.d(TAG, "Enviando datos de detección: " + lastDetectionData.length() + " elementos");
+            }
+
+            startActivity(intent);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error al abrir imagen completa: " + e.getMessage(), e);
+            Toast.makeText(this, "Error al mostrar imagen", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void selectImageFromGallery() {
@@ -337,9 +350,10 @@ public class Detector_obj extends AppCompatActivity {
             return;
         }
 
-        // DEBUG: Mostrar token info
-        Log.d("DETECT", "Token disponible, longitud: " + token.length());
-        Log.d("DETECT", "Token (primeros 30): " + token.substring(0, Math.min(30, token.length())) + "...");
+        Log.d("DETECT", "Enviando imagen para detección. Contexto automático: " + selectedContext);
+
+        // Mostrar contexto automático al usuario
+        Toast.makeText(this, "Analizando para contexto: " + getContextDisplayName(selectedContext), Toast.LENGTH_SHORT).show();
 
         // Enviar imagen para detección
         enviarPpe(selectedBitmap, token);
@@ -348,8 +362,8 @@ public class Detector_obj extends AppCompatActivity {
     private void limpiarDatos() {
         selectedBitmap = null;
         originalBitmap = null;
-        selectedContext = "welder";
-        contextDropdown.setText(availableContexts[0], false);
+        lastDetectionData = null;
+        selectedContext = "welder"; // Resetear a contexto por defecto
         imagePreview.setVisibility(View.GONE);
         llPlaceholder.setVisibility(View.VISIBLE);
         imagePreview.setImageBitmap(null);
@@ -368,7 +382,7 @@ public class Detector_obj extends AppCompatActivity {
         btnDetect.setText("Analizando...");
 
         try {
-            // COMPRIMIR IMAGEN antes de enviar (IMPORTANTE)
+            // COMPRIMIR IMAGEN antes de enviar
             Bitmap compressedBitmap = comprimirImagen(bitmap);
 
             // Convertir bitmap a MultipartBody.Part
@@ -379,15 +393,9 @@ public class Detector_obj extends AppCompatActivity {
             }
 
             // Crear el header Authorization con el formato "Bearer <token>"
-            String authHeader;
-            if (token.startsWith("Bearer ")) {
-                authHeader = token;
-            } else {
-                authHeader = "Bearer " + token;
-            }
+            String authHeader = token.startsWith("Bearer ") ? token : "Bearer " + token;
 
             Log.d("API_REQUEST", "Enviando solicitud...");
-            Log.d("API_REQUEST", "Auth Header: " + authHeader.substring(0, Math.min(30, authHeader.length())) + "...");
             Log.d("API_REQUEST", "Context: " + selectedContext);
             Log.d("API_REQUEST", "Imagen tamaño: " + compressedBitmap.getWidth() + "x" + compressedBitmap.getHeight());
 
@@ -395,7 +403,7 @@ public class Detector_obj extends AppCompatActivity {
             Call<PpeResponse> call = ppeApi.checkPpe(
                     authHeader,        // Header Authorization: Bearer <token>
                     "local",           // Parámetro model
-                    selectedContext,   // Parámetro context
+                    selectedContext,   // Parámetro context (automático)
                     imagePart          // Archivo de imagen
             );
 
@@ -408,32 +416,6 @@ public class Detector_obj extends AppCompatActivity {
                     });
 
                     Log.d("API_RESPONSE", "Código HTTP: " + response.code());
-                    Log.d("API_RESPONSE", "Mensaje: " + response.message());
-                    Log.d("API_RESPONSE", "¿Éxito?: " + response.isSuccessful());
-
-                    // ============== DEBUG: CAPTURAR RESPUESTA RAW ==============
-                    try {
-                        String rawResponse;
-                        if (response.isSuccessful() && response.body() != null) {
-                            Gson gson = new Gson();
-                            rawResponse = gson.toJson(response.body());
-                        } else if (response.errorBody() != null) {
-                            rawResponse = response.errorBody().string();
-                        } else {
-                            rawResponse = "Respuesta vacía";
-                        }
-
-                        Log.d(TAG, "📥 RESPUESTA DEL SERVIDOR:");
-                        Log.d(TAG, "Status: " + response.code());
-                        Log.d(TAG, "Body: " + rawResponse.substring(0, Math.min(500, rawResponse.length())));
-
-                        // Guardar para revisar después
-                        prefsManager.saveLastApiResponse(rawResponse);
-
-                    } catch (IOException e) {
-                        Log.e(TAG, "Error leyendo respuesta: " + e.getMessage());
-                    }
-                    // ============== FIN DEBUG ==============
 
                     // Manejar error 401 (token inválido/vencido)
                     if (response.code() == 401) {
@@ -453,46 +435,37 @@ public class Detector_obj extends AppCompatActivity {
 
                     // Manejar otros errores HTTP
                     if (!response.isSuccessful()) {
-                        String errorMsgFinal; // Usar nombre diferente
-                        if (response.errorBody() != null) {
-                            try {
+                        // Crear variable final para usar en lambda
+                        final String errorMsgFinal;
+                        try {
+                            if (response.errorBody() != null) {
                                 String errorBody = response.errorBody().string();
                                 errorMsgFinal = "Error del servidor: " + response.code() + " - " +
                                         errorBody.substring(0, Math.min(100, errorBody.length()));
-                            } catch (IOException e) {
-                                Log.e("API_ERROR", "Error leyendo errorBody", e);
+                            } else {
                                 errorMsgFinal = "Error del servidor: " + response.code();
                             }
-                        } else {
-                            errorMsgFinal = "Error del servidor: " + response.code();
+                        } catch (IOException e) {
+                            Log.e("API_ERROR", "Error leyendo errorBody", e);
+                            // Variable final separada para este caso
+                            final String ioErrorMsg = "Error del servidor: " + response.code();
+                            runOnUiThread(() -> handleError(ioErrorMsg));
+                            return;
                         }
 
-                        final String finalErrorMsg = errorMsgFinal; // Crear variable final
-                        runOnUiThread(() -> {
-                            handleError(finalErrorMsg);
-                        });
+                        runOnUiThread(() -> handleError(errorMsgFinal));
                         return;
                     }
 
                     // Manejar respuesta vacía
                     if (response.body() == null) {
-                        runOnUiThread(() -> {
-                            handleError("Respuesta vacía del servidor");
-                        });
+                        runOnUiThread(() -> handleError("Respuesta vacía del servidor"));
                         return;
                     }
 
                     // Procesar respuesta exitosa
                     PpeResponse body = response.body();
-
-                    // DEBUG: Mostrar respuesta parseada
-                    Gson gson = new Gson();
-                    String jsonResponse = gson.toJson(body);
-                    Log.d(TAG, "📊 Respuesta parseada (JSON): " + jsonResponse);
-
-                    runOnUiThread(() -> {
-                        procesarRespuesta(body);
-                    });
+                    runOnUiThread(() -> procesarRespuesta(body));
                 }
 
                 @Override
@@ -504,25 +477,25 @@ public class Detector_obj extends AppCompatActivity {
 
                     Log.e("API_FAILURE", "Error en la llamada API: ", t);
 
-                    String errorMsgFinal; // Usar nombre diferente
+                    // Determinar mensaje de error
+                    String errorMessage;
                     if (t.getMessage() != null) {
                         if (t.getMessage().contains("timeout")) {
-                            errorMsgFinal = "Timeout: El servidor tardó demasiado";
+                            errorMessage = "Timeout: El servidor tardó demasiado";
                         } else if (t.getMessage().contains("SSL")) {
-                            errorMsgFinal = "Error de seguridad SSL";
+                            errorMessage = "Error de seguridad SSL";
                         } else if (t.getMessage().contains("Unable to resolve host")) {
-                            errorMsgFinal = "No se puede conectar al servidor";
+                            errorMessage = "No se puede conectar al servidor";
                         } else {
-                            errorMsgFinal = "Error: " + t.getMessage();
+                            errorMessage = "Error: " + t.getMessage();
                         }
                     } else {
-                        errorMsgFinal = "Error de conexión desconocido";
+                        errorMessage = "Error de conexión desconocido";
                     }
 
-                    final String finalErrorMsg = errorMsgFinal; // Crear variable final
-                    runOnUiThread(() -> {
-                        handleError(finalErrorMsg);
-                    });
+                    // Crear variable final para usar en lambda
+                    final String finalErrorMessage = errorMessage;
+                    runOnUiThread(() -> handleError(finalErrorMessage));
                 }
             });
         } catch (Exception e) {
@@ -573,17 +546,33 @@ public class Detector_obj extends AppCompatActivity {
     }
 
     private void procesarRespuesta(PpeResponse response) {
-        Log.d(TAG, "📊 ======== PROCESANDO RESPUESTA DEL SERVIDOR ========");
+        Log.d(TAG, "📊 PROCESANDO RESPUESTA DEL SERVIDOR");
         Log.d(TAG, "✅ OK?: " + response.isOk());
-        Log.d(TAG, "🔧 Contexto seleccionado: " + selectedContext);
-        Log.d(TAG, "🎯 Detected items: " + response.getDetected());
-        Log.d(TAG, "❌ Missing items (raw): " + response.getMissing());
-        Log.d(TAG, "📝 Message: " + response.getMessage());
-        Log.d(TAG, "🔍 Model: " + response.getModel());
+        Log.d(TAG, "🔧 Contexto automático: " + selectedContext);
 
-        // Obtener missing items usando el nuevo método
+        // Obtener missing items
         List<String> missingItems = response.getMissing();
-        Log.d(TAG, "🔍 Missing items procesados: " + missingItems.size() + " -> " + missingItems);
+        Log.d(TAG, "🔍 Missing items: " + missingItems.size());
+
+        // Guardar datos de detección para la vista completa
+        try {
+            lastDetectionData = new JSONArray();
+            for (String item : missingItems) {
+                JSONObject obj = new JSONObject();
+                JSONObject coords = new JSONObject();
+                // Coordenadas predeterminadas
+                coords.put("x", 0.5);
+                coords.put("y", 0.5);
+                coords.put("width", 0.3);
+                coords.put("height", 0.3);
+                obj.put("coordinates", coords);
+                obj.put("label", traducirElemento(item)); // Agregar etiqueta traducida
+                lastDetectionData.put(obj);
+            }
+            Log.d(TAG, "Datos de detección guardados: " + lastDetectionData.length() + " elementos");
+        } catch (JSONException e) {
+            Log.e(TAG, "Error creando JSON de detección: " + e.getMessage());
+        }
 
         if (response.isOk()) {
             // ✅ TODO CORRECTO - EPP completo
@@ -607,7 +596,6 @@ public class Detector_obj extends AppCompatActivity {
         } else {
             // ❌ ELEMENTOS FALTANTES
             if (!missingItems.isEmpty()) {
-                // Usar missingItems
                 String contextName = getContextDisplayName(selectedContext);
                 String missingCount = String.valueOf(missingItems.size());
                 resultText.setText(Html.fromHtml("❌ <b>Se detectaron " + missingCount + " elementos faltantes</b><br/><small>Contexto: " + contextName + "</small>"));
@@ -636,7 +624,6 @@ public class Detector_obj extends AppCompatActivity {
                 // ENVIAR NOTIFICACIÓN AL WEBSOCKET
                 enviarNotificacionWebSocket(contextName, missingItems);
 
-                // Toast informativo
                 Toast.makeText(Detector_obj.this,
                         "Se detectaron " + missingCount + " elementos faltantes. Ver lista abajo.",
                         Toast.LENGTH_LONG).show();
@@ -676,7 +663,6 @@ public class Detector_obj extends AppCompatActivity {
     }
 
     private String traducirElemento(String elemento) {
-        // Traducciones de elementos comunes de EPP
         elemento = elemento.toLowerCase();
 
         if (elemento.contains("helmet")) return "Casco de seguridad";
@@ -702,7 +688,6 @@ public class Detector_obj extends AppCompatActivity {
         if (elemento.contains("welding")) return "Equipo de soldadura";
         if (elemento.contains("gear")) return "Equipo de protección";
 
-        // Si no se reconoce, devolver el original formateado
         return elemento.substring(0, 1).toUpperCase() + elemento.substring(1).replace("_", " ");
     }
 
@@ -730,34 +715,6 @@ public class Detector_obj extends AppCompatActivity {
         }
     }
 
-    /**
-     * MÉTODO PARA PROBAR LA CONEXIÓN WEBSOCKET
-     * Mantén presionado el botón "Detectar EPP" para probar
-     */
-    private void testWebSocketConnection() {
-        if (webSocketClient != null) {
-            String status = webSocketClient.getConnectionStatus();
-
-            // Mostrar diálogo con información
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-            builder.setTitle("🔧 Prueba WebSocket")
-                    .setMessage("Estado: " + status +
-                            "\n\nURL: https://unreproaching-rancorously-evelina.ngrok-free.dev" +
-                            "\n\n¿Enviar mensaje de prueba?")
-                    .setPositiveButton("Enviar Prueba", (dialog, which) -> {
-                        webSocketClient.enviarNotificacionSimple("Prueba manual - " + new Date());
-                        Toast.makeText(this, "Mensaje de prueba enviado", Toast.LENGTH_SHORT).show();
-                    })
-                    .setNegativeButton("Ver Estado", (dialog, which) -> {
-                        Toast.makeText(this, "Estado: " + status, Toast.LENGTH_LONG).show();
-                    })
-                    .setNeutralButton("Cancelar", null)
-                    .show();
-        } else {
-            Toast.makeText(this, "WebSocketClient es null", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -769,11 +726,8 @@ public class Detector_obj extends AppCompatActivity {
                 Uri imageUri = data.getData();
                 if (imageUri != null) {
                     try {
-                        // Cargar imagen optimizada
                         InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inSampleSize = 2; // Reducir tamaño
-                        selectedBitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                        selectedBitmap = BitmapFactory.decodeStream(inputStream);
 
                         if (inputStream != null) {
                             inputStream.close();
@@ -782,6 +736,7 @@ public class Detector_obj extends AppCompatActivity {
                         if (selectedBitmap != null) {
                             mostrarImagenSeleccionada();
                             resetResultText();
+                            Log.d(TAG, "Imagen cargada: " + selectedBitmap.getWidth() + "x" + selectedBitmap.getHeight());
                             Toast.makeText(this, "Imagen cargada correctamente", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(this, "Error al cargar imagen", Toast.LENGTH_SHORT).show();
@@ -796,7 +751,7 @@ public class Detector_obj extends AppCompatActivity {
                 if (extras != null) {
                     selectedBitmap = (Bitmap) extras.get("data");
                     if (selectedBitmap != null) {
-                        // Mejorar la calidad de la foto de la cámara
+                        // Mejorar calidad si es necesario
                         selectedBitmap = Bitmap.createScaledBitmap(
                                 selectedBitmap,
                                 selectedBitmap.getWidth() * 2,
@@ -806,6 +761,7 @@ public class Detector_obj extends AppCompatActivity {
 
                         mostrarImagenSeleccionada();
                         resetResultText();
+                        Log.d(TAG, "Foto tomada: " + selectedBitmap.getWidth() + "x" + selectedBitmap.getHeight());
                         Toast.makeText(this, "Foto tomada correctamente", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "Error: Foto no disponible", Toast.LENGTH_SHORT).show();
@@ -819,9 +775,14 @@ public class Detector_obj extends AppCompatActivity {
 
     private void mostrarImagenSeleccionada() {
         if (selectedBitmap != null) {
+            Log.d(TAG, "Mostrando imagen seleccionada");
             imagePreview.setVisibility(View.VISIBLE);
             llPlaceholder.setVisibility(View.GONE);
             imagePreview.setImageBitmap(selectedBitmap);
+
+            // Asegurarse de que sea clickeable
+            imagePreview.setClickable(true);
+            imagePreview.setFocusable(true);
         }
     }
 
@@ -844,59 +805,19 @@ public class Detector_obj extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        // Verificar conexión WebSocket cuando la app vuelve al frente
-        if (webSocketClient != null && !webSocketClient.isConnected()) {
-            Log.d(TAG, "🔄 Reconectando WebSocket en onResume...");
-            webSocketClient.reconnect();
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        // No desconectamos el WebSocket completamente para mantener la conexión
+        // Liberar recursos
+        if (selectedBitmap != null && !selectedBitmap.isRecycled()) {
+            selectedBitmap.recycle();
+        }
+        if (originalBitmap != null && !originalBitmap.isRecycled()) {
+            originalBitmap.recycle();
+        }
     }
 
     // Métodos WebSocket
-    private void enviarNotificacionWebSocketVerificadoManual(String contexto) {
-        Log.d(TAG, "✅ Enviando notificación de EPP verificado manualmente...");
-        try {
-            JSONObject notificacionData = new JSONObject();
-            notificacionData.put("tipo", "epp_verificado_manual");
-            notificacionData.put("mensaje", "✅ EPP VERIFICADO MANUALMENTE en contexto: " + contexto);
-            notificacionData.put("fecha", new Date().toString());
-            notificacionData.put("empresaId", prefsManager.getIdEmpresa());
-            notificacionData.put("timestamp", System.currentTimeMillis());
-            notificacionData.put("origen", "android_app");
-            notificacionData.put("verificacion", "manual");
-
-            JSONObject usuarioData = new JSONObject();
-            usuarioData.put("id", prefsManager.getIdUsuario());
-            usuarioData.put("nombre", prefsManager.getNombre());
-            usuarioData.put("cargo", prefsManager.getCargo());
-            notificacionData.put("usuario", usuarioData);
-
-            if (webSocketClient != null && webSocketClient.isConnected()) {
-                webSocketClient.enviarNotificacion(notificacionData);
-                Log.d(TAG, "✅ Notificación de verificación manual enviada");
-                Toast.makeText(Detector_obj.this, "✅ Notificación enviada (verificación manual)", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "❌ Error enviando notificación de verificación manual: " + e.getMessage());
-        }
-    }
-
     private void enviarNotificacionWebSocket(String contexto, List<String> elementosFaltantes) {
-        Log.d(TAG, "🚀 INICIANDO envío de notificación WebSocket...");
-        String cargo = prefsManager.getCargo();
-        if (cargo == null || cargo.isEmpty()) {
-            Log.w(TAG, "❌ No se puede enviar notificación: cargo no disponible");
-            Toast.makeText(this, "Error: Cargo no disponible", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         try {
             JSONObject notificacionData = new JSONObject();
             notificacionData.put("tipo", "epp_faltante");
@@ -906,50 +827,9 @@ public class Detector_obj extends AppCompatActivity {
             notificacionData.put("timestamp", System.currentTimeMillis());
             notificacionData.put("origen", "android_app");
 
-            JSONObject usuarioData = new JSONObject();
-            usuarioData.put("id", prefsManager.getIdUsuario());
-            usuarioData.put("nombre", prefsManager.getNombre());
-            usuarioData.put("nombre_completo", prefsManager.getNombreCompleto());
-            usuarioData.put("cargo", cargo);
-            usuarioData.put("email", prefsManager.getCorreoElectronico());
-            notificacionData.put("usuario", usuarioData);
-
-            JSONObject deteccionData = new JSONObject();
-            deteccionData.put("contexto", selectedContext);
-            deteccionData.put("contexto_display", contexto);
-            deteccionData.put("elementos_faltantes", new org.json.JSONArray(elementosFaltantes));
-            deteccionData.put("total_faltantes", elementosFaltantes.size());
-            deteccionData.put("fecha_deteccion", System.currentTimeMillis());
-            notificacionData.put("deteccion", deteccionData);
-
-            org.json.JSONArray elementosTraducidos = new org.json.JSONArray();
-            for (String elemento : elementosFaltantes) {
-                elementosTraducidos.put(traducirElemento(elemento));
-            }
-            notificacionData.put("elementos_faltantes_es", elementosTraducidos);
-
-            Log.d(TAG, "📤 JSON a enviar: " + notificacionData.toString(2));
-
-            if (webSocketClient == null) {
-                Toast.makeText(this, "Error: WebSocket no inicializado", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (webSocketClient.isConnected()) {
+            if (webSocketClient != null && webSocketClient.isConnected()) {
                 webSocketClient.enviarNotificacion(notificacionData);
-                Toast.makeText(Detector_obj.this, "✅ Notificación enviada al sistema SG-SST", Toast.LENGTH_SHORT).show();
-                prefsManager.saveLastNotificationSent(contexto, elementosFaltantes.size());
-            } else {
-                Log.w(TAG, "⚠️ WebSocket no conectado, intentando reconectar...");
-                webSocketClient.reconnect();
-                new Handler().postDelayed(() -> {
-                    if (webSocketClient.isConnected()) {
-                        webSocketClient.enviarNotificacion(notificacionData);
-                        Toast.makeText(Detector_obj.this, "✅ Notificación enviada (reconexión)", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(Detector_obj.this, "❌ Error de conexión con el servidor", Toast.LENGTH_LONG).show();
-                    }
-                }, 2000);
+                Toast.makeText(Detector_obj.this, "✅ Notificación enviada", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             Log.e(TAG, "❌ Error en enviarNotificacionWebSocket: " + e.getMessage());
@@ -957,7 +837,6 @@ public class Detector_obj extends AppCompatActivity {
     }
 
     private void enviarNotificacionWebSocketCompleto(String contexto) {
-        Log.d(TAG, "✅ Enviando notificación de EPP completo...");
         try {
             JSONObject notificacionData = new JSONObject();
             notificacionData.put("tipo", "epp_completo");
@@ -967,15 +846,8 @@ public class Detector_obj extends AppCompatActivity {
             notificacionData.put("timestamp", System.currentTimeMillis());
             notificacionData.put("origen", "android_app");
 
-            JSONObject usuarioData = new JSONObject();
-            usuarioData.put("id", prefsManager.getIdUsuario());
-            usuarioData.put("nombre", prefsManager.getNombre());
-            usuarioData.put("cargo", prefsManager.getCargo());
-            notificacionData.put("usuario", usuarioData);
-
             if (webSocketClient != null && webSocketClient.isConnected()) {
                 webSocketClient.enviarNotificacion(notificacionData);
-                Log.d(TAG, "✅ Notificación de EPP completo enviada");
             }
         } catch (Exception e) {
             Log.e(TAG, "❌ Error enviando notificación de EPP completo: " + e.getMessage());

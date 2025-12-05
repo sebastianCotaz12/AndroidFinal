@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8FAFC"
-    tools:context=".controller.Detector_obj">
+    android:background="#F8FAFC">
 
     <!-- HEADER MODERNO -->
     <com.google.android.material.card.MaterialCardView
@@ -103,11 +101,9 @@
                         app:strokeColor="#BBDEFB"
                         app:strokeWidth="1dp">
 
-                        <LinearLayout
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="match_parent">
 
                             <ImageView
                                 android:id="@+id/imagePreview"
@@ -120,8 +116,8 @@
 
                             <LinearLayout
                                 android:id="@+id/llPlaceholder"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:visibility="visible">
@@ -143,7 +139,7 @@
 
                             </LinearLayout>
 
-                        </LinearLayout>
+                        </FrameLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
@@ -218,33 +214,6 @@
                             app:strokeWidth="1dp" />
                     </LinearLayout>
 
-                    <!-- Selector de Contexto -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/contextLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:hint="Contexto de trabajo"
-                        android:layout_marginBottom="8dp">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/contextDropdown"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none"
-                            android:editable="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Selecciona el contexto de trabajo (soldador, médico, etc.)"
-                        android:textColor="#78909C"
-                        android:textSize="12sp"
-                        android:gravity="center"
-                        android:layout_marginBottom="16dp" />
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnDetect"
                         android:layout_width="match_parent"
@@ -262,7 +231,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- TARJETA DE RESULTADOS - Añadido ID cardResults -->
+            <!-- TARJETA DE RESULTADOS -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardResults"
                 android:layout_width="match_parent"

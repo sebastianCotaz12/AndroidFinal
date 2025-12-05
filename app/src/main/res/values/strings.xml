@@ -8,4 +8,8 @@
     <string name="subir_imagen">Espacio para ver imagen de la  actividad</string>
     <string name="subir_video">Espacio para ver video de la actividad</string>
     <string name="enviar_evidencia">Enviar evidencia</string>
+
+    <string name="back">Volver</string>
+    <string name="toggle_overlay">Alternar rectángulos</string>
+    <string name="reset_zoom">Reiniciar zoom</string>
 </resources>
