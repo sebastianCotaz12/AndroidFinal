@@ -7,11 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,22 +37,15 @@ import com.example.myapplication.utils.LocalAnnotationManager;
 import com.example.myapplication.utils.VisualAnnotationEngine;
 import com.example.myapplication.utils.AnnotatedItem;
 import com.example.myapplication.utils.PrefsManager;
-import com.example.myapplication.utils.WebSocketClient;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -81,9 +72,8 @@ public class Detector_obj extends AppCompatActivity {
     private Bitmap selectedBitmap;
     private Bitmap originalBitmap;
     private PpeApi ppeApi;
-    private String selectedContext = "welder"; // Contexto por defecto
+    private String selectedContext = "construction";
     private PrefsManager prefsManager;
-    private WebSocketClient webSocketClient;
 
     // Para almacenar datos de detección
     private JSONArray lastDetectionData;
@@ -118,9 +108,6 @@ public class Detector_obj extends AppCompatActivity {
         // Inicializar PrefsManager
         prefsManager = new PrefsManager(this);
 
-        // Inicializar WebSocketClient
-        webSocketClient = WebSocketClient.getInstance(this);
-
         // Inicializar vistas
         initViews();
 
@@ -141,19 +128,6 @@ public class Detector_obj extends AppCompatActivity {
 
         // Verificar autenticación
         checkAuthentication();
-
-        // Prueba de conexión WebSocket al iniciar
-        testWebSocketOnStart();
-    }
-
-    private void testWebSocketOnStart() {
-        new Handler().postDelayed(() -> {
-            if (webSocketClient != null) {
-                Log.d(TAG, "🔍 Probando conexión WebSocket al iniciar...");
-                String status = webSocketClient.getConnectionStatus();
-                Log.d(TAG, "📡 Estado WebSocket: " + status);
-            }
-        }, 1000);
     }
 
     private void checkAuthentication() {
@@ -165,7 +139,7 @@ public class Detector_obj extends AppCompatActivity {
             Log.d("AUTH", "Token encontrado, longitud: " + token.length());
             Log.d("AUTH", "Cargo del usuario: " + prefsManager.getCargo());
 
-            // Configurar contexto automático basado en el cargo (SIN mostrar interfaz)
+            // Configurar contexto automático basado en el cargo
             autoSetContextFromCargo();
         }
     }
@@ -179,24 +153,27 @@ public class Detector_obj extends AppCompatActivity {
                 selectedContext = "welder";
             } else if (cargo.contains("médico") || cargo.contains("medico") ||
                     cargo.contains("doctor") || cargo.contains("enfermero") ||
-                    cargo.contains("enfermera")) {
+                    cargo.contains("enfermera") || cargo.contains("salud")) {
                 selectedContext = "medical";
-            } else if (cargo.contains("seguridad") || cargo.contains("guardia")) {
+            } else if (cargo.contains("seguridad") || cargo.contains("guardia") ||
+                    cargo.contains("vigilante") || cargo.contains("policía")) {
                 selectedContext = "security_guard";
             } else if (cargo.contains("ingeniero") || cargo.contains("operario") ||
                     cargo.contains("construcción") || cargo.contains("construccion") ||
-                    cargo.contains("obra") || cargo.contains("administracion") ||
-                    cargo.contains("usuario")) {
+                    cargo.contains("obra") || cargo.contains("técnico") ||
+                    cargo.contains("mecánico") || cargo.contains("electricista")) {
+                selectedContext = "construction";
+            } else {
                 selectedContext = "construction";
             }
 
             Log.d("CONTEXTO", "Contexto automático desde cargo '" + cargo + "': " + selectedContext);
-            // NO mostramos Toast para no molestar al usuario
+        } else {
+            Log.w("CONTEXTO", "Cargo no definido, usando contexto por defecto: " + selectedContext);
         }
     }
 
     private void initViews() {
-        // Buscar todas las vistas usando los IDs del XML
         imagePreview = findViewById(R.id.imagePreview);
         llPlaceholder = findViewById(R.id.llPlaceholder);
         resultText = findViewById(R.id.resultText);
@@ -212,11 +189,11 @@ public class Detector_obj extends AppCompatActivity {
         imagePreview.setVisibility(View.GONE);
         llPlaceholder.setVisibility(View.VISIBLE);
         llMissingItems.setVisibility(View.GONE);
+        cardResults.setVisibility(View.GONE);
 
-        // Asegurarse de que la imagen sea clickeable
-        imagePreview.setClickable(true);
-        imagePreview.setFocusable(true);
-        imagePreview.setFocusableInTouchMode(true);
+        // Establecer texto inicial
+        resultText.setText("Selecciona o toma una foto para detectar EPP");
+        resultText.setTextColor(getResources().getColor(android.R.color.darker_gray));
     }
 
     private void setupClickListeners() {
@@ -225,84 +202,16 @@ public class Detector_obj extends AppCompatActivity {
         btnDetect.setOnClickListener(v -> detectObjects());
         btnCancelar.setOnClickListener(v -> finish());
         btnLimpiar.setOnClickListener(v -> limpiarDatos());
-
-        // Agregar listener para abrir imagen en pantalla completa
-        imagePreview.setOnClickListener(v -> {
-            Log.d(TAG, "Clic en imagen detectado");
-            openImageFullScreen();
-        });
-
-        // Efecto visual al tocar la imagen
-        imagePreview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        imagePreview.setAlpha(0.7f);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        imagePreview.setAlpha(1.0f);
-                        break;
-                }
-                return false; // Dejar que el onClickListener maneje el clic
-            }
-        });
-    }
-
-    private void openImageFullScreen() {
-        Log.d(TAG, "openImageFullScreen llamado");
-
-        if (selectedBitmap == null && originalBitmap == null) {
-            Toast.makeText(this, "No hay imagen para mostrar", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Bitmap bitmapToShow = (originalBitmap != null) ? originalBitmap : selectedBitmap;
-
-        if (bitmapToShow == null) {
-            Toast.makeText(this, "Error: Imagen no disponible", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            // Guardar imagen temporalmente
-            File cacheDir = getCacheDir();
-            String fileName = "detection_" + System.currentTimeMillis() + ".jpg";
-            File imageFile = new File(cacheDir, fileName);
-
-            FileOutputStream fos = new FileOutputStream(imageFile);
-            bitmapToShow.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-            fos.flush();
-            fos.close();
-
-            Log.d(TAG, "Imagen guardada en: " + imageFile.getAbsolutePath());
-
-            // Crear intent para ResultadoActivity
-            Intent intent = new Intent(Detector_obj.this, ResultadoActivity.class);
-            intent.putExtra("imagePath", imageFile.getAbsolutePath());
-
-            // Pasar datos de detección si existen
-            if (lastDetectionData != null) {
-                intent.putExtra("missing", lastDetectionData.toString());
-                Log.d(TAG, "Enviando datos de detección: " + lastDetectionData.length() + " elementos");
-            }
-
-            startActivity(intent);
-
-        } catch (Exception e) {
-            Log.e(TAG, "Error al abrir imagen completa: " + e.getMessage(), e);
-            Toast.makeText(this, "Error al mostrar imagen", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void selectImageFromGallery() {
         try {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
             startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
         } catch (Exception e) {
-            Log.e("GALERIA", "Error: " + e.getMessage());
+            Log.e("GALERIA", "Error: " + e.getMessage(), e);
             Toast.makeText(this, "Error al abrir galería", Toast.LENGTH_SHORT).show();
         }
     }
@@ -311,6 +220,9 @@ public class Detector_obj extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             abrirCamara();
         } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                Toast.makeText(this, "Se necesita permiso de cámara para tomar fotos", Toast.LENGTH_LONG).show();
+            }
             requestPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
@@ -324,25 +236,22 @@ public class Detector_obj extends AppCompatActivity {
                 Toast.makeText(this, "No hay aplicación de cámara disponible", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Log.e("CAMARA", "Error: " + e.getMessage());
+            Log.e("CAMARA", "Error: " + e.getMessage(), e);
             Toast.makeText(this, "Error al abrir cámara: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void detectObjects() {
-        // Verificar que hay imagen seleccionada
         if (selectedBitmap == null) {
             Toast.makeText(this, "Primero selecciona o toma una foto", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Verificar conexión API
         if (ppeApi == null) {
             Toast.makeText(this, "Error: Conexión no disponible", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Verificar token de autenticación
         String token = prefsManager.getToken();
         if (token == null || token.isEmpty()) {
             Toast.makeText(this, "Sesión expirada. Vuelve a iniciar sesión", Toast.LENGTH_LONG).show();
@@ -350,61 +259,69 @@ public class Detector_obj extends AppCompatActivity {
             return;
         }
 
-        Log.d("DETECT", "Enviando imagen para detección. Contexto automático: " + selectedContext);
+        Log.d("DETECT", "Enviando imagen para detección. Contexto: " + selectedContext);
 
-        // Mostrar contexto automático al usuario
-        Toast.makeText(this, "Analizando para contexto: " + getContextDisplayName(selectedContext), Toast.LENGTH_SHORT).show();
+        String contextDisplayName = getContextDisplayName(selectedContext);
+        Toast.makeText(this, "Analizando para: " + contextDisplayName, Toast.LENGTH_SHORT).show();
 
-        // Enviar imagen para detección
         enviarPpe(selectedBitmap, token);
     }
 
     private void limpiarDatos() {
+        if (selectedBitmap != null && !selectedBitmap.isRecycled()) {
+            selectedBitmap.recycle();
+        }
+        if (originalBitmap != null && !originalBitmap.isRecycled()) {
+            originalBitmap.recycle();
+        }
+
         selectedBitmap = null;
         originalBitmap = null;
         lastDetectionData = null;
-        selectedContext = "welder"; // Resetear a contexto por defecto
+
+        autoSetContextFromCargo();
+
         imagePreview.setVisibility(View.GONE);
         llPlaceholder.setVisibility(View.VISIBLE);
         imagePreview.setImageBitmap(null);
+        cardResults.setVisibility(View.GONE);
         resultText.setText("Selecciona o toma una foto para detectar EPP");
         resultText.setTextColor(getResources().getColor(android.R.color.darker_gray));
         llMissingItems.setVisibility(View.GONE);
+        llMissingItems.removeAllViews();
+
         Toast.makeText(this, "Datos limpiados", Toast.LENGTH_SHORT).show();
     }
 
     private void enviarPpe(Bitmap bitmap, String token) {
-        // Guardar copia original para mostrar después
         originalBitmap = bitmap.copy(bitmap.getConfig(), true);
 
-        // Mostrar estado de carga
         btnDetect.setEnabled(false);
         btnDetect.setText("Analizando...");
 
         try {
-            // COMPRIMIR IMAGEN antes de enviar
             Bitmap compressedBitmap = comprimirImagen(bitmap);
+            if (compressedBitmap == null) {
+                throw new Exception("Error al comprimir la imagen");
+            }
 
-            // Convertir bitmap a MultipartBody.Part
             MultipartBody.Part imagePart = ImageUtils.bitmapToMultipart(compressedBitmap, "image");
 
             if (imagePart == null) {
                 throw new Exception("Error al convertir imagen a formato multipart");
             }
 
-            // Crear el header Authorization con el formato "Bearer <token>"
             String authHeader = token.startsWith("Bearer ") ? token : "Bearer " + token;
 
-            Log.d("API_REQUEST", "Enviando solicitud...");
+            Log.d("API_REQUEST", "=== ENVIANDO SOLICITUD ===");
             Log.d("API_REQUEST", "Context: " + selectedContext);
             Log.d("API_REQUEST", "Imagen tamaño: " + compressedBitmap.getWidth() + "x" + compressedBitmap.getHeight());
 
-            // Llamada a la API con token
             Call<PpeResponse> call = ppeApi.checkPpe(
-                    authHeader,        // Header Authorization: Bearer <token>
-                    "local",           // Parámetro model
-                    selectedContext,   // Parámetro context (automático)
-                    imagePart          // Archivo de imagen
+                    authHeader,
+                    "local",
+                    selectedContext,
+                    imagePart
             );
 
             call.enqueue(new Callback<PpeResponse>() {
@@ -417,53 +334,42 @@ public class Detector_obj extends AppCompatActivity {
 
                     Log.d("API_RESPONSE", "Código HTTP: " + response.code());
 
-                    // Manejar error 401 (token inválido/vencido)
                     if (response.code() == 401) {
                         handleTokenExpired();
                         return;
                     }
 
-                    // Manejar error 404 (endpoint no encontrado)
                     if (response.code() == 404) {
                         runOnUiThread(() -> {
                             Toast.makeText(Detector_obj.this,
-                                    "Error 404: Endpoint no encontrado. Verifica la URL del backend.",
+                                    "Error 404: Endpoint no encontrado",
                                     Toast.LENGTH_LONG).show();
                         });
                         return;
                     }
 
-                    // Manejar otros errores HTTP
                     if (!response.isSuccessful()) {
-                        // Crear variable final para usar en lambda
-                        final String errorMsgFinal;
+                        String errorMsg = "Error del servidor: " + response.code();
                         try {
                             if (response.errorBody() != null) {
                                 String errorBody = response.errorBody().string();
-                                errorMsgFinal = "Error del servidor: " + response.code() + " - " +
+                                errorMsg = "Error " + response.code() + ": " +
                                         errorBody.substring(0, Math.min(100, errorBody.length()));
-                            } else {
-                                errorMsgFinal = "Error del servidor: " + response.code();
                             }
                         } catch (IOException e) {
                             Log.e("API_ERROR", "Error leyendo errorBody", e);
-                            // Variable final separada para este caso
-                            final String ioErrorMsg = "Error del servidor: " + response.code();
-                            runOnUiThread(() -> handleError(ioErrorMsg));
-                            return;
                         }
 
-                        runOnUiThread(() -> handleError(errorMsgFinal));
+                        final String finalErrorMsg = errorMsg;
+                        runOnUiThread(() -> handleError(finalErrorMsg));
                         return;
                     }
 
-                    // Manejar respuesta vacía
                     if (response.body() == null) {
                         runOnUiThread(() -> handleError("Respuesta vacía del servidor"));
                         return;
                     }
 
-                    // Procesar respuesta exitosa
                     PpeResponse body = response.body();
                     runOnUiThread(() -> procesarRespuesta(body));
                 }
@@ -477,7 +383,6 @@ public class Detector_obj extends AppCompatActivity {
 
                     Log.e("API_FAILURE", "Error en la llamada API: ", t);
 
-                    // Determinar mensaje de error
                     String errorMessage;
                     if (t.getMessage() != null) {
                         if (t.getMessage().contains("timeout")) {
@@ -486,14 +391,15 @@ public class Detector_obj extends AppCompatActivity {
                             errorMessage = "Error de seguridad SSL";
                         } else if (t.getMessage().contains("Unable to resolve host")) {
                             errorMessage = "No se puede conectar al servidor";
+                        } else if (t.getMessage().contains("Connection refused")) {
+                            errorMessage = "Conexión rechazada. Verifica el servidor";
                         } else {
-                            errorMessage = "Error: " + t.getMessage();
+                            errorMessage = "Error de conexión: " + t.getMessage();
                         }
                     } else {
                         errorMessage = "Error de conexión desconocido";
                     }
 
-                    // Crear variable final para usar en lambda
                     final String finalErrorMessage = errorMessage;
                     runOnUiThread(() -> handleError(finalErrorMessage));
                 }
@@ -510,14 +416,14 @@ public class Detector_obj extends AppCompatActivity {
 
     private Bitmap comprimirImagen(Bitmap original) {
         try {
-            // Tamaño máximo para enviar
-            int maxWidth = 1024;
-            int maxHeight = 1024;
+            int maxWidth = 800;
+            int maxHeight = 800;
 
             int width = original.getWidth();
             int height = original.getHeight();
 
-            // Si la imagen es muy grande, redimensionar
+            Log.d("COMPRESION", "Tamaño original: " + width + "x" + height);
+
             if (width > maxWidth || height > maxHeight) {
                 float ratio = Math.min(
                         (float) maxWidth / width,
@@ -527,10 +433,12 @@ public class Detector_obj extends AppCompatActivity {
                 int newWidth = (int) (width * ratio);
                 int newHeight = (int) (height * ratio);
 
+                Log.d("COMPRESION", "Redimensionando a: " + newWidth + "x" + newHeight);
+
                 return Bitmap.createScaledBitmap(original, newWidth, newHeight, true);
             }
 
-            return original;
+            return original.copy(original.getConfig(), true);
         } catch (Exception e) {
             Log.e("COMPRIMIR_IMAGEN", "Error: ", e);
             return original;
@@ -546,27 +454,31 @@ public class Detector_obj extends AppCompatActivity {
     }
 
     private void procesarRespuesta(PpeResponse response) {
-        Log.d(TAG, "📊 PROCESANDO RESPUESTA DEL SERVIDOR");
-        Log.d(TAG, "✅ OK?: " + response.isOk());
-        Log.d(TAG, "🔧 Contexto automático: " + selectedContext);
+        Log.d(TAG, "=== PROCESANDO RESPUESTA ===");
+        Log.d(TAG, "OK?: " + response.isOk());
+        Log.d(TAG, "Contexto: " + selectedContext);
+        Log.d(TAG, "Mensaje: " + response.getMessage());
 
-        // Obtener missing items
         List<String> missingItems = response.getMissing();
-        Log.d(TAG, "🔍 Missing items: " + missingItems.size());
+        List<String> detectedItems = response.getDetected();
 
-        // Guardar datos de detección para la vista completa
+        Log.d(TAG, "Missing items: " + missingItems.size());
+        Log.d(TAG, "Detected items: " + (detectedItems != null ? detectedItems.size() : 0));
+
+        cardResults.setVisibility(View.VISIBLE);
+
         try {
             lastDetectionData = new JSONArray();
             for (String item : missingItems) {
                 JSONObject obj = new JSONObject();
                 JSONObject coords = new JSONObject();
-                // Coordenadas predeterminadas
                 coords.put("x", 0.5);
                 coords.put("y", 0.5);
                 coords.put("width", 0.3);
                 coords.put("height", 0.3);
                 obj.put("coordinates", coords);
-                obj.put("label", traducirElemento(item)); // Agregar etiqueta traducida
+                obj.put("label", traducirElemento(item));
+                obj.put("original_name", item);
                 lastDetectionData.put(obj);
             }
             Log.d(TAG, "Datos de detección guardados: " + lastDetectionData.length() + " elementos");
@@ -575,33 +487,30 @@ public class Detector_obj extends AppCompatActivity {
         }
 
         if (response.isOk()) {
-            // ✅ TODO CORRECTO - EPP completo
             String contextName = getContextDisplayName(selectedContext);
-            resultText.setText(Html.fromHtml("✅ <b>¡Tienes todos los elementos de protección necesarios!</b><br/><small>Contexto: " + contextName + "</small>"));
+            resultText.setText(Html.fromHtml("<b>✅ ¡Tienes todos los elementos de protección necesarios!</b><br/><small>Contexto: " + contextName + "</small>"));
             resultText.setTextColor(getResources().getColor(R.color.success_green));
 
-            // Mostrar imagen original
             imagePreview.setImageBitmap(originalBitmap);
 
-            // Ocultar lista de faltantes
             llMissingItems.setVisibility(View.GONE);
+            llMissingItems.removeAllViews();
 
-            Toast.makeText(Detector_obj.this,
-                    "EPP completos para " + contextName,
+            Toast.makeText(this,
+                    "✅ EPP completos para " + contextName,
                     Toast.LENGTH_SHORT).show();
 
-            // Enviar notificación de "todo correcto"
-            enviarNotificacionWebSocketCompleto(contextName);
+            // Actualizar estadísticas
+            prefsManager.incrementEPPCompletos();
+            prefsManager.incrementTotalDetections();
 
         } else {
-            // ❌ ELEMENTOS FALTANTES
             if (!missingItems.isEmpty()) {
                 String contextName = getContextDisplayName(selectedContext);
                 String missingCount = String.valueOf(missingItems.size());
-                resultText.setText(Html.fromHtml("❌ <b>Se detectaron " + missingCount + " elementos faltantes</b><br/><small>Contexto: " + contextName + "</small>"));
+                resultText.setText(Html.fromHtml("<b>⚠️ Se detectaron " + missingCount + " elementos faltantes</b><br/><small>Contexto: " + contextName + "</small>"));
                 resultText.setTextColor(getResources().getColor(R.color.error_red));
 
-                // Anotar la imagen si es posible
                 List<AnnotatedItem> missingAnnotations =
                         annotationManager.getAnnotationsForMissingItems(missingItems, selectedContext);
 
@@ -611,59 +520,66 @@ public class Detector_obj extends AppCompatActivity {
                         selectedContext
                 );
 
-                // Mostrar la imagen (anotada si existe, sino la original)
                 if (imagenAnotada != null) {
                     imagePreview.setImageBitmap(imagenAnotada);
                 } else {
                     imagePreview.setImageBitmap(originalBitmap);
                 }
 
-                // Mostrar la lista de elementos faltantes en español
                 mostrarListaFaltantes(missingItems);
 
-                // ENVIAR NOTIFICACIÓN AL WEBSOCKET
-                enviarNotificacionWebSocket(contextName, missingItems);
+                // ⚠️ IMPORTANTE: NO necesitas enviar notificación desde Android
+                // El backend YA lo hace automáticamente cuando detecta EPP faltante
+                Log.d(TAG, "✅ El backend se encargará de enviar la notificación WebSocket automáticamente");
 
-                Toast.makeText(Detector_obj.this,
-                        "Se detectaron " + missingCount + " elementos faltantes. Ver lista abajo.",
+                Toast.makeText(this,
+                        "⚠️ Se detectaron " + missingCount + " elementos faltantes",
                         Toast.LENGTH_LONG).show();
+
+                // Actualizar estadísticas
+                prefsManager.incrementEPPFaltantes();
+                prefsManager.incrementTotalDetections();
+                prefsManager.saveLastNotificationSent(selectedContext, missingItems.size());
+
             } else {
-                handleError("No se especificaron elementos faltantes");
+                handleError("No se detectaron elementos específicos faltantes");
             }
         }
     }
 
     private void mostrarListaFaltantes(List<String> missingItems) {
         if (missingItems != null && !missingItems.isEmpty()) {
-            // Limpiar lista anterior
             llMissingItems.removeAllViews();
 
-            // Crear título
             TextView title = new TextView(this);
             title.setText("Elementos faltantes:");
             title.setTextColor(getResources().getColor(R.color.error_red));
-            title.setTextSize(14);
+            title.setTextSize(16);
             title.setTypeface(null, android.graphics.Typeface.BOLD);
-            title.setPadding(0, 0, 0, 8);
+            title.setPadding(0, 0, 0, 16);
             llMissingItems.addView(title);
 
-            // Agregar cada elemento faltante
             for (String item : missingItems) {
                 TextView tvItem = new TextView(this);
                 tvItem.setText("• " + traducirElemento(item));
                 tvItem.setTextSize(14);
                 tvItem.setTextColor(getResources().getColor(android.R.color.black));
-                tvItem.setPadding(0, 4, 0, 4);
+                tvItem.setPadding(16, 8, 0, 8);
                 llMissingItems.addView(tvItem);
             }
 
-            // Mostrar la lista
             llMissingItems.setVisibility(View.VISIBLE);
+        } else {
+            llMissingItems.setVisibility(View.GONE);
         }
     }
 
     private String traducirElemento(String elemento) {
-        elemento = elemento.toLowerCase();
+        if (elemento == null || elemento.isEmpty()) {
+            return "Elemento desconocido";
+        }
+
+        elemento = elemento.toLowerCase().trim();
 
         if (elemento.contains("helmet")) return "Casco de seguridad";
         if (elemento.contains("goggles") || elemento.contains("glasses")) return "Gafas de protección";
@@ -671,7 +587,7 @@ public class Detector_obj extends AppCompatActivity {
         if (elemento.contains("vest")) return "Chaleco reflectante";
         if (elemento.contains("boots") || elemento.contains("shoes")) return "Botas de seguridad";
         if (elemento.contains("mask")) return "Mascarilla";
-        if (elemento.contains("ear") || elemento.contains("protection")) return "Protectores auditivos";
+        if (elemento.contains("ear") && elemento.contains("protection")) return "Protectores auditivos";
         if (elemento.contains("harness")) return "Arnés de seguridad";
         if (elemento.contains("apron")) return "Delantal";
         if (elemento.contains("gown")) return "Bata";
@@ -687,31 +603,36 @@ public class Detector_obj extends AppCompatActivity {
         if (elemento.contains("cap")) return "Gorra/Elemento identificatorio";
         if (elemento.contains("welding")) return "Equipo de soldadura";
         if (elemento.contains("gear")) return "Equipo de protección";
+        if (elemento.contains("helmet")) return "Casco";
+        if (elemento.contains("goggles")) return "Gafas";
+        if (elemento.contains("safety") && elemento.contains("boots")) return "Botas de seguridad";
+        if (elemento.contains("protective") && elemento.contains("glasses")) return "Gafas protectoras";
+        if (elemento.contains("ear") && elemento.contains("plug")) return "Tapones auditivos";
 
-        return elemento.substring(0, 1).toUpperCase() + elemento.substring(1).replace("_", " ");
+        return elemento.substring(0, 1).toUpperCase() +
+                elemento.substring(1).replace("_", " ");
     }
 
     private void handleError(String errorMessage) {
-        resultText.setText(Html.fromHtml("⚠️ <b>" + errorMessage + "</b>"));
+        resultText.setText(Html.fromHtml("<b>⚠️ " + errorMessage + "</b>"));
         resultText.setTextColor(getResources().getColor(R.color.warning_orange));
         llMissingItems.setVisibility(View.GONE);
+        llMissingItems.removeAllViews();
 
         if (originalBitmap != null) {
             imagePreview.setImageBitmap(originalBitmap);
         }
 
-        Toast.makeText(Detector_obj.this,
-                "Error: " + errorMessage,
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 
     private String getContextDisplayName(String context) {
         switch (context) {
             case "welder": return "Soldador";
-            case "medical": return "Médico/Enfermera";
-            case "security_guard": return "Guardia de Seguridad";
+            case "medical": return "Médico/Enfermería";
+            case "security_guard": return "Seguridad";
             case "construction": return "Construcción/Obra";
-            default: return "General";
+            default: return context;
         }
     }
 
@@ -737,21 +658,23 @@ public class Detector_obj extends AppCompatActivity {
                             mostrarImagenSeleccionada();
                             resetResultText();
                             Log.d(TAG, "Imagen cargada: " + selectedBitmap.getWidth() + "x" + selectedBitmap.getHeight());
-                            Toast.makeText(this, "Imagen cargada correctamente", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "✅ Imagen cargada", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(this, "Error al cargar imagen", Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
-                        Log.e("IMAGE_LOAD", "Error: " + e.getMessage());
+                        Log.e("IMAGE_LOAD", "Error: " + e.getMessage(), e);
                         Toast.makeText(this, "Error al cargar imagen", Toast.LENGTH_SHORT).show();
+                    } catch (SecurityException e) {
+                        Log.e("IMAGE_LOAD", "Permiso denegado: " + e.getMessage());
+                        Toast.makeText(this, "Permiso denegado para acceder a la imagen", Toast.LENGTH_SHORT).show();
                     }
                 }
             } else if (requestCode == CAMERA_REQUEST && data != null) {
                 Bundle extras = data.getExtras();
-                if (extras != null) {
+                if (extras != null && extras.get("data") instanceof Bitmap) {
                     selectedBitmap = (Bitmap) extras.get("data");
                     if (selectedBitmap != null) {
-                        // Mejorar calidad si es necesario
                         selectedBitmap = Bitmap.createScaledBitmap(
                                 selectedBitmap,
                                 selectedBitmap.getWidth() * 2,
@@ -762,14 +685,31 @@ public class Detector_obj extends AppCompatActivity {
                         mostrarImagenSeleccionada();
                         resetResultText();
                         Log.d(TAG, "Foto tomada: " + selectedBitmap.getWidth() + "x" + selectedBitmap.getHeight());
-                        Toast.makeText(this, "Foto tomada correctamente", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "✅ Foto tomada", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "Error: Foto no disponible", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (data.getData() != null) {
+                        try {
+                            selectedBitmap = MediaStore.Images.Media.getBitmap(
+                                    getContentResolver(),
+                                    data.getData()
+                            );
+                            if (selectedBitmap != null) {
+                                mostrarImagenSeleccionada();
+                                resetResultText();
+                                Toast.makeText(this, "✅ Foto cargada", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (IOException e) {
+                            Log.e("CAMERA", "Error obteniendo imagen: " + e.getMessage());
+                            Toast.makeText(this, "Error al obtener la foto", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }
         } else if (resultCode == RESULT_CANCELED) {
-            Toast.makeText(this, "Operación cancelada", Toast.LENGTH_SHORT).show();
+            Log.d("ACTIVITY_RESULT", "Operación cancelada por el usuario");
         }
     }
 
@@ -780,9 +720,7 @@ public class Detector_obj extends AppCompatActivity {
             llPlaceholder.setVisibility(View.GONE);
             imagePreview.setImageBitmap(selectedBitmap);
 
-            // Asegurarse de que sea clickeable
-            imagePreview.setClickable(true);
-            imagePreview.setFocusable(true);
+            cardResults.setVisibility(View.GONE);
         }
     }
 
@@ -790,6 +728,8 @@ public class Detector_obj extends AppCompatActivity {
         resultText.setText("Imagen seleccionada. Presiona 'Detectar EPP' para analizar");
         resultText.setTextColor(getResources().getColor(android.R.color.darker_gray));
         llMissingItems.setVisibility(View.GONE);
+        llMissingItems.removeAllViews();
+        cardResults.setVisibility(View.GONE);
     }
 
     @Override
@@ -807,50 +747,11 @@ public class Detector_obj extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Liberar recursos
         if (selectedBitmap != null && !selectedBitmap.isRecycled()) {
             selectedBitmap.recycle();
         }
         if (originalBitmap != null && !originalBitmap.isRecycled()) {
             originalBitmap.recycle();
-        }
-    }
-
-    // Métodos WebSocket
-    private void enviarNotificacionWebSocket(String contexto, List<String> elementosFaltantes) {
-        try {
-            JSONObject notificacionData = new JSONObject();
-            notificacionData.put("tipo", "epp_faltante");
-            notificacionData.put("mensaje", "⚠️ EPP incompleto detectado en contexto: " + contexto);
-            notificacionData.put("fecha", new Date().toString());
-            notificacionData.put("empresaId", prefsManager.getIdEmpresa());
-            notificacionData.put("timestamp", System.currentTimeMillis());
-            notificacionData.put("origen", "android_app");
-
-            if (webSocketClient != null && webSocketClient.isConnected()) {
-                webSocketClient.enviarNotificacion(notificacionData);
-                Toast.makeText(Detector_obj.this, "✅ Notificación enviada", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "❌ Error en enviarNotificacionWebSocket: " + e.getMessage());
-        }
-    }
-
-    private void enviarNotificacionWebSocketCompleto(String contexto) {
-        try {
-            JSONObject notificacionData = new JSONObject();
-            notificacionData.put("tipo", "epp_completo");
-            notificacionData.put("mensaje", "✅ EPP completo detectado en contexto: " + contexto);
-            notificacionData.put("fecha", new Date().toString());
-            notificacionData.put("empresaId", prefsManager.getIdEmpresa());
-            notificacionData.put("timestamp", System.currentTimeMillis());
-            notificacionData.put("origen", "android_app");
-
-            if (webSocketClient != null && webSocketClient.isConnected()) {
-                webSocketClient.enviarNotificacion(notificacionData);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "❌ Error enviando notificación de EPP completo: " + e.getMessage());
         }
     }
 }
